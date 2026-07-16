@@ -8,8 +8,12 @@ terraform {
   }
 }
 
+
+data "azurerm_client_config" "current" {}
+
 # Configure Azure Provider
 provider "azurerm" {
+  subscription_id                 = var.subscription_id
   resource_provider_registrations = "none"
-  futures {}
+  features {}
 }
