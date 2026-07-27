@@ -29,9 +29,11 @@ resource "azurerm_storage_account" "data" {
   account_replication_type = "LRS"
 
   # SECURE default = false;insecure when flag is true
-  ## allow_nested_items_to_be_public = var.mc01_public_storage
-  ## public_network_access_enabled = var.mc01_public_storage
-  ## min_tls_version = var.mc06_weak_tls ? "TLS1_0" : "TLS1_2"
+  #mc01
+  allow_nested_items_to_be_public = var.mc01_public_storage
+  public_network_access_enabled   = var.mc01_public_storage
+  #mc06
+  min_tls_version = var.mc06_weak_tls ? "TLS1_0" : "TLS1_2"
 
   tags = {
     environment = "dev"
@@ -123,5 +125,10 @@ resource "azurerm_linux_function_app" "functionapp" {
   storage_account_access_key = azurerm_storage_account.data.primary_access_key
   service_plan_id            = azurerm_service_plan.serviceplan.id
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   site_config {}
 }
+
