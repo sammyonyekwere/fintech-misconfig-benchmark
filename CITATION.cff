@@ -1,33 +1,26 @@
-
 cff-version: 1.2.0
 message: "If you use this software or its results, please cite it as below."
-title: "Benchmarking Static and Runtime Cloud Misconfiguration Detection for Fintech Payment Workloads on Microsoft Azure"
+
+title: "A Reproducible Benchmark of Static and Runtime Cloud Misconfiguration Detection for Fintech Payment Workloads on Microsoft Azure"
+
 type: software
+
 authors:
   - family-names: "Onyekwere"
     given-names: "Samuel"
-    # EDIT: register a free ORCID at https://orcid.org and paste it here.
-    # Delete this line entirely if you do not have one yet.
     orcid: "https://orcid.org/0009-0000-2532-1562"
     affiliation: "University of Greater Manchester"
-# EDIT: match this tag to the Git release you cut (e.g. v1.0.0).
+
 version: "1.0.0"
-
-# EDIT: after Zenodo mints the DOI on release, paste the VERSION DOI here,
-#       then commit the change so GitHub's citation box shows it.
-#       Leave commented for the very first release (Zenodo mints it for you).
-# doi: "10.5281/zenodo.XXXXXXX"
-
-date-released: "2026-09-01"
 
 url: "https://github.com/sammyonyekwere/fintech-misconfig-benchmark"
 repository-code: "https://github.com/sammyonyekwere/fintech-misconfig-benchmark"
 
 license: Apache-2.0
+
 keywords:
   - "cloud security"
   - "misconfiguration detection"
-  - "infrastructure as code"
   - "Terraform"
   - "Microsoft Azure"
   - "static analysis"
@@ -38,13 +31,21 @@ keywords:
   - "PCI-DSS"
   - "benchmark"
   - "reproducibility"
+
 abstract: >-
-  An empirical, regulation-anchored benchmark comparing static and runtime
-  detection of seeded cloud misconfigurations in Terraform-based Azure
-  fintech payment workloads. Seven detection tools (four static analysers and
-  three runtime mechanisms) are evaluated across fifteen deployment variants
-  and ten seeded misconfigurations, reporting true-positive rate, false-positive
-  rate, and time-to-first-detection with 95% confidence intervals, McNemar
-  paired tests, and set-cover complementarity analysis. The repository contains
-  all Terraform variants, seeded-misconfiguration flags, the custom KQL rule
-  set, the analysis harness, and raw normalised tool outputs.
+  A regulation-anchored reproducible benchmark comparing static and runtime
+  detection of seeded cloud misconfigurations in Terraform-based Azure fintech
+  payment workloads. Seven detection tools are evaluated across fifteen
+  deployment variants and ten seeded misconfigurations using true-positive
+  rate, false-positive rate, time-to-first-detection, statistical comparison,
+  and complementarity analysis.
+
+preferred-citation:
+  type: software
+  title: "A Reproducible Benchmark of Static and Runtime Cloud Misconfiguration Detection for Fintech Payment Workloads on Microsoft Azure"
+  authors:
+    - family-names: "Onyekwere"
+      given-names: "Samuel"
+      orcid: "https://orcid.org/0009-0000-2532-1562"
+  year: 2026
+  version: "1.0.0"
