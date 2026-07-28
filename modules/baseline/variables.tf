@@ -15,9 +15,6 @@ variable "sql_server_user" {
   type = string
 }
 
-variable "sql_server_password" {
-  type = string
-}
 
 variable "os_type" {
   type    = string

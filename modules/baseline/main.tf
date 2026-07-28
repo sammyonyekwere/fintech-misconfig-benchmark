@@ -35,6 +35,11 @@ resource "azurerm_storage_account" "data" {
   #mc06
   min_tls_version = var.mc06_weak_tls ? "TLS1_0" : "TLS1_2"
 
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.storage.id]
+  }
+
   tags = {
     environment = "dev"
   }
@@ -50,26 +55,8 @@ resource "azurerm_key_vault" "vault" {
   enabled_for_disk_encryption = true
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 7
-  purge_protection_enabled    = false
-
-  sku_name = "standard"
-
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-
-    key_permissions = [
-      "Get",
-    ]
-
-    secret_permissions = [
-      "Get",
-    ]
-
-    storage_permissions = [
-      "Get",
-    ]
-  }
+  purge_protection_enabled    = !var.mc08_no_cmk
+  sku_name                    = "standard"
 }
 
 resource "random_password" "sql" {
@@ -77,10 +64,19 @@ resource "random_password" "sql" {
   special = true
 }
 
+resource "time_sleep" "wait_for_kv_policy" {
+  depends_on      = [azurerm_key_vault_access_policy.terraform_client]
+  create_duration = "30s"
+}
+
 resource "azurerm_key_vault_secret" "sql_conn" {
   name         = "sql-connection"
   value        = local.sql_conn_string
   key_vault_id = azurerm_key_vault.vault.id
+
+  depends_on = [
+    time_sleep.wait_for_kv_policy
+  ]
 }
 
 
@@ -91,7 +87,7 @@ resource "azurerm_mssql_server" "sqlserver" {
   location                     = azurerm_resource_group.rg.location
   version                      = "12.0"
   administrator_login          = var.sql_server_user
-  administrator_login_password = var.sql_server_password
+  administrator_login_password = random_password.sql.result
 
   #SECURE: private only; INSECURE: public endpoint open
   public_network_access_enabled = var.mc03_sql_public
@@ -255,11 +251,49 @@ resource "azurerm_key_vault_key" "cmk" {
   key_size        = 2048
   key_opts        = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
   expiration_date = timeadd(timestamp(), "8760h")
+
+  depends_on = [
+    time_sleep.wait_for_kv_policy
+  ]
+
 }
 
 resource "azurerm_storage_account_customer_managed_key" "data" {
-  count              = var.mc08_no_cmk ? 0 : 1
-  storage_account_id = azurerm_storage_account.data.id
-  key_vault_id       = azurerm_key_vault.vault.id
-  key_name           = azurerm_key_vault_key.cmk[0].name
+  count                     = var.mc08_no_cmk ? 0 : 1
+  storage_account_id        = azurerm_storage_account.data.id
+  key_vault_id              = azurerm_key_vault.vault.id
+  key_name                  = azurerm_key_vault_key.cmk[0].name
+  user_assigned_identity_id = azurerm_user_assigned_identity.storage.id
+
+  depends_on = [
+    azurerm_key_vault_access_policy.storage_uai
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "terraform_client" {
+  key_vault_id = azurerm_key_vault.vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = [
+    "Create",
+    "Delete",
+    "Get",
+    "List",
+    "Purge",
+    "Recover",
+    "Update",
+    "GetRotationPolicy",
+    "SetRotationPolicy",
+    "Rotate",
+  ]
+
+  secret_permissions = [
+    "Get",
+    "Set",
+  ]
+
+  storage_permissions = [
+    "Get",
+  ]
 }

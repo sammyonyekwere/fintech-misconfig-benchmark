@@ -1,23 +1,20 @@
 # misconfbench-fintech
 
-Reproducible benchmark for evaluating static and runtime cloud misconfiguration
-detection in a fintech-style payment workload on Microsoft Azure.
+Reproducible benchmark for evaluating static and runtime cloud misconfiguration detection in a fintech-style payment workload on Microsoft Azure.
 
-## Current Project Status
+## Project Status
 
-This repository is in active build-out and the baseline Terraform module is now
-capturing a broader set of fintech Azure misconfiguration cases.
+This repository is an active misconfiguration benchmark. The baseline Terraform module is implemented and captures a broad set of Azure security and configuration cases for controlled testing.
 
 Implemented in `modules/baseline/`:
 
 - Resource group, VNet, subnet, storage accounts, Key Vault, SQL server and
 	database, service plan, Linux Function App, and NSG controls.
 - Identity and access wiring for the Function App and a sample Azure AD service
-	principal.
+- Identity and access wiring for the Function App, a sample Azure AD application/service principal, and a user-assigned identity for storage CMK workflows.
 - Shared helpers in `locals.tf` for scope selection and SQL connection-string
 	construction.
-- Misconfiguration toggles from `mc01` to `mc10`, with several already wired
-	into the baseline resources.
+- Misconfiguration toggles from `mc01` to `mc10`, wired into the baseline resources where applicable.
 
 Current toggle behavior in code:
 
@@ -30,6 +27,8 @@ Current toggle behavior in code:
 - `mc05_plaintext_secrets` writes the SQL connection string directly into app
 	settings instead of using a Key Vault reference.
 - `mc06_weak_tls` weakens TLS settings for storage, SQL, and the Function App.
+- `mc07_logging_disabled` disables diagnostic settings for Key Vault and SQL.
+- `mc08_no_cmk` disables the customer-managed key path for storage.
 - `mc09_nsg_open_inbound` broadens inbound NSG exposure.
 - `mc10_sp_nonexpiring` makes the service principal access path overly broad and
 	long-lived.
@@ -47,7 +46,7 @@ Current toggle behavior in code:
 - `results/processed/`: Normalized/aggregated benchmark outputs.
 - `az-cli/cli.ps1`: Azure CLI helpers used in execution workflow.
 
-## Baseline Infrastructure (Terraform)
+## Baseline Infrastructure
 
 Implemented files:
 
@@ -62,6 +61,10 @@ Provider stack:
 - `hashicorp/azurerm` `=4.1.0`
 - `hashicorp/azuread` `~>3.0`
 - `hashicorp/random` `~>3.6`
+
+## Validation Status
+
+The current baseline has been applied successfully with Terraform, including the Key Vault policy and CMK timing adjustments needed for the deploy identity.
 
 ## Misconfiguration Switches
 
@@ -109,9 +112,7 @@ terraform init
 terraform plan -var-file="terraform.tfvars"
 ```
 
-The current baseline plan now covers identity binding, NSG association, SQL
-public-access variants, Key Vault secret storage, and the Function App's
-connection-string handling.
+The current baseline plan covers identity binding, NSG association, SQL public-access variants, Key Vault secret storage, CMK wiring, and the Function App connection-string handling.
 
 5. Apply:
 
@@ -138,4 +139,4 @@ than production secrets.
 ## Citation
 
 Citation metadata is provided in `CITATION.cff` for GitHub and Zenodo-based
-archiving/referencing.
+archiving and referencing.
