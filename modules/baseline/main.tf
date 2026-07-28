@@ -33,7 +33,8 @@ resource "azurerm_storage_account" "data" {
   allow_nested_items_to_be_public = var.mc01_public_storage
   public_network_access_enabled   = var.mc01_public_storage
   #mc06
-  min_tls_version = var.mc06_weak_tls ? "TLS1_0" : "TLS1_2"
+  min_tls_version            = "TLS1_2"
+  https_traffic_only_enabled = !var.mc06_no_https
 
   identity {
     type         = "UserAssigned"
@@ -91,7 +92,7 @@ resource "azurerm_mssql_server" "sqlserver" {
 
   #SECURE: private only; INSECURE: public endpoint open
   public_network_access_enabled = var.mc03_sql_public
-  minimum_tls_version           = var.mc06_weak_tls ? "1.0" : "1.2"
+  minimum_tls_version           = "1.2"
 
 }
 
@@ -111,7 +112,7 @@ resource "azurerm_mssql_database" "mssqldb" {
   license_type = "LicenseIncluded"
   max_size_gb  = 2
   sku_name     = "S0"
-  enclave_type = "VBS"
+  # enclave_type = "VBS"
 
   tags = {
     environment = "staging"
@@ -149,14 +150,17 @@ resource "azurerm_linux_function_app" "functionapp" {
     type = "SystemAssigned"
   }
 
+  # mc06: false = HTTPS only (secure); true = allow plaintext HTTP
+  https_only = !var.mc06_no_https
+
   app_settings = {
     # INSECURE: the raw credential is written into the app configuration
     "SQL_CONNECTION" = var.mc05_plaintext_secrets ? local.sql_conn_string : local.conn_secure
   }
 
   site_config {
-    minimum_tls_version = var.mc06_weak_tls ? "1.0" : "1.2"
-    ftps_state          = var.mc06_weak_tls ? "AllAllowed" : "Disabled"
+    minimum_tls_version = "1.2"
+    ftps_state          = "Disabled"
   }
 }
 
@@ -207,7 +211,9 @@ resource "azurerm_storage_account" "logs" {
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-  min_tls_version          = var.mc06_weak_tls ? "TLS1_0" : "TLS1_2"
+  min_tls_version          = "TLS1_2"
+
+  https_traffic_only_enabled = !var.mc06_no_https
 
   # this account is never public in any variant
   allow_nested_items_to_be_public = false
@@ -291,9 +297,20 @@ resource "azurerm_key_vault_access_policy" "terraform_client" {
   secret_permissions = [
     "Get",
     "Set",
+    "Delete",
+    "Purge",
+    "Recover",
   ]
 
   storage_permissions = [
     "Get",
   ]
+}
+
+resource "azurerm_key_vault_access_policy" "functionapp" {
+  key_vault_id = azurerm_key_vault.vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = azurerm_linux_function_app.functionapp.identity[0].principal_id
+
+  secret_permissions = ["Get"]
 }

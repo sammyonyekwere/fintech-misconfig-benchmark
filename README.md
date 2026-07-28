@@ -10,8 +10,11 @@ Implemented in `modules/baseline/`:
 
 - Resource group, VNet, subnet, storage accounts, Key Vault, SQL server and
 	database, service plan, Linux Function App, and NSG controls.
-- Identity and access wiring for the Function App and a sample Azure AD service
 - Identity and access wiring for the Function App, a sample Azure AD application/service principal, and a user-assigned identity for storage CMK workflows.
+- Key Vault access policies for the deploying identity, the storage
+	user-assigned identity, and the Function App's system-assigned identity
+	(required for the app to resolve its Key Vault secret reference at
+	runtime).
 - Shared helpers in `locals.tf` for scope selection and SQL connection-string
 	construction.
 - Misconfiguration toggles from `mc01` to `mc10`, wired into the baseline resources where applicable.
@@ -26,7 +29,11 @@ Current toggle behavior in code:
 - `mc04_open_mgmt_ports` opens common management ports in the NSG.
 - `mc05_plaintext_secrets` writes the SQL connection string directly into app
 	settings instead of using a Key Vault reference.
-- `mc06_weak_tls` weakens TLS settings for storage, SQL, and the Function App.
+- `mc06_no_https` disables HTTPS-only enforcement on the storage accounts and
+	the Function App, allowing plaintext HTTP traffic. TLS version itself is
+	pinned to 1.2 on storage, SQL, and the Function App, since Azure now
+	enforces a TLS 1.2 floor platform-wide and no longer allows provisioning
+	weaker versions.
 - `mc07_logging_disabled` disables diagnostic settings for Key Vault and SQL.
 - `mc08_no_cmk` disables the customer-managed key path for storage.
 - `mc09_nsg_open_inbound` broadens inbound NSG exposure.
@@ -58,13 +65,40 @@ Implemented files:
 
 Provider stack:
 
-- `hashicorp/azurerm` `=4.1.0`
+- `hashicorp/azurerm` `~>4.1`
 - `hashicorp/azuread` `~>3.0`
 - `hashicorp/random` `~>3.6`
+- `hashicorp/time` `~>0.11`
 
 ## Validation Status
 
-The current baseline has been applied successfully with Terraform, including the Key Vault policy and CMK timing adjustments needed for the deploy identity.
+The baseline has been applied successfully end-to-end with Terraform for both
+the hardened and vulnerable variants, including the Key Vault policy and CMK
+timing adjustments needed for the deploy identity, and the Key Vault access
+policy needed for the Function App to resolve its Key Vault secret reference.
+
+Two platform-level constraints were found and adjusted for during validation:
+
+- Azure SQL logical servers now enforce a TLS 1.2 floor and reject creation
+	requests specifying a lower `minimum_tls_version`. TLS version is pinned to
+	1.2 across SQL, storage, and the Function App; `mc06` now toggles
+	HTTPS-only enforcement instead of TLS version (see `mc06_no_https` above).
+- `azurerm_mssql_database` does not support `enclave_type = "VBS"` on the
+	DTU-based `S0` SKU used in this baseline; the enclave setting has been
+	removed.
+
+### Operational note: redeploying a variant
+
+The Key Vault (`purge_protection_enabled = true` whenever `mc08_no_cmk =
+false`, the default) cannot be purged once destroyed — it only soft-deletes,
+and Azure requires the same vault name to stay reserved for
+`soft_delete_retention_days` (7 days). Tearing an environment down with
+`terraform destroy` (rather than deleting the resource group directly through
+Azure) keeps Terraform state in sync with this behavior. If a resource group
+is deleted out-of-band, the next `apply` for the same `variant_name` will
+auto-recover the soft-deleted vault along with its child objects (keys,
+secrets, access policies, diagnostic settings), which then need to be
+`terraform import`-ed back into state before `apply` can proceed.
 
 ## Misconfiguration Switches
 
@@ -76,7 +110,7 @@ All switches default to secure (`false`) and are controlled through
 - `mc03_sql_public`
 - `mc04_open_mgmt_ports`
 - `mc05_plaintext_secrets`
-- `mc06_weak_tls`
+- `mc06_no_https`
 - `mc07_logging_disabled`
 - `mc08_no_cmk`
 - `mc09_nsg_open_inbound`

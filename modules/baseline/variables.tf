@@ -47,7 +47,7 @@ variable "mc05_plaintext_secrets" {
   default = false
 }
 
-variable "mc06_weak_tls" {
+variable "mc06_no_https" {
   type    = bool
   default = false
 }
