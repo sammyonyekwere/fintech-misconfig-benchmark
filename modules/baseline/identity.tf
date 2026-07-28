@@ -1,14 +1,6 @@
 data "azurerm_subscription" "current" {}
 
-locals {
-  # SECURE: narrow role, resource-group scope
-  tight_scope = azurerm_resource_group.rg.id
-  tight_role  = "Storage Blob Data Reader"
 
-  # INSECURE: Contributor access the whole subscription
-  wide_scope = data.azurerm_subscription.current.id
-  wide_role  = "Contributor"
-}
 
 resource "azurerm_role_assignment" "func_identity" {
   scope        = var.mc02_rbac_contributor ? local.wide_scope : local.tight_scope
@@ -18,3 +10,33 @@ resource "azurerm_role_assignment" "func_identity" {
     var.mc02_rbac_contributor ? local.wide_role : local.tight_role
   )
 }
+
+resource "azuread_application" "payments" {
+  display_name = "sp-${var.variant_name}-payments"
+}
+
+resource "azuread_service_principal" "payments" {
+  client_id = azuread_application.payments.client_id
+}
+
+resource "azuread_application_password" "payments" {
+  application_id = azuread_application.payments.id
+
+  #SECURE: 90-day credential; INSECURE: effectively never expires
+  end_date = var.mc10_sp_nonexpiring ? "299-12-31T00:00:00Z" : timeadd(timestamp(), "2160h")
+
+  rotate_when_changed = var.enable_credential_rotation ? {
+    rotation = timestamp()
+  } : {}
+}
+
+resource "azurerm_role_assignment" "sp_payments" {
+  #SECURE: Reader on the resource group; INSECURE: Owner on the subscription
+  scope = (
+    var.mc10_sp_nonexpiring ? local.wide_scope : local.tight_scope
+  )
+
+  role_definition_name = var.mc10_sp_nonexpiring ? "Owner" : "Reader"
+  principal_id         = azuread_service_principal.payments.object_id
+}
+

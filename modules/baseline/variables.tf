@@ -75,4 +75,9 @@ variable "mc10_sp_nonexpiring" {
   default = false
 }
 
+variable "enable_credential_rotation" {
+  type    = bool
+  default = false
+}
+
 

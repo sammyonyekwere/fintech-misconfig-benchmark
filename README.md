@@ -3,24 +3,43 @@
 Reproducible benchmark for evaluating static and runtime cloud misconfiguration
 detection in a fintech-style payment workload on Microsoft Azure.
 
-## Current Project Status (as of 2026-07-27)
+## Current Project Status
 
-This repository is in active build-out.
+This repository is in active build-out and the baseline Terraform module is now
+capturing a broader set of fintech Azure misconfiguration cases.
 
-- Baseline Terraform module is implemented in `modules/baseline/`.
-- Core Azure resources are provisioned (resource group, VNet/subnet, storage,
-	key vault, SQL server/database, service plan, Linux Function App).
-- Misconfiguration toggles are defined for `mc01` to `mc10`.
-- Current toggle logic implemented in code:
-	- `mc01_public_storage` (storage public exposure)
-	- `mc02_rbac_contributor` (overly broad role assignment)
-	- `mc06_weak_tls` (weak storage TLS)
-- Additional toggles are scaffolded in variables and will be implemented in
-	upcoming variants.
+Implemented in `modules/baseline/`:
+
+- Resource group, VNet, subnet, storage accounts, Key Vault, SQL server and
+	database, service plan, Linux Function App, and NSG controls.
+- Identity and access wiring for the Function App and a sample Azure AD service
+	principal.
+- Shared helpers in `locals.tf` for scope selection and SQL connection-string
+	construction.
+- Misconfiguration toggles from `mc01` to `mc10`, with several already wired
+	into the baseline resources.
+
+Current toggle behavior in code:
+
+- `mc01_public_storage` enables public storage exposure.
+- `mc02_rbac_contributor` switches the Function App identity from a narrow
+	resource-group role to subscription-wide Contributor.
+- `mc03_sql_public` opens SQL to public network access and adds an allow-all
+	firewall rule.
+- `mc04_open_mgmt_ports` opens common management ports in the NSG.
+- `mc05_plaintext_secrets` writes the SQL connection string directly into app
+	settings instead of using a Key Vault reference.
+- `mc06_weak_tls` weakens TLS settings for storage, SQL, and the Function App.
+- `mc09_nsg_open_inbound` broadens inbound NSG exposure.
+- `mc10_sp_nonexpiring` makes the service principal access path overly broad and
+	long-lived.
+- `enable_credential_rotation` supports rotating the generated application
+	password during testing.
 
 ## Repository Layout
 
-- `modules/baseline/`: Terraform baseline deployment and misconfiguration flags.
+- `modules/baseline/`: Terraform baseline deployment, locals, identity, and
+	misconfiguration flags.
 - `variants/`: Planned variant-specific IaC overlays.
 - `harness/kql/`: KQL rules for runtime detection and telemetry checks.
 - `analysis/`: Analysis scripts/notebooks for detection-performance metrics.
@@ -33,6 +52,7 @@ This repository is in active build-out.
 Implemented files:
 
 - `modules/baseline/main.tf`
+- `modules/baseline/locals.tf`
 - `modules/baseline/identity.tf`
 - `modules/baseline/variables.tf`
 - `modules/baseline/versions.tf`
@@ -58,6 +78,9 @@ All switches default to secure (`false`) and are controlled through
 - `mc08_no_cmk`
 - `mc09_nsg_open_inbound`
 - `mc10_sp_nonexpiring`
+
+The secure path keeps the function app credential out of plain app settings by
+using a Key Vault reference when plaintext secrets are disabled.
 
 ## Quick Start
 
@@ -86,6 +109,10 @@ terraform init
 terraform plan -var-file="terraform.tfvars"
 ```
 
+The current baseline plan now covers identity binding, NSG association, SQL
+public-access variants, Key Vault secret storage, and the Function App's
+connection-string handling.
+
 5. Apply:
 
 ```powershell
@@ -103,6 +130,10 @@ terraform destroy -var-file="terraform.tfvars" -auto-approve
 Do not keep real credentials in committed tfvars files. Use environment
 variables, secret stores, or untracked local tfvars overrides for sensitive
 values.
+
+The repository currently contains sample configuration values in
+`modules/baseline/terraform.tfvars`; treat them as local test inputs rather
+than production secrets.
 
 ## Citation
 
