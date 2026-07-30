@@ -1,6 +1,3 @@
-variable "subscription_id" {
-  type = string
-}
 
 variable "variant_name" {
   type = string
@@ -11,15 +8,8 @@ variable "location" {
   default = "westeurope"
 }
 
-variable "sql_server_user" {
-  type = string
-}
 
 
-variable "os_type" {
-  type    = string
-  default = "Linux"
-}
 
 # -- Table 1 misconfiguration switches (false = secure)
 variable "mc01_public_storage" {
@@ -78,12 +68,3 @@ variable "enable_credential_rotation" {
 }
 
 
-variable "enable_nsg_routine_update" {
-  type    = bool
-  default = false
-}
-
-variable "enable_tls_cert_renewal" {
-  type    = bool
-  default = false
-}

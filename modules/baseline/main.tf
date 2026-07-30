@@ -205,6 +205,62 @@ resource "azurerm_network_security_rule" "mgmt" {
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
 
+# noisy but still-restricted NSG rule
+resource "azurerm_network_security_rule" "routine" {
+  count                       = var.enable_nsg_routine_update ? 1 : 0
+  name                        = "app-inbound-8443"
+  priority                    = 110
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "8443"
+  source_address_prefix       = "10.20.0.0/16" # still restricted and compliant
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.nsg.name
+}
+
+# an automated TLS certificate renewal in Key Vault
+resource "azurerm_key_vault_certificate" "app" {
+  count        = var.enable_tls_cert_renewal ? 1 : 0
+  name         = "cert-app-${var.variant_name}"
+  key_vault_id = azurerm_key_vault.vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = false
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = true
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+      trigger {
+        days_before_expiry = 30
+      }
+    }
+
+    x509_certificate_properties {
+      subject            = "CN=payments.internal"
+      validity_in_months = 12
+      key_usage          = ["digitalSignature", "keyEncipherment"]
+    }
+  }
+}
+
+
 resource "azurerm_storage_account" "logs" {
   name                     = "st${var.variant_name}logs"
   resource_group_name      = azurerm_resource_group.rg.name
@@ -300,6 +356,17 @@ resource "azurerm_key_vault_access_policy" "terraform_client" {
     "Delete",
     "Purge",
     "Recover",
+  ]
+
+  certificate_permissions = [
+    "Create",
+    "Delete",
+    "Get",
+    "Import",
+    "List",
+    "Purge",
+    "Recover",
+    "Update",
   ]
 
   storage_permissions = [
