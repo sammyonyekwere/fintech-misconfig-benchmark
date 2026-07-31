@@ -68,3 +68,13 @@ variable "enable_credential_rotation" {
 }
 
 
+
+variable "enable_nsg_routine_update" {
+  type    = bool
+  default = false
+}
+
+variable "enable_tls_cert_renewal" {
+  type    = bool
+  default = false
+}

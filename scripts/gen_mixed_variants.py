@@ -2,7 +2,7 @@ import random, pathlib, textwrap
 
 SWITCHES = [
     "mc01_public_storage", "mc02_rbac_contributor", 
-    "mc03_sql_public", "mc04_open_mgmt_ports"  
+    "mc03_sql_public", "mc04_open_mgmt_ports",  
     "mc05_plaintext_secrets",
     "mc06_no_https",          
     "mc07_logging_disabled", 

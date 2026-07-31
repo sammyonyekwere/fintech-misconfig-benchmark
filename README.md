@@ -118,22 +118,6 @@ certificate without it fails with a 403. The certificate's key is also set to
 `exportable = false`, since the subscription's security-baseline policy
 denies creating Key Vault certificates with exportable private keys.
 
-### Known issues
-
-- `variants/*/variables.tf` do not declare `enable_nsg_routine_update` or
-	`enable_tls_cert_renewal`, even though every `variants/*/main.tf` passes
-	them through to the `baseline` module. `terraform plan`/`apply` will fail
-	on "reference to undeclared input variable" until each variant's
-	`variables.tf` gets those two variable blocks added (see
-	`modules/baseline/variables.tf` for the declarations to copy).
-- `scripts/gen_mixed_variants.py` is missing a comma after
-	`"mc04_open_mgmt_ports"` in the `SWITCHES` list, which silently
-	concatenates it with `"mc05_plaintext_secrets"` into one bogus string.
-	As a result, all three generated `mixed-seed-*/terraform.tfvars` files
-	reference a nonexistent `mc04_open_mgmt_portsmc05_plaintext_secrets`
-	variable instead of testing `mc04` and `mc05` individually, and will fail
-	to apply until the script is fixed and the three variants regenerated.
-
 ### Operational note: redeploying a variant
 
 The Key Vault (`purge_protection_enabled = true` whenever `mc08_no_cmk =
