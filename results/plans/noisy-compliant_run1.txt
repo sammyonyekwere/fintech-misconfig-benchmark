@@ -1,0 +1,230 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # module.baseline.azuread_application_password.payments must be replaced
+-/+ resource "azuread_application_password" "payments" {
+      + display_name        = (known after apply)
+      ~ end_date            = "2026-10-31T00:30:57Z" -> (known after apply) # forces replacement
+      ~ id                  = "00ca8959-a2b8-4bc2-996f-842e53a02e89/password/f6b3dde9-2cfd-4b1f-8c7d-1dcaa4cc4a28" -> (known after apply)
+      ~ key_id              = "f6b3dde9-2cfd-4b1f-8c7d-1dcaa4cc4a28" -> (known after apply)
+      ~ rotate_when_changed = {
+          - "rotation" = "2026-08-02T00:30:57Z"
+        } -> (known after apply) # forces replacement
+      ~ start_date          = "2026-08-02T00:30:58.1067443Z" -> (known after apply)
+      ~ value               = (sensitive value)
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.baseline.azurerm_key_vault_certificate.app[0] will be created
+  + resource "azurerm_key_vault_certificate" "app" {
+      + certificate_attribute           = (known after apply)
+      + certificate_data                = (known after apply)
+      + certificate_data_base64         = (known after apply)
+      + id                              = (known after apply)
+      + key_vault_id                    = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-noisy/providers/Microsoft.KeyVault/vaults/vaultnoisy"
+      + name                            = "cert-app-noisy"
+      + resource_manager_id             = (known after apply)
+      + resource_manager_versionless_id = (known after apply)
+      + secret_id                       = (known after apply)
+      + thumbprint                      = (known after apply)
+      + version                         = (known after apply)
+      + versionless_id                  = (known after apply)
+      + versionless_secret_id           = (known after apply)
+
+      + certificate_policy {
+          + issuer_parameters {
+              + name = "Self"
+            }
+          + key_properties {
+              + curve      = (known after apply)
+              + exportable = false
+              + key_size   = 2048
+              + key_type   = "RSA"
+              + reuse_key  = true
+            }
+          + lifetime_action {
+              + action {
+                  + action_type = "AutoRenew"
+                }
+              + trigger {
+                  + days_before_expiry = 30
+                }
+            }
+          + secret_properties {
+              + content_type = "application/x-pkcs12"
+            }
+          + x509_certificate_properties {
+              + extended_key_usage = (known after apply)
+              + key_usage          = [
+                  + "digitalSignature",
+                  + "keyEncipherment",
+                ]
+              + subject            = "CN=payments.internal"
+              + validity_in_months = 12
+
+              + subject_alternative_names (known after apply)
+            }
+        }
+    }
+
+  # module.baseline.azurerm_key_vault_key.cmk[0] must be replaced
+-/+ resource "azurerm_key_vault_key" "cmk" {
+      + curve                   = (known after apply)
+      ~ e                       = "AQAB" -> (known after apply)
+      ~ expiration_date         = "2027-08-02T00:34:39Z" -> (known after apply) # forces replacement
+      ~ id                      = "https://vaultnoisy.vault.azure.net/keys/cmk-storage/23f0010fdab84ca2adf9b3e3f90cf288" -> (known after apply)
+      ~ n                       = "t5odTZ_l4FOUZgkLgZegU9Rbqm7a0nYPt-eEBw2z9ryhDywT7QDIsr80uKVb7U4YtMxalNyshqbDPe1_UFAC4anK9Q6ra1-2H1N7XLo8FFwKGh5ZF9v9vrY6D-5TzkmtMtH3OSW73JCaBYKcnfYNP2_fwfEzHYlGEZ1Kh_i7MjEkM9KSgholosCmiNKyEqutWgL7P5R37mgj2otyMZHBaSME_EvMoDNBaAlsNTNMC8fk6zj0Dtw_lR_B8JiB-aQC0f6CT_1IyWM_skXt3LVQGmgssRa986LzUn8oDdjHUuwnBWfA5-AnV77C5U_whHI1pok2z_PO2N9zdpe_jbc4YQ" -> (known after apply)
+        name                    = "cmk-storage"
+      ~ public_key_openssh      = <<-EOT
+            ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3mh1Nn+XgU5RmCQuBl6BT1FuqbtrSdg+354QHDbP2vKEPLBPtAMiyvzS4pVvtThi0zFqU3KyGpsM97X9QUALhqcr1DqtrX7YfU3tcujwUXAoaHlkX2/2+tjoP7lPOSa0y0fc5JbvckJoFgpyd9g0/b9/B8TMdiUYRnUqH+LsyMSQz0pKCGiWiwKaI0rISq61aAvs/lHfuaCPai3IxkcFpIwT8S8ygM0FoCWw1M0wLx+TrOPQO3D+VH8HwmIH5pALR/oJP/UjJYz+yRe3ctVAaaCyxFr3zovNSfygN2MdS7CcFZ8Dn4CdXvsLlT/CEcjWmiTbP887Y33N2l7+Ntzhh
+        EOT -> (known after apply)
+      ~ public_key_pem          = <<-EOT
+            -----BEGIN PUBLIC KEY-----
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt5odTZ/l4FOUZgkLgZeg
+            U9Rbqm7a0nYPt+eEBw2z9ryhDywT7QDIsr80uKVb7U4YtMxalNyshqbDPe1/UFAC
+            4anK9Q6ra1+2H1N7XLo8FFwKGh5ZF9v9vrY6D+5TzkmtMtH3OSW73JCaBYKcnfYN
+            P2/fwfEzHYlGEZ1Kh/i7MjEkM9KSgholosCmiNKyEqutWgL7P5R37mgj2otyMZHB
+            aSME/EvMoDNBaAlsNTNMC8fk6zj0Dtw/lR/B8JiB+aQC0f6CT/1IyWM/skXt3LVQ
+            GmgssRa986LzUn8oDdjHUuwnBWfA5+AnV77C5U/whHI1pok2z/PO2N9zdpe/jbc4
+            YQIDAQAB
+            -----END PUBLIC KEY-----
+        EOT -> (known after apply)
+      ~ resource_id             = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-noisy/providers/Microsoft.KeyVault/vaults/vaultnoisy/keys/cmk-storage/versions/23f0010fdab84ca2adf9b3e3f90cf288" -> (known after apply)
+      ~ resource_versionless_id = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-noisy/providers/Microsoft.KeyVault/vaults/vaultnoisy/keys/cmk-storage" -> (known after apply)
+      - tags                    = {} -> null
+      ~ version                 = "23f0010fdab84ca2adf9b3e3f90cf288" -> (known after apply)
+      ~ versionless_id          = "https://vaultnoisy.vault.azure.net/keys/cmk-storage" -> (known after apply)
+      + x                       = (known after apply)
+      + y                       = (known after apply)
+        # (5 unchanged attributes hidden)
+    }
+
+  # module.baseline.azurerm_monitor_diagnostic_setting.sql[0] will be updated in-place
+  ~ resource "azurerm_monitor_diagnostic_setting" "sql" {
+        id                             = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-noisy/providers/Microsoft.Sql/servers/sqlnoisyserver/databases/mssqlnoisydb|diag-sql"
+        name                           = "diag-sql"
+        # (5 unchanged attributes hidden)
+
+      - metric {
+          - category = "Basic" -> null
+          - enabled  = true -> null
+
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
+        }
+      - metric {
+          - category = "InstanceAndAppAdvanced" -> null
+          - enabled  = true -> null
+
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
+        }
+      - metric {
+          - category = "WorkloadManagement" -> null
+          - enabled  = true -> null
+
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
+        }
+      + metric {
+          + category = "AllMetrics"
+          + enabled  = true
+        }
+
+        # (4 unchanged blocks hidden)
+    }
+
+  # module.baseline.azurerm_network_security_group.nsg will be updated in-place
+  ~ resource "azurerm_network_security_group" "nsg" {
+        id                  = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-noisy/providers/Microsoft.Network/networkSecurityGroups/nsg-app"
+        name                = "nsg-app"
+      ~ security_rule       = [
+          - {
+              - access                                     = "Allow"
+              - destination_address_prefix                 = "*"
+              - destination_address_prefixes               = []
+              - destination_application_security_group_ids = []
+              - destination_port_range                     = "443"
+              - destination_port_ranges                    = []
+              - direction                                  = "Inbound"
+              - name                                       = "app-inbound"
+              - priority                                   = 100
+              - protocol                                   = "Tcp"
+              - source_address_prefix                      = "10.20.0.0/16"
+              - source_address_prefixes                    = []
+              - source_application_security_group_ids      = []
+              - source_port_range                          = "*"
+              - source_port_ranges                         = []
+                # (1 unchanged attribute hidden)
+            },
+          - {
+              - access                                     = "Allow"
+              - destination_address_prefix                 = "*"
+              - destination_address_prefixes               = []
+              - destination_application_security_group_ids = []
+              - destination_port_range                     = "8443"
+              - destination_port_ranges                    = []
+              - direction                                  = "Inbound"
+              - name                                       = "app-inbound-8443"
+              - priority                                   = 110
+              - protocol                                   = "Tcp"
+              - source_address_prefix                      = "10.20.0.0/16"
+              - source_address_prefixes                    = []
+              - source_application_security_group_ids      = []
+              - source_port_range                          = "*"
+              - source_port_ranges                         = []
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + access                                     = "Allow"
+              + destination_address_prefix                 = "*"
+              + destination_address_prefixes               = []
+              + destination_application_security_group_ids = []
+              + destination_port_range                     = "443"
+              + destination_port_ranges                    = []
+              + direction                                  = "Inbound"
+              + name                                       = "app-inbound"
+              + priority                                   = 100
+              + protocol                                   = "Tcp"
+              + source_address_prefix                      = "10.20.0.0/16"
+              + source_address_prefixes                    = []
+              + source_application_security_group_ids      = []
+              + source_port_range                          = "*"
+              + source_port_ranges                         = []
+            },
+        ]
+        tags                = {}
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.baseline.azurerm_storage_account.data will be updated in-place
+  ~ resource "azurerm_storage_account" "data" {
+        id                                 = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-noisy/providers/Microsoft.Storage/storageAccounts/stnoisydata"
+        name                               = "stnoisydata"
+        tags                               = {
+            "environment" = "dev"
+        }
+        # (97 unchanged attributes hidden)
+
+      - customer_managed_key {
+          - key_vault_key_id          = "https://vaultnoisy.vault.azure.net/keys/cmk-storage" -> null
+          - user_assigned_identity_id = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-noisy/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-noisy-storage" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+        # (4 unchanged blocks hidden)
+    }
+
+Plan: 3 to add, 3 to change, 2 to destroy.

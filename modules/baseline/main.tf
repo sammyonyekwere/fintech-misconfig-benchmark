@@ -56,7 +56,7 @@ resource "azurerm_key_vault" "vault" {
   enabled_for_disk_encryption = true
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 7
-  purge_protection_enabled    = !var.mc08_no_cmk
+  purge_protection_enabled = !var.mc08_no_cmk
   sku_name                    = "standard"
 }
 
@@ -93,6 +93,11 @@ resource "azurerm_mssql_server" "sqlserver" {
   #SECURE: private only; INSECURE: public endpoint open
   public_network_access_enabled = var.mc03_sql_public
   minimum_tls_version           = "1.2"
+
+  timeouts {
+    create = "15m"
+    delete = "15m"
+  }
 
 }
 
@@ -226,6 +231,10 @@ resource "azurerm_key_vault_certificate" "app" {
   count        = var.enable_tls_cert_renewal ? 1 : 0
   name         = "cert-app-${var.variant_name}"
   key_vault_id = azurerm_key_vault.vault.id
+
+  depends_on = [
+    time_sleep.wait_for_kv_policy
+  ]
 
   certificate_policy {
     issuer_parameters {

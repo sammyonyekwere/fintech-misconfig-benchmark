@@ -1,5 +1,9 @@
 variant_name = "mixed202"
-# seed 202 selected: mc04, mc08, mc09
-mc04_open_mgmt_portsmc05_plaintext_secrets = true
-mc08_no_cmk                                = true
-mc09_nsg_open_inbound                      = true
+sql_server_user = "sqluser1"
+# seed 202 selected: mc07, mc08, mc10
+mc07_logging_disabled = true
+mc08_no_cmk           = true
+mc10_sp_nonexpiring   = true
+
+
+disable_purge_protection_for_testing = true

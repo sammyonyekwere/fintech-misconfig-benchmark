@@ -6,7 +6,9 @@ terraform {
 module "baseline" {
     source = "../../modules/baseline"
 
+    subscription_id = var.subscription_id
     variant_name = var.variant_name
+    sql_server_user = var.sql_server_user
 
     mc01_public_storage    = var.mc01_public_storage    
     mc02_rbac_contributor  = var.mc02_rbac_contributor  

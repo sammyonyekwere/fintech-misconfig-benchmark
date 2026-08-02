@@ -71,11 +71,28 @@ Current toggle behavior in code:
 		change activity.
 - `scripts/gen_mixed_variants.py`: generates the `mixed-seed-*` variant
 	folders and their `terraform.tfvars` from a random seed.
+- `scripts/run_variant.sh`: full lifecycle for one variant — backend init,
+	validate, plan, save the plan to `results/plans/`, apply, log to
+	`results/logs/`, and record a timestamped row in `results/run_log.csv`.
+	Usage: `./scripts/run_variant.sh <variant-folder-name> [run-number]`.
+- `scripts/teardown.sh`: destroys one variant (`./scripts/teardown.sh
+	<variant-folder-name>`) or every variant under `variants/` if called with
+	no arguments.
+- `load-env.ps1`: PowerShell loader that reads `.env` and exports its values
+	into the current session (`. .\load-env.ps1`), since PowerShell has no
+	native `.env` support. `scripts/run_variant.sh`/`teardown.sh` load `.env`
+	the same way natively via `source`.
 - `harness/kql/`: KQL rules for runtime detection and telemetry checks.
 - `analysis/`: Analysis scripts/notebooks for detection-performance metrics.
-- `results/raw/`: Raw tool outputs.
-- `results/processed/`: Normalized/aggregated benchmark outputs.
-- `az-cli/cli.ps1`: Azure CLI helpers used in execution workflow.
+- `results/plans/`: saved `terraform show` output per variant run
+	(`<variant>_run<N>.txt`), produced by `scripts/run_variant.sh`.
+- `results/logs/`: `terraform apply` output per variant run
+	(`<variant>_run<N>.log`), produced by `scripts/run_variant.sh`.
+- `results/run_log.csv`: one row per completed run — variant, run number,
+	UTC deploy timestamp.
+- `az-cli/cli.ps1`: one-time setup for the remote state backend (creates
+	`rg-tfstate`, storage account `sttfstatembf`, and the `tfstate` blob
+	container that every variant's `backend "azurerm" {}` points at).
 
 ## Baseline Infrastructure
 
@@ -96,10 +113,19 @@ Provider stack:
 
 ## Validation Status
 
-The baseline has been applied successfully end-to-end with Terraform for both
-the hardened and vulnerable variants, including the Key Vault policy and CMK
-timing adjustments needed for the deploy identity, and the Key Vault access
-policy needed for the Function App to resolve its Key Vault secret reference.
+All 15 variants (`hardened`, `vuln-01`…`vuln-10`, `mixed-seed-101/202/303`,
+`noisy-compliant`) have been applied successfully end-to-end via
+`scripts/run_variant.sh`, with saved plans and apply logs for each run under
+`results/plans/` and `results/logs/`. This includes the Key Vault policy and
+CMK timing adjustments needed for the deploy identity, the Key Vault access
+policy needed for the Function App to resolve its Key Vault secret reference,
+and the certificate-permissions grant below.
+
+`azurerm_key_vault_certificate.app` initially had no `depends_on` on the
+access policy grant, unlike the secret and key resources — on a variant's
+first-ever deploy this let certificate creation race ahead of the policy
+propagating and fail with a 403. Fixed by adding the same `depends_on =
+[time_sleep.wait_for_kv_policy]` the secret/key resources already use.
 
 Two platform-level constraints were found and adjusted for during validation:
 
@@ -129,7 +155,37 @@ Azure) keeps Terraform state in sync with this behavior. If a resource group
 is deleted out-of-band, the next `apply` for the same `variant_name` will
 auto-recover the soft-deleted vault along with its child objects (keys,
 secrets, access policies, diagnostic settings), which then need to be
-`terraform import`-ed back into state before `apply` can proceed.
+`terraform import`-ed back into state before `apply` can proceed — even after
+a clean `terraform destroy`, since the vault only ever soft-deletes.
+
+**Purge protection cannot be disabled once enabled, and cannot be disabled at
+all while CMK is in use.** Two hard Azure constraints, not configurable
+around:
+- Once a vault has `purge_protection_enabled = true`, no later `apply` can
+	ever turn it back off — Azure rejects the update outright. An
+	`disable_purge_protection_for_testing`-style variable only works on a
+	vault that's never had protection enabled, so it's not viable for any
+	variant that already exists with protection on.
+- Separately, `azurerm_storage_account_customer_managed_key` (used whenever
+	`mc08_no_cmk = false`) requires its Key Vault to have *both* soft delete
+	and purge protection enabled — Azure rejects CMK configuration otherwise.
+	This means purge protection can never be turned off on any variant that
+	also uses CMK, regardless of how the vault was created.
+
+**Practical workaround for iterating on a CMK-enabled variant** (e.g.
+`hardened`) without waiting out the 7-day retention: bump `variant_name` in
+that variant's `terraform.tfvars` (e.g. `hardened` → `hardened2`) to get a
+genuinely fresh, never-protected Key Vault under a new name, rather than
+fighting the old one. The abandoned vault auto-purges on its own once its
+retention window passes.
+
+`azurerm_mssql_server` has an explicit `timeouts { create = "15m", delete =
+"15m" }` block, since SQL server creation on this subscription has ranged
+from ~2 minutes to hanging indefinitely with no error. The timeout makes
+Terraform fail cleanly instead of requiring a manual interrupt, which — when
+it does happen — can leave state out of sync with what actually got created
+in Azure (fixable via `terraform import` once confirmed the resource
+completed on Azure's side with e.g. `az sql server show`).
 
 ## Misconfiguration Switches
 
@@ -159,8 +215,20 @@ enabled together in `variants/noisy-compliant/`.
 ## Quick Start
 
 Each folder under `variants/` is a self-contained deployment of one benchmark
-scenario. Run Terraform from inside the specific variant you want, not from
-`modules/baseline` directly.
+scenario, with its own state in the shared remote backend (set up once via
+`az-cli/cli.ps1`). Run Terraform from inside the specific variant you want,
+not from `modules/baseline` directly.
+
+`subscription_id` and `sql_server_user` aren't set in any tracked
+`terraform.tfvars` file — supply them via a local `.env` (gitignored):
+
+```
+TF_VAR_subscription_id=<subscription-id>
+TF_VAR_sql_server_user=<sql-admin-username>
+```
+
+In PowerShell, load it once per session with `. .\load-env.ps1`. Bash scripts
+(`scripts/run_variant.sh`, `scripts/teardown.sh`) source `.env` themselves.
 
 1. Authenticate to Azure:
 
@@ -169,42 +237,32 @@ az login
 az account set --subscription <subscription-id>
 ```
 
-2. Go to the variant you want to deploy, e.g. the hardened baseline:
+2. Deploy a variant using the helper script (handles backend init, plan,
+	 apply, and logging in one step):
+
+```bash
+./scripts/run_variant.sh hardened
+```
+
+3. Destroy when finished, for one variant or all of them — always tear down
+	 through Terraform rather than deleting the resource group directly in
+	 Azure (see the operational note below on why):
+
+```bash
+./scripts/teardown.sh hardened
+./scripts/teardown.sh          # tears down every variant under variants/
+```
+
+**Manual equivalent**, if you want to run the steps individually instead of
+via the scripts:
 
 ```powershell
 cd variants/hardened
-```
-
-3. Initialize Terraform:
-
-```powershell
-terraform init
-```
-
-4. Review plan:
-
-```powershell
-terraform plan -var-file="terraform.tfvars"
-```
-
-5. Apply:
-
-```powershell
-terraform apply -var-file="terraform.tfvars"
-```
-
-6. Destroy when finished — always tear down through Terraform rather than
-	 deleting the resource group directly in Azure (see the operational note
-	 below on why):
-
-```powershell
+terraform init -backend-config="resource_group_name=rg-tfstate" -backend-config="storage_account_name=sttfstatembf" -backend-config="container_name=tfstate" -backend-config="key=hardened.terraform.tfstate"
+terraform plan -var-file="terraform.tfvars" -out=tfplan
+terraform apply tfplan
 terraform destroy -var-file="terraform.tfvars" -auto-approve
 ```
-
-`subscription_id` and `sql_server_user` aren't set in the variant
-`terraform.tfvars` files; pass them via `-var` or environment variables
-(`TF_VAR_subscription_id`, `TF_VAR_sql_server_user`) instead of committing
-them.
 
 ## Security Note
 

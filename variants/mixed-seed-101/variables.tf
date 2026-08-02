@@ -3,6 +3,14 @@ variable "variant_name" {
   type = string
 }
 
+variable "subscription_id" {
+  type = string
+}
+
+variable "sql_server_user" {
+  type = string
+}
+
 variable "location" {
   type    = string
   default = "westeurope"
@@ -75,6 +83,11 @@ variable "enable_nsg_routine_update" {
 }
 
 variable "enable_tls_cert_renewal" {
+  type    = bool
+  default = false
+}
+
+variable "disable_purge_protection_for_testing" {
   type    = bool
   default = false
 }

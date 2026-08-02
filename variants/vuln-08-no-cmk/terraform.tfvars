@@ -1,5 +1,6 @@
 
 variant_name    = "vuln08"
+sql_server_user = "sqluser1"
 mc01_public_storage    = false
 mc02_rbac_contributor  = false
 mc03_sql_public        = false

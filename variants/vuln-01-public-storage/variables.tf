@@ -3,6 +3,14 @@ variable "variant_name" {
   type = string
 }
 
+variable "subscription_id" {
+  type = string
+}
+
+variable "sql_server_user" {
+  type = string
+}
+
 variable "location" {
   type    = string
   default = "westeurope"
