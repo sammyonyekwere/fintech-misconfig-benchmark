@@ -1,776 +1,111 @@
 
 Terraform used the selected providers to generate the following execution
 plan. Resource actions are indicated with the following symbols:
-  + create
+  ~ update in-place
+-/+ destroy and then create replacement
 
 Terraform will perform the following actions:
 
-  # module.baseline.azuread_application.payments will be created
-  + resource "azuread_application" "payments" {
-      + app_role_ids                = (known after apply)
-      + client_id                   = (known after apply)
-      + disabled_by_microsoft       = (known after apply)
-      + display_name                = "sp-vuln01-payments"
-      + id                          = (known after apply)
-      + logo_url                    = (known after apply)
-      + oauth2_permission_scope_ids = (known after apply)
-      + object_id                   = (known after apply)
-      + prevent_duplicate_names     = false
-      + publisher_domain            = (known after apply)
-      + sign_in_audience            = "AzureADMyOrg"
-      + tags                        = (known after apply)
-      + template_id                 = (known after apply)
-
-      + feature_tags (known after apply)
-    }
-
-  # module.baseline.azuread_application_password.payments will be created
-  + resource "azuread_application_password" "payments" {
-      + application_id = (known after apply)
+  # module.baseline.azuread_application_password.payments must be replaced
+-/+ resource "azuread_application_password" "payments" {
       + display_name   = (known after apply)
-      + end_date       = (known after apply)
-      + id             = (known after apply)
-      + key_id         = (known after apply)
-      + start_date     = (known after apply)
-      + value          = (sensitive value)
+      ~ end_date       = "2026-11-01T16:38:54Z" -> (known after apply) # forces replacement
+      ~ id             = "e5755373-482d-43d5-a02a-5452a6211c8c/password/c338e48b-bf8b-4c68-b01c-20a28193a4ad" -> (known after apply)
+      ~ key_id         = "c338e48b-bf8b-4c68-b01c-20a28193a4ad" -> (known after apply)
+      ~ start_date     = "2026-08-03T16:38:55.9158905Z" -> (known after apply)
+      ~ value          = (sensitive value)
+        # (1 unchanged attribute hidden)
     }
 
-  # module.baseline.azuread_service_principal.payments will be created
-  + resource "azuread_service_principal" "payments" {
-      + account_enabled             = true
-      + app_role_ids                = (known after apply)
-      + app_roles                   = (known after apply)
-      + application_tenant_id       = (known after apply)
-      + client_id                   = (known after apply)
-      + display_name                = (known after apply)
-      + homepage_url                = (known after apply)
-      + id                          = (known after apply)
-      + logout_url                  = (known after apply)
-      + oauth2_permission_scope_ids = (known after apply)
-      + oauth2_permission_scopes    = (known after apply)
-      + object_id                   = (known after apply)
-      + redirect_uris               = (known after apply)
-      + saml_metadata_url           = (known after apply)
-      + service_principal_names     = (known after apply)
-      + sign_in_audience            = (known after apply)
-      + tags                        = (known after apply)
-      + type                        = (known after apply)
-
-      + feature_tags (known after apply)
-
-      + features (known after apply)
-    }
-
-  # module.baseline.azurerm_key_vault.vault will be created
-  + resource "azurerm_key_vault" "vault" {
-      + access_policy                 = (known after apply)
-      + enable_rbac_authorization     = false
-      + enabled_for_disk_encryption   = true
-      + id                            = (known after apply)
-      + location                      = "westeurope"
-      + name                          = "vaultvuln01"
-      + public_network_access_enabled = true
-      + purge_protection_enabled      = true
-      + rbac_authorization_enabled    = (known after apply)
-      + resource_group_name           = "rg-vuln01"
-      + sku_name                      = "standard"
-      + soft_delete_retention_days    = 7
-      + tenant_id                     = "0d7e5e08-08f5-4c19-a6d0-9262be69304b"
-      + vault_uri                     = (known after apply)
-
-      + contact (known after apply)
-
-      + network_acls (known after apply)
-    }
-
-  # module.baseline.azurerm_key_vault_access_policy.functionapp will be created
-  + resource "azurerm_key_vault_access_policy" "functionapp" {
-      + id                 = (known after apply)
-      + key_vault_id       = (known after apply)
-      + object_id          = (known after apply)
-      + secret_permissions = [
-          + "Get",
-        ]
-      + tenant_id          = "0d7e5e08-08f5-4c19-a6d0-9262be69304b"
-    }
-
-  # module.baseline.azurerm_key_vault_access_policy.storage_uai will be created
-  + resource "azurerm_key_vault_access_policy" "storage_uai" {
-      + id              = (known after apply)
-      + key_permissions = [
-          + "Get",
-          + "WrapKey",
-          + "UnwrapKey",
-        ]
-      + key_vault_id    = (known after apply)
-      + object_id       = (known after apply)
-      + tenant_id       = "0d7e5e08-08f5-4c19-a6d0-9262be69304b"
-    }
-
-  # module.baseline.azurerm_key_vault_access_policy.terraform_client will be created
-  + resource "azurerm_key_vault_access_policy" "terraform_client" {
-      + certificate_permissions = [
-          + "Create",
-          + "Delete",
-          + "Get",
-          + "Import",
-          + "List",
-          + "Purge",
-          + "Recover",
-          + "Update",
-        ]
-      + id                      = (known after apply)
-      + key_permissions         = [
-          + "Create",
-          + "Delete",
-          + "Get",
-          + "List",
-          + "Purge",
-          + "Recover",
-          + "Update",
-          + "GetRotationPolicy",
-          + "SetRotationPolicy",
-          + "Rotate",
-        ]
-      + key_vault_id            = (known after apply)
-      + object_id               = "962419b0-2ba9-46d2-8915-2601f7a156c9"
-      + secret_permissions      = [
-          + "Get",
-          + "Set",
-          + "Delete",
-          + "Purge",
-          + "Recover",
-        ]
-      + storage_permissions     = [
-          + "Get",
-        ]
-      + tenant_id               = "0d7e5e08-08f5-4c19-a6d0-9262be69304b"
-    }
-
-  # module.baseline.azurerm_key_vault_key.cmk[0] will be created
-  + resource "azurerm_key_vault_key" "cmk" {
+  # module.baseline.azurerm_key_vault_key.cmk[0] must be replaced
+-/+ resource "azurerm_key_vault_key" "cmk" {
       + curve                   = (known after apply)
-      + e                       = (known after apply)
-      + expiration_date         = (known after apply)
-      + id                      = (known after apply)
-      + key_opts                = [
-          + "decrypt",
-          + "encrypt",
-          + "sign",
-          + "unwrapKey",
-          + "verify",
-          + "wrapKey",
-        ]
-      + key_size                = 2048
-      + key_type                = "RSA"
-      + key_vault_id            = (known after apply)
-      + n                       = (known after apply)
-      + name                    = "cmk-storage"
-      + public_key_openssh      = (known after apply)
-      + public_key_pem          = (known after apply)
-      + resource_id             = (known after apply)
-      + resource_versionless_id = (known after apply)
-      + version                 = (known after apply)
-      + versionless_id          = (known after apply)
+      ~ e                       = "AQAB" -> (known after apply)
+      ~ expiration_date         = "2027-08-01T20:08:49Z" -> (known after apply) # forces replacement
+      ~ id                      = "https://vaultvuln01.vault.azure.net/keys/cmk-storage/1803b02ecde14d4ea02f5875c1675d3c" -> (known after apply)
+      ~ n                       = "vWDbo3aTl93DmvKWi-fMrP8_ER0dj4_eotmU7Kgw8bmYUvj6TblmwJKGjNC3RSP-OVc-60OThqiTEWZY2fFTcYvoYu2wY-lFx46QT1lTJb2gwDso74gRDxFDdSakeWG1YpVpJgtK8NSEOSfGqe7y7av3qsRsdSxgRREkv0W1h6I4OgkUnnAuwhy_PhpnyQafQnhAHrYFECQVWu0VLAZnQeS8-V9J8pY8mG1UN5kSWAjpmqZ4UglU-QhF0XIAtfZQELp0Q0Z_2VKD_U3E5UHyICbRQws8O6Vmb9tzxNSs0QmlvxS-y8FZFrHA05jZc6KKwbzM4kqCcrrHmRuSfJdIGQ" -> (known after apply)
+        name                    = "cmk-storage"
+      ~ public_key_openssh      = <<-EOT
+            ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9YNujdpOX3cOa8paL58ys/z8RHR2Pj96i2ZTsqDDxuZhS+PpNuWbAkoaM0LdFI/45Vz7rQ5OGqJMRZljZ8VNxi+hi7bBj6UXHjpBPWVMlvaDAOyjviBEPEUN1JqR5YbVilWkmC0rw1IQ5J8ap7vLtq/eqxGx1LGBFESS/RbWHojg6CRSecC7CHL8+GmfJBp9CeEAetgUQJBVa7RUsBmdB5Lz5X0nyljyYbVQ3mRJYCOmapnhSCVT5CEXRcgC19lAQunRDRn/ZUoP9TcTlQfIgJtFDCzw7pWZv23PE1KzRCaW/FL7LwVkWscDTmNlzoorBvMziSoJyuseZG5J8l0gZ
+        EOT -> (known after apply)
+      ~ public_key_pem          = <<-EOT
+            -----BEGIN PUBLIC KEY-----
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvWDbo3aTl93DmvKWi+fM
+            rP8/ER0dj4/eotmU7Kgw8bmYUvj6TblmwJKGjNC3RSP+OVc+60OThqiTEWZY2fFT
+            cYvoYu2wY+lFx46QT1lTJb2gwDso74gRDxFDdSakeWG1YpVpJgtK8NSEOSfGqe7y
+            7av3qsRsdSxgRREkv0W1h6I4OgkUnnAuwhy/PhpnyQafQnhAHrYFECQVWu0VLAZn
+            QeS8+V9J8pY8mG1UN5kSWAjpmqZ4UglU+QhF0XIAtfZQELp0Q0Z/2VKD/U3E5UHy
+            ICbRQws8O6Vmb9tzxNSs0QmlvxS+y8FZFrHA05jZc6KKwbzM4kqCcrrHmRuSfJdI
+            GQIDAQAB
+            -----END PUBLIC KEY-----
+        EOT -> (known after apply)
+      ~ resource_id             = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.KeyVault/vaults/vaultvuln01/keys/cmk-storage/versions/1803b02ecde14d4ea02f5875c1675d3c" -> (known after apply)
+      ~ resource_versionless_id = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.KeyVault/vaults/vaultvuln01/keys/cmk-storage" -> (known after apply)
+      - tags                    = {} -> null
+      ~ version                 = "1803b02ecde14d4ea02f5875c1675d3c" -> (known after apply)
+      ~ versionless_id          = "https://vaultvuln01.vault.azure.net/keys/cmk-storage" -> (known after apply)
       + x                       = (known after apply)
       + y                       = (known after apply)
+        # (5 unchanged attributes hidden)
     }
 
-  # module.baseline.azurerm_key_vault_secret.sql_conn will be created
-  + resource "azurerm_key_vault_secret" "sql_conn" {
-      + id                      = (known after apply)
-      + key_vault_id            = (known after apply)
-      + name                    = "sql-connection"
-      + resource_id             = (known after apply)
-      + resource_versionless_id = (known after apply)
-      + value                   = (sensitive value)
-      + value_wo                = (write-only attribute)
-      + version                 = (known after apply)
-      + versionless_id          = (known after apply)
-    }
+  # module.baseline.azurerm_monitor_diagnostic_setting.sql[0] will be updated in-place
+  ~ resource "azurerm_monitor_diagnostic_setting" "sql" {
+        id                             = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.Sql/servers/sqlvuln01server/databases/mssqlvuln01db|diag-sql"
+        name                           = "diag-sql"
+        # (5 unchanged attributes hidden)
 
-  # module.baseline.azurerm_linux_function_app.functionapp will be created
-  + resource "azurerm_linux_function_app" "functionapp" {
-      + app_settings                                   = (known after apply)
-      + builtin_logging_enabled                        = true
-      + client_certificate_enabled                     = false
-      + client_certificate_mode                        = "Optional"
-      + content_share_force_disabled                   = false
-      + custom_domain_verification_id                  = (sensitive value)
-      + daily_memory_time_quota                        = 0
-      + default_hostname                               = (known after apply)
-      + enabled                                        = true
-      + ftp_publish_basic_authentication_enabled       = true
-      + functions_extension_version                    = "~4"
-      + hosting_environment_id                         = (known after apply)
-      + https_only                                     = true
-      + id                                             = (known after apply)
-      + key_vault_reference_identity_id                = (known after apply)
-      + kind                                           = (known after apply)
-      + location                                       = "westeurope"
-      + name                                           = "functionvuln01app"
-      + outbound_ip_address_list                       = (known after apply)
-      + outbound_ip_addresses                          = (known after apply)
-      + possible_outbound_ip_address_list              = (known after apply)
-      + possible_outbound_ip_addresses                 = (known after apply)
-      + public_network_access_enabled                  = true
-      + resource_group_name                            = "rg-vuln01"
-      + service_plan_id                                = (known after apply)
-      + site_credential                                = (sensitive value)
-      + storage_account_access_key                     = (sensitive value)
-      + storage_account_name                           = "stvuln01data"
-      + storage_uses_managed_identity                  = false
-      + virtual_network_backup_restore_enabled         = false
-      + vnet_image_pull_enabled                        = false
-      + webdeploy_publish_basic_authentication_enabled = true
-      + zip_deploy_file                                = (known after apply)
+      - metric {
+          - category = "Basic" -> null
+          - enabled  = true -> null
 
-      + identity {
-          + principal_id = (known after apply)
-          + tenant_id    = (known after apply)
-          + type         = "SystemAssigned"
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
         }
+      - metric {
+          - category = "InstanceAndAppAdvanced" -> null
+          - enabled  = true -> null
 
-      + site_config {
-          + always_on                               = (known after apply)
-          + app_scale_limit                         = (known after apply)
-          + container_registry_use_managed_identity = false
-          + default_documents                       = (known after apply)
-          + detailed_error_logging_enabled          = (known after apply)
-          + elastic_instance_minimum                = (known after apply)
-          + ftps_state                              = "Disabled"
-          + http2_enabled                           = false
-          + ip_restriction_default_action           = "Allow"
-          + linux_fx_version                        = (known after apply)
-          + load_balancing_mode                     = "LeastRequests"
-          + managed_pipeline_mode                   = "Integrated"
-          + minimum_tls_version                     = "1.2"
-          + pre_warmed_instance_count               = (known after apply)
-          + remote_debugging_enabled                = false
-          + remote_debugging_version                = (known after apply)
-          + scm_ip_restriction_default_action       = "Allow"
-          + scm_minimum_tls_version                 = "1.2"
-          + scm_type                                = (known after apply)
-          + scm_use_main_ip_restriction             = false
-          + use_32_bit_worker                       = false
-          + vnet_route_all_enabled                  = false
-          + websockets_enabled                      = false
-          + worker_count                            = (known after apply)
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
         }
-    }
+      - metric {
+          - category = "WorkloadManagement" -> null
+          - enabled  = true -> null
 
-  # module.baseline.azurerm_log_analytics_workspace.law will be created
-  + resource "azurerm_log_analytics_workspace" "law" {
-      + allow_resource_only_permissions = true
-      + daily_quota_gb                  = -1
-      + id                              = (known after apply)
-      + internet_ingestion_enabled      = true
-      + internet_query_enabled          = true
-      + local_authentication_disabled   = (known after apply)
-      + local_authentication_enabled    = true
-      + location                        = "westeurope"
-      + name                            = "law-vuln01"
-      + primary_shared_key              = (sensitive value)
-      + resource_group_name             = "rg-vuln01"
-      + retention_in_days               = 30
-      + secondary_shared_key            = (sensitive value)
-      + sku                             = "PerGB2018"
-      + workspace_id                    = (known after apply)
-    }
-
-  # module.baseline.azurerm_monitor_diagnostic_setting.kv[0] will be created
-  + resource "azurerm_monitor_diagnostic_setting" "kv" {
-      + id                             = (known after apply)
-      + log_analytics_destination_type = (known after apply)
-      + log_analytics_workspace_id     = (known after apply)
-      + name                           = "diag-kv"
-      + target_resource_id             = (known after apply)
-
-      + enabled_log {
-          + category       = "AuditEvent"
-            # (1 unchanged attribute hidden)
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
         }
-
-      + enabled_metric (known after apply)
-
-      + metric (known after apply)
-    }
-
-  # module.baseline.azurerm_monitor_diagnostic_setting.sql[0] will be created
-  + resource "azurerm_monitor_diagnostic_setting" "sql" {
-      + id                             = (known after apply)
-      + log_analytics_destination_type = (known after apply)
-      + log_analytics_workspace_id     = (known after apply)
-      + name                           = "diag-sql"
-      + target_resource_id             = (known after apply)
-
-      + enabled_log {
-          + category       = "SQLSecurityAuditEvents"
-            # (1 unchanged attribute hidden)
-        }
-
-      + enabled_metric (known after apply)
-
       + metric {
           + category = "AllMetrics"
           + enabled  = true
         }
+
+        # (4 unchanged blocks hidden)
     }
 
-  # module.baseline.azurerm_mssql_database.mssqldb will be created
-  + resource "azurerm_mssql_database" "mssqldb" {
-      + auto_pause_delay_in_minutes                                = (known after apply)
-      + collation                                                  = "SQL_Latin1_General_CP1_CI_AS"
-      + create_mode                                                = "Default"
-      + creation_source_database_id                                = (known after apply)
-      + enclave_type                                               = (known after apply)
-      + geo_backup_enabled                                         = true
-      + id                                                         = (known after apply)
-      + ledger_enabled                                             = (known after apply)
-      + license_type                                               = "LicenseIncluded"
-      + maintenance_configuration_name                             = (known after apply)
-      + max_size_gb                                                = 2
-      + min_capacity                                               = (known after apply)
-      + name                                                       = "mssqlvuln01db"
-      + read_replica_count                                         = (known after apply)
-      + read_scale                                                 = (known after apply)
-      + restore_point_in_time                                      = (known after apply)
-      + sample_name                                                = (known after apply)
-      + secondary_type                                             = (known after apply)
-      + server_id                                                  = (known after apply)
-      + sku_name                                                   = "S0"
-      + storage_account_type                                       = "Geo"
-      + tags                                                       = {
-          + "environment" = "staging"
+  # module.baseline.azurerm_storage_account.data will be updated in-place
+  ~ resource "azurerm_storage_account" "data" {
+        id                                 = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.Storage/storageAccounts/stvuln01data"
+        name                               = "stvuln01data"
+        tags                               = {
+            "environment" = "dev"
         }
-      + transparent_data_encryption_enabled                        = true
-      + transparent_data_encryption_key_automatic_rotation_enabled = false
-      + zone_redundant                                             = (known after apply)
+        # (97 unchanged attributes hidden)
 
-      + long_term_retention_policy (known after apply)
-
-      + short_term_retention_policy (known after apply)
-
-      + threat_detection_policy (known after apply)
-    }
-
-  # module.baseline.azurerm_mssql_server.sqlserver will be created
-  + resource "azurerm_mssql_server" "sqlserver" {
-      + administrator_login                      = "sqluser1"
-      + administrator_login_password             = (sensitive value)
-      + administrator_login_password_wo          = (write-only attribute)
-      + connection_policy                        = "Default"
-      + express_vulnerability_assessment_enabled = false
-      + fully_qualified_domain_name              = (known after apply)
-      + id                                       = (known after apply)
-      + location                                 = "westeurope"
-      + minimum_tls_version                      = "1.2"
-      + name                                     = "sqlvuln01server"
-      + outbound_network_restriction_enabled     = false
-      + primary_user_assigned_identity_id        = (known after apply)
-      + public_network_access_enabled            = false
-      + resource_group_name                      = "rg-vuln01"
-      + restorable_dropped_database_ids          = (known after apply)
-      + version                                  = "12.0"
-
-      + timeouts {
-          + create = "15m"
-          + delete = "15m"
-        }
-    }
-
-  # module.baseline.azurerm_network_security_group.nsg will be created
-  + resource "azurerm_network_security_group" "nsg" {
-      + id                  = (known after apply)
-      + location            = "westeurope"
-      + name                = "nsg-app"
-      + resource_group_name = "rg-vuln01"
-      + security_rule       = [
-          + {
-              + access                                     = "Allow"
-              + destination_address_prefix                 = "*"
-              + destination_address_prefixes               = []
-              + destination_application_security_group_ids = []
-              + destination_port_range                     = "443"
-              + destination_port_ranges                    = []
-              + direction                                  = "Inbound"
-              + name                                       = "app-inbound"
-              + priority                                   = 100
-              + protocol                                   = "Tcp"
-              + source_address_prefix                      = "10.20.0.0/16"
-              + source_address_prefixes                    = []
-              + source_application_security_group_ids      = []
-              + source_port_range                          = "*"
-              + source_port_ranges                         = []
-                # (1 unchanged attribute hidden)
-            },
-        ]
-    }
-
-  # module.baseline.azurerm_resource_group.rg will be created
-  + resource "azurerm_resource_group" "rg" {
-      + id       = (known after apply)
-      + location = "westeurope"
-      + name     = "rg-vuln01"
-    }
-
-  # module.baseline.azurerm_role_assignment.func_identity will be created
-  + resource "azurerm_role_assignment" "func_identity" {
-      + condition_version                = (known after apply)
-      + id                               = (known after apply)
-      + name                             = (known after apply)
-      + principal_id                     = (known after apply)
-      + principal_type                   = (known after apply)
-      + role_definition_id               = (known after apply)
-      + role_definition_name             = "Storage Blob Data Reader"
-      + scope                            = (known after apply)
-      + skip_service_principal_aad_check = (known after apply)
-    }
-
-  # module.baseline.azurerm_role_assignment.sp_payments will be created
-  + resource "azurerm_role_assignment" "sp_payments" {
-      + condition_version                = (known after apply)
-      + id                               = (known after apply)
-      + name                             = (known after apply)
-      + principal_id                     = (known after apply)
-      + principal_type                   = (known after apply)
-      + role_definition_id               = (known after apply)
-      + role_definition_name             = "Reader"
-      + scope                            = (known after apply)
-      + skip_service_principal_aad_check = (known after apply)
-    }
-
-  # module.baseline.azurerm_service_plan.serviceplan will be created
-  + resource "azurerm_service_plan" "serviceplan" {
-      + id                              = (known after apply)
-      + kind                            = (known after apply)
-      + location                        = "westeurope"
-      + maximum_elastic_worker_count    = (known after apply)
-      + name                            = "appvuln01service"
-      + os_type                         = "Linux"
-      + per_site_scaling_enabled        = false
-      + premium_plan_auto_scale_enabled = false
-      + reserved                        = (known after apply)
-      + resource_group_name             = "rg-vuln01"
-      + sku_name                        = "B1"
-      + worker_count                    = (known after apply)
-    }
-
-  # module.baseline.azurerm_storage_account.data will be created
-  + resource "azurerm_storage_account" "data" {
-      + access_tier                        = (known after apply)
-      + account_kind                       = "StorageV2"
-      + account_replication_type           = "LRS"
-      + account_tier                       = "Standard"
-      + allow_nested_items_to_be_public    = true
-      + cross_tenant_replication_enabled   = false
-      + default_to_oauth_authentication    = false
-      + dns_endpoint_type                  = "Standard"
-      + https_traffic_only_enabled         = true
-      + id                                 = (known after apply)
-      + infrastructure_encryption_enabled  = false
-      + is_hns_enabled                     = false
-      + large_file_share_enabled           = (known after apply)
-      + local_user_enabled                 = true
-      + location                           = "westeurope"
-      + min_tls_version                    = "TLS1_2"
-      + name                               = "stvuln01data"
-      + nfsv3_enabled                      = false
-      + primary_access_key                 = (sensitive value)
-      + primary_blob_connection_string     = (sensitive value)
-      + primary_blob_endpoint              = (known after apply)
-      + primary_blob_host                  = (known after apply)
-      + primary_blob_internet_endpoint     = (known after apply)
-      + primary_blob_internet_host         = (known after apply)
-      + primary_blob_microsoft_endpoint    = (known after apply)
-      + primary_blob_microsoft_host        = (known after apply)
-      + primary_connection_string          = (sensitive value)
-      + primary_dfs_endpoint               = (known after apply)
-      + primary_dfs_host                   = (known after apply)
-      + primary_dfs_internet_endpoint      = (known after apply)
-      + primary_dfs_internet_host          = (known after apply)
-      + primary_dfs_microsoft_endpoint     = (known after apply)
-      + primary_dfs_microsoft_host         = (known after apply)
-      + primary_file_endpoint              = (known after apply)
-      + primary_file_host                  = (known after apply)
-      + primary_file_internet_endpoint     = (known after apply)
-      + primary_file_internet_host         = (known after apply)
-      + primary_file_microsoft_endpoint    = (known after apply)
-      + primary_file_microsoft_host        = (known after apply)
-      + primary_location                   = (known after apply)
-      + primary_queue_endpoint             = (known after apply)
-      + primary_queue_host                 = (known after apply)
-      + primary_queue_microsoft_endpoint   = (known after apply)
-      + primary_queue_microsoft_host       = (known after apply)
-      + primary_table_endpoint             = (known after apply)
-      + primary_table_host                 = (known after apply)
-      + primary_table_microsoft_endpoint   = (known after apply)
-      + primary_table_microsoft_host       = (known after apply)
-      + primary_web_endpoint               = (known after apply)
-      + primary_web_host                   = (known after apply)
-      + primary_web_internet_endpoint      = (known after apply)
-      + primary_web_internet_host          = (known after apply)
-      + primary_web_microsoft_endpoint     = (known after apply)
-      + primary_web_microsoft_host         = (known after apply)
-      + public_network_access_enabled      = true
-      + queue_encryption_key_type          = "Service"
-      + resource_group_name                = "rg-vuln01"
-      + secondary_access_key               = (sensitive value)
-      + secondary_blob_connection_string   = (sensitive value)
-      + secondary_blob_endpoint            = (known after apply)
-      + secondary_blob_host                = (known after apply)
-      + secondary_blob_internet_endpoint   = (known after apply)
-      + secondary_blob_internet_host       = (known after apply)
-      + secondary_blob_microsoft_endpoint  = (known after apply)
-      + secondary_blob_microsoft_host      = (known after apply)
-      + secondary_connection_string        = (sensitive value)
-      + secondary_dfs_endpoint             = (known after apply)
-      + secondary_dfs_host                 = (known after apply)
-      + secondary_dfs_internet_endpoint    = (known after apply)
-      + secondary_dfs_internet_host        = (known after apply)
-      + secondary_dfs_microsoft_endpoint   = (known after apply)
-      + secondary_dfs_microsoft_host       = (known after apply)
-      + secondary_file_endpoint            = (known after apply)
-      + secondary_file_host                = (known after apply)
-      + secondary_file_internet_endpoint   = (known after apply)
-      + secondary_file_internet_host       = (known after apply)
-      + secondary_file_microsoft_endpoint  = (known after apply)
-      + secondary_file_microsoft_host      = (known after apply)
-      + secondary_location                 = (known after apply)
-      + secondary_queue_endpoint           = (known after apply)
-      + secondary_queue_host               = (known after apply)
-      + secondary_queue_microsoft_endpoint = (known after apply)
-      + secondary_queue_microsoft_host     = (known after apply)
-      + secondary_table_endpoint           = (known after apply)
-      + secondary_table_host               = (known after apply)
-      + secondary_table_microsoft_endpoint = (known after apply)
-      + secondary_table_microsoft_host     = (known after apply)
-      + secondary_web_endpoint             = (known after apply)
-      + secondary_web_host                 = (known after apply)
-      + secondary_web_internet_endpoint    = (known after apply)
-      + secondary_web_internet_host        = (known after apply)
-      + secondary_web_microsoft_endpoint   = (known after apply)
-      + secondary_web_microsoft_host       = (known after apply)
-      + sftp_enabled                       = false
-      + shared_access_key_enabled          = true
-      + table_encryption_key_type          = "Service"
-      + tags                               = {
-          + "environment" = "dev"
+      - customer_managed_key {
+          - key_vault_key_id          = "https://vaultvuln01.vault.azure.net/keys/cmk-storage" -> null
+          - user_assigned_identity_id = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-vuln01-storage" -> null
+            # (1 unchanged attribute hidden)
         }
 
-      + blob_properties (known after apply)
-
-      + identity {
-          + identity_ids = (known after apply)
-          + principal_id = (known after apply)
-          + tenant_id    = (known after apply)
-          + type         = "UserAssigned"
-        }
-
-      + network_rules (known after apply)
-
-      + queue_properties (known after apply)
-
-      + routing (known after apply)
-
-      + share_properties (known after apply)
-
-      + static_website (known after apply)
+        # (4 unchanged blocks hidden)
     }
 
-  # module.baseline.azurerm_storage_account.logs will be created
-  + resource "azurerm_storage_account" "logs" {
-      + access_tier                        = (known after apply)
-      + account_kind                       = "StorageV2"
-      + account_replication_type           = "LRS"
-      + account_tier                       = "Standard"
-      + allow_nested_items_to_be_public    = false
-      + cross_tenant_replication_enabled   = false
-      + default_to_oauth_authentication    = false
-      + dns_endpoint_type                  = "Standard"
-      + https_traffic_only_enabled         = true
-      + id                                 = (known after apply)
-      + infrastructure_encryption_enabled  = false
-      + is_hns_enabled                     = false
-      + large_file_share_enabled           = (known after apply)
-      + local_user_enabled                 = true
-      + location                           = "westeurope"
-      + min_tls_version                    = "TLS1_2"
-      + name                               = "stvuln01logs"
-      + nfsv3_enabled                      = false
-      + primary_access_key                 = (sensitive value)
-      + primary_blob_connection_string     = (sensitive value)
-      + primary_blob_endpoint              = (known after apply)
-      + primary_blob_host                  = (known after apply)
-      + primary_blob_internet_endpoint     = (known after apply)
-      + primary_blob_internet_host         = (known after apply)
-      + primary_blob_microsoft_endpoint    = (known after apply)
-      + primary_blob_microsoft_host        = (known after apply)
-      + primary_connection_string          = (sensitive value)
-      + primary_dfs_endpoint               = (known after apply)
-      + primary_dfs_host                   = (known after apply)
-      + primary_dfs_internet_endpoint      = (known after apply)
-      + primary_dfs_internet_host          = (known after apply)
-      + primary_dfs_microsoft_endpoint     = (known after apply)
-      + primary_dfs_microsoft_host         = (known after apply)
-      + primary_file_endpoint              = (known after apply)
-      + primary_file_host                  = (known after apply)
-      + primary_file_internet_endpoint     = (known after apply)
-      + primary_file_internet_host         = (known after apply)
-      + primary_file_microsoft_endpoint    = (known after apply)
-      + primary_file_microsoft_host        = (known after apply)
-      + primary_location                   = (known after apply)
-      + primary_queue_endpoint             = (known after apply)
-      + primary_queue_host                 = (known after apply)
-      + primary_queue_microsoft_endpoint   = (known after apply)
-      + primary_queue_microsoft_host       = (known after apply)
-      + primary_table_endpoint             = (known after apply)
-      + primary_table_host                 = (known after apply)
-      + primary_table_microsoft_endpoint   = (known after apply)
-      + primary_table_microsoft_host       = (known after apply)
-      + primary_web_endpoint               = (known after apply)
-      + primary_web_host                   = (known after apply)
-      + primary_web_internet_endpoint      = (known after apply)
-      + primary_web_internet_host          = (known after apply)
-      + primary_web_microsoft_endpoint     = (known after apply)
-      + primary_web_microsoft_host         = (known after apply)
-      + public_network_access_enabled      = false
-      + queue_encryption_key_type          = "Service"
-      + resource_group_name                = "rg-vuln01"
-      + secondary_access_key               = (sensitive value)
-      + secondary_blob_connection_string   = (sensitive value)
-      + secondary_blob_endpoint            = (known after apply)
-      + secondary_blob_host                = (known after apply)
-      + secondary_blob_internet_endpoint   = (known after apply)
-      + secondary_blob_internet_host       = (known after apply)
-      + secondary_blob_microsoft_endpoint  = (known after apply)
-      + secondary_blob_microsoft_host      = (known after apply)
-      + secondary_connection_string        = (sensitive value)
-      + secondary_dfs_endpoint             = (known after apply)
-      + secondary_dfs_host                 = (known after apply)
-      + secondary_dfs_internet_endpoint    = (known after apply)
-      + secondary_dfs_internet_host        = (known after apply)
-      + secondary_dfs_microsoft_endpoint   = (known after apply)
-      + secondary_dfs_microsoft_host       = (known after apply)
-      + secondary_file_endpoint            = (known after apply)
-      + secondary_file_host                = (known after apply)
-      + secondary_file_internet_endpoint   = (known after apply)
-      + secondary_file_internet_host       = (known after apply)
-      + secondary_file_microsoft_endpoint  = (known after apply)
-      + secondary_file_microsoft_host      = (known after apply)
-      + secondary_location                 = (known after apply)
-      + secondary_queue_endpoint           = (known after apply)
-      + secondary_queue_host               = (known after apply)
-      + secondary_queue_microsoft_endpoint = (known after apply)
-      + secondary_queue_microsoft_host     = (known after apply)
-      + secondary_table_endpoint           = (known after apply)
-      + secondary_table_host               = (known after apply)
-      + secondary_table_microsoft_endpoint = (known after apply)
-      + secondary_table_microsoft_host     = (known after apply)
-      + secondary_web_endpoint             = (known after apply)
-      + secondary_web_host                 = (known after apply)
-      + secondary_web_internet_endpoint    = (known after apply)
-      + secondary_web_internet_host        = (known after apply)
-      + secondary_web_microsoft_endpoint   = (known after apply)
-      + secondary_web_microsoft_host       = (known after apply)
-      + sftp_enabled                       = false
-      + shared_access_key_enabled          = true
-      + table_encryption_key_type          = "Service"
-
-      + blob_properties (known after apply)
-
-      + network_rules (known after apply)
-
-      + queue_properties (known after apply)
-
-      + routing (known after apply)
-
-      + share_properties (known after apply)
-
-      + static_website (known after apply)
-    }
-
-  # module.baseline.azurerm_storage_account_customer_managed_key.data[0] will be created
-  + resource "azurerm_storage_account_customer_managed_key" "data" {
-      + id                        = (known after apply)
-      + key_name                  = "cmk-storage"
-      + key_vault_id              = (known after apply)
-      + key_vault_key_id          = (known after apply)
-      + key_vault_uri             = (known after apply)
-      + key_version               = (known after apply)
-      + managed_hsm_key_id        = (known after apply)
-      + storage_account_id        = (known after apply)
-      + user_assigned_identity_id = (known after apply)
-    }
-
-  # module.baseline.azurerm_subnet.snet will be created
-  + resource "azurerm_subnet" "snet" {
-      + address_prefixes                              = [
-          + "10.20.1.0/24",
-        ]
-      + default_outbound_access_enabled               = true
-      + id                                            = (known after apply)
-      + name                                          = "snet-app"
-      + private_endpoint_network_policies             = "Disabled"
-      + private_link_service_network_policies_enabled = true
-      + resource_group_name                           = "rg-vuln01"
-      + virtual_network_name                          = "vnet-payments"
-    }
-
-  # module.baseline.azurerm_subnet_network_security_group_association.app will be created
-  + resource "azurerm_subnet_network_security_group_association" "app" {
-      + id                        = (known after apply)
-      + network_security_group_id = (known after apply)
-      + subnet_id                 = (known after apply)
-    }
-
-  # module.baseline.azurerm_user_assigned_identity.storage will be created
-  + resource "azurerm_user_assigned_identity" "storage" {
-      + client_id           = (known after apply)
-      + id                  = (known after apply)
-      + location            = "westeurope"
-      + name                = "uai-vuln01-storage"
-      + principal_id        = (known after apply)
-      + resource_group_name = "rg-vuln01"
-      + tenant_id           = (known after apply)
-    }
-
-  # module.baseline.azurerm_virtual_network.vnet will be created
-  + resource "azurerm_virtual_network" "vnet" {
-      + address_space                  = [
-          + "10.20.0.0/16",
-        ]
-      + dns_servers                    = (known after apply)
-      + guid                           = (known after apply)
-      + id                             = (known after apply)
-      + location                       = "westeurope"
-      + name                           = "vnet-payments"
-      + private_endpoint_vnet_policies = "Disabled"
-      + resource_group_name            = "rg-vuln01"
-      + subnet                         = (known after apply)
-    }
-
-  # module.baseline.random_password.sql will be created
-  + resource "random_password" "sql" {
-      + bcrypt_hash = (sensitive value)
-      + id          = (known after apply)
-      + length      = 24
-      + lower       = true
-      + min_lower   = 0
-      + min_numeric = 0
-      + min_special = 0
-      + min_upper   = 0
-      + number      = true
-      + numeric     = true
-      + result      = (sensitive value)
-      + special     = true
-      + upper       = true
-    }
-
-  # module.baseline.time_sleep.wait_for_kv_policy will be created
-  + resource "time_sleep" "wait_for_kv_policy" {
-      + create_duration = "30s"
-      + id              = (known after apply)
-    }
-
-Plan: 29 to add, 0 to change, 0 to destroy.
+Plan: 2 to add, 2 to change, 2 to destroy.

@@ -1,11 +1,12 @@
 import json, subprocess, time, csv, pathlib, datetime, shutil
 
 VARIANTS = [
-    "hardened",
+    # "hardened",
     "vuln-01-public-storage", "vuln-02-rbac-contributor", "vuln-03-sql-public",
     "vuln-04-open-mgmt-ports", "vuln-05-plaintext-secrets", "vuln-06-no-https",
     "vuln-07-logging-disabled", "vuln-08-no-cmk", "vuln-09-nsg-open-inbound",
     "vuln-10-sp-nonexpiring-owner", "mixed-seed-101", "mixed-seed-202", "mixed-seed-303",
+    "noisy-compliant"
 ]
 
 # command template per tool ({d} = variant dir, {name} = output stem)
@@ -100,5 +101,4 @@ with open("results/static_scan_run_log.csv", "w", newline="") as f:
                   "duration_s", "n_findings", "mc_detected"])
     for v in VARIANTS:
         for tool, cmd in TOOLS.items():
-            for n in (1, 2, 3):
-                run(tool, cmd, v, n, log)
+            run(tool, cmd, v, 1, log)
