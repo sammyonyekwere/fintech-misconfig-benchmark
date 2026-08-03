@@ -83,13 +83,45 @@ Current toggle behavior in code:
 	native `.env` support. `scripts/run_variant.sh`/`teardown.sh` load `.env`
 	the same way natively via `source`.
 - `harness/kql/`: KQL rules for runtime detection and telemetry checks.
+- `harness/run_static.py`: runs the static detection tools (KICS, Checkov,
+	Trivy — see "Static Detection Tooling" below) against every variant, 3
+	runs each. Raw scanner output goes to `results/raw/`, findings are mapped
+	from each tool's native rule IDs to `mc0X` IDs via `RULE_MAP` (sourced from
+	`results/rule_map.json`) and written to `results/normalised/`, and one
+	summary row per run is logged to `results/static_scan_run_log.csv`. For
+	KICS specifically, before each scan it copies that variant's own
+	`terraform.tfvars` onto `modules/baseline/terraform.tfvars` and scans
+	`modules/baseline` directly instead of the variant wrapper — see "Static
+	Detection Tooling" for why. `modules/baseline/terraform.tfvars` is left
+	holding whichever variant ran last (currently `mixed-seed-303`) once the
+	script finishes; it's gitignored, so this has no effect on anything
+	tracked.
+- `harness/static_scan.ps1`: the standalone helper originally used to
+	(re)generate `results/rule_map.json` before the same KICS workaround was
+	folded into `run_static.py` itself. Kept for ad-hoc one-off rescans of a
+	single variant/tool without running the full suite.
 - `analysis/`: Analysis scripts/notebooks for detection-performance metrics.
 - `results/plans/`: saved `terraform show` output per variant run
 	(`<variant>_run<N>.txt`), produced by `scripts/run_variant.sh`.
 - `results/logs/`: `terraform apply` output per variant run
 	(`<variant>_run<N>.log`), produced by `scripts/run_variant.sh`.
-- `results/run_log.csv`: one row per completed run — variant, run number,
-	UTC deploy timestamp.
+- `results/raw/`: raw JSON output per static-scan run
+	(`<tool>_<variant>_run<N>.json`), produced by `harness/run_static.py`.
+- `results/normalised/`: per-run static-scan findings translated to `mc0X`
+	IDs via `RULE_MAP` (`<tool>_<variant>_run<N>.json`), produced by
+	`harness/run_static.py`.
+- `results/rule_map.json`: native rule ID → `mc0X` ID mapping for KICS,
+	Checkov, and Trivy, built by diffing each tool's findings for every
+	`vuln-0X` variant against `hardened`. Loaded into `run_static.py` as
+	`RULE_MAP`.
+- `results/run_log.csv`: one row per completed deploy (variant, run number,
+	UTC deploy timestamp), produced by `scripts/run_variant.sh`.
+- `results/static_scan_run_log.csv`: one row per static-scan run (tool,
+	variant, run, timestamp, duration, finding count, detected `mc0X` IDs),
+	produced by `harness/run_static.py`. Kept as a separate file from
+	`results/run_log.csv` above — the two scripts used to collide on the same
+	filename with incompatible schemas, with `run_static.py` truncating
+	whatever deploy-run history was there.
 - `az-cli/cli.ps1`: one-time setup for the remote state backend (creates
 	`rg-tfstate`, storage account `sttfstatembf`, and the `tfstate` blob
 	container that every variant's `backend "azurerm" {}` points at).
@@ -211,6 +243,81 @@ benign, legitimate-looking change activity for testing detection
 false-positive rates: `enable_credential_rotation`,
 `enable_nsg_routine_update`, and `enable_tls_cert_renewal`. All three are
 enabled together in `variants/noisy-compliant/`.
+
+## Static Detection Tooling
+
+`harness/run_static.py` runs three static IaC scanners against every variant:
+
+- **KICS**
+- **Checkov**
+- **Trivy** (`trivy config`)
+
+Two tools that are more commonly seen in this space were deliberately left
+out:
+
+- **Terrascan** was excluded because the project is retired (no longer
+	maintained upstream), so it isn't a viable long-term detection baseline
+	for this benchmark.
+- **tfsec** was replaced by **Trivy**. Aqua Security (tfsec's maintainer)
+	folded tfsec's Terraform checks into Trivy's `config` command rather than
+	continuing tfsec as a separate tool, so Trivy is the direct successor
+	here, not an additional fourth scanner.
+
+Azure Policy is handled separately from these three, since it needs a live
+Azure scope to evaluate against rather than scanning Terraform source files.
+
+### Rule mapping (`results/rule_map.json`)
+
+Each tool reports findings against its own native rule IDs (KICS query IDs,
+Checkov check IDs, Trivy AVD-style IDs), not this benchmark's `mc0X` IDs.
+`results/rule_map.json` maps native rule ID → `mc0X` ID per tool, and is
+loaded into `run_static.py` as `RULE_MAP`. It was built empirically, not from
+documentation: each tool was scanned against every `vuln-0X` variant and
+against `hardened`, and whichever native rule ID(s) newly appeared for a
+given `vuln-0X` (that weren't already present for `hardened`) were mapped to
+that variant's `mc0X` ID.
+
+**KICS needs a different scan target than Checkov/Trivy.** Every variant's
+`main.tf` is a thin wrapper that calls `module "baseline" { source =
+"../../modules/baseline" }` — the actual `azurerm_*` resources, where every
+`mc0X` flag takes effect, live in `modules/baseline/`, not in the variant
+folder itself. Checkov and Trivy both resolve that local module reference
+automatically even when scanned from inside `variants/<name>/`. KICS does
+not — it only scans files inside whatever path it's given, so scanning
+`variants/<name>/` directly leaves KICS blind to every resource that
+actually matters (confirmed via its own report: `files_scanned` stayed at
+3 — just the wrapper's `main.tf`/`variables.tf`/`terraform.tfvars` — for
+every variant). `harness/run_static.py` works around this by copying each
+variant's own `terraform.tfvars` onto `modules/baseline/terraform.tfvars`
+and scanning `modules/baseline` directly for KICS specifically (Checkov and
+Trivy keep scanning the variant wrapper as normal), which sidesteps the
+module-boundary resolution issue entirely.
+
+### Known detection coverage gaps
+
+Not every `mc0X` misconfiguration is caught by these tools out of the box —
+`results/rule_map.json` reflects this honestly rather than forcing a mapping
+that isn't real:
+
+- `mc02_rbac_contributor`, `mc05_plaintext_secrets`, `mc07_logging_disabled`,
+	and `mc10_sp_nonexpiring` are not detected by KICS, Checkov, or Trivy —
+	none of the three ship a rule keyed on RBAC role scope, plaintext app
+	settings, missing diagnostic settings, or service-principal credential
+	lifetime for these resource types.
+- `mc01_public_storage` is not detected by Trivy (its finding set is
+	identical between `hardened` and `vuln-01-public-storage`); KICS and
+	Checkov both catch it.
+- `mc08_no_cmk` is not detected by Checkov (disabling CMK only makes a
+	*passing* check inapplicable — no new failing check appears); KICS and
+	Trivy both catch it.
+- Trivy's `AZU-0047` ("unrestricted ingress from any IP") fires for both
+	`mc04_open_mgmt_ports` and `mc09_nsg_open_inbound`, since they're
+	overlapping NSG-exposure concepts. It's mapped to `mc09_nsg_open_inbound`
+	in `RULE_MAP`; `mc04` is still uniquely identifiable via its two other
+	Trivy hits (`AZU-0048`, `AZU-0050`). Practical effect: a solo scan of
+	`vuln-04-open-mgmt-ports` will also show a `mc09` detection alongside the
+	correct `mc04` one, since `RULE_MAP` can only map one native ID to one
+	`mc0X` ID.
 
 ## Quick Start
 

@@ -1,0 +1,27 @@
+{
+  "tool": "trivy",
+  "variant": "vuln-08-no-cmk",
+  "run": 3,
+  "scanned_at": "2026-08-03T11:29:47.675024Z",
+  "duration_s": 1.39,
+  "findings": [
+    {
+      "mc_id": "mc08_no_cmk",
+      "detected": true
+    }
+  ],
+  "out_of_scope": [
+    "AZU-0012",
+    "AZU-0012",
+    "AZU-0013",
+    "AZU-0015",
+    "AZU-0017",
+    "AZU-0027",
+    "AZU-0057",
+    "AZU-0057",
+    "AZU-0058",
+    "AZU-0058",
+    "AZU-0061",
+    "AZU-0061"
+  ]
+}

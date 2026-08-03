@@ -1,0 +1,31 @@
+{
+  "tool": "trivy",
+  "variant": "vuln-04-open-mgmt-ports",
+  "run": 3,
+  "scanned_at": "2026-08-03T11:24:45.955030Z",
+  "duration_s": 1.48,
+  "findings": [
+    {
+      "mc_id": "mc04_open_mgmt_ports",
+      "detected": true
+    },
+    {
+      "mc_id": "mc09_nsg_open_inbound",
+      "detected": true
+    }
+  ],
+  "out_of_scope": [
+    "AZU-0012",
+    "AZU-0012",
+    "AZU-0013",
+    "AZU-0015",
+    "AZU-0017",
+    "AZU-0027",
+    "AZU-0057",
+    "AZU-0057",
+    "AZU-0058",
+    "AZU-0058",
+    "AZU-0061",
+    "AZU-0061"
+  ]
+}

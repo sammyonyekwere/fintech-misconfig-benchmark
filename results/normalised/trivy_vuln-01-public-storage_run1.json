@@ -1,0 +1,22 @@
+{
+  "tool": "trivy",
+  "variant": "vuln-01-public-storage",
+  "run": 1,
+  "scanned_at": "2026-08-03T11:20:54.341931Z",
+  "duration_s": 1.61,
+  "findings": [],
+  "out_of_scope": [
+    "AZU-0012",
+    "AZU-0012",
+    "AZU-0013",
+    "AZU-0015",
+    "AZU-0017",
+    "AZU-0027",
+    "AZU-0057",
+    "AZU-0057",
+    "AZU-0058",
+    "AZU-0058",
+    "AZU-0061",
+    "AZU-0061"
+  ]
+}

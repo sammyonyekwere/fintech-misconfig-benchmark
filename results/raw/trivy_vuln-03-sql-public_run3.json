@@ -1,0 +1,1775 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.72.0"
+  },
+  "ReportID": "019fc75d-43e8-701b-9bcc-e6ff150cf522",
+  "CreatedAt": "2026-08-03T12:23:26.056007+01:00",
+  "ArtifactName": "variants/vuln-03-sql-public",
+  "ArtifactType": "filesystem",
+  "Results": [
+    {
+      "Target": ".",
+      "Class": "config",
+      "Type": "terraformplan-snapshot",
+      "MisconfSummary": {
+        "Successes": 79,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "../../modules/baseline/main.tf",
+      "Class": "config",
+      "Type": "terraformplan-snapshot",
+      "MisconfSummary": {
+        "Successes": 0,
+        "Failures": 14
+      },
+      "Misconfigurations": [
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0012",
+          "Title": "The default action on Storage account network rules should be set to deny",
+          "Description": "The default_action for network rules should come into effect when no other rules are matched.\nThe default action should be set to Deny.\n",
+          "Message": "No network rules defined and default action allows access.",
+          "Namespace": "builtin.azure.storage.azure0012",
+          "Query": "data.builtin.azure.storage.azure0012.deny",
+          "Resolution": "Set network rules to deny",
+          "Severity": "CRITICAL",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0012",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/firewall/rule-processing",
+            "https://avd.aquasec.com/misconfig/azu-0012"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "storage",
+            "StartLine": 24,
+            "EndLine": 47,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 24,
+                  "Content": "resource \"azurerm_storage_account\" \"data\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_storage_account\"\u001b[0m \u001b[38;5;37m\"data\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 25,
+                  "Content": "  name                     = \"st${var.variant_name}data\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m                     = \u001b[38;5;37m\"st\u001b[0m\u001b[38;5;37m${\u001b[0m\u001b[38;5;33mvar\u001b[0m.\u001b[38;5;33mvar\u001b[0miant_name\u001b[38;5;37m}\u001b[0m\u001b[38;5;37mdata\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 26,
+                  "Content": "  resource_group_name      = azurerm_resource_group.rg.name",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mresource_group_name\u001b[0m      = azurerm_resource_group.rg.name",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 27,
+                  "Content": "  location                 = azurerm_resource_group.rg.location",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mlocation\u001b[0m                 = azurerm_resource_group.rg.location",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 28,
+                  "Content": "  account_tier             = \"Standard\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245maccount_tier\u001b[0m             = \u001b[38;5;37m\"Standard\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 29,
+                  "Content": "  account_replication_type = \"LRS\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245maccount_replication_type\u001b[0m = \u001b[38;5;37m\"LRS\"\u001b[0m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 30,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;239m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 31,
+                  "Content": "  # SECURE default = false;insecure when flag is true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  # SECURE default = false;insecure when flag is true",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 32,
+                  "Content": "  #mc01",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  #mc01",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 33,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0012",
+          "Title": "The default action on Storage account network rules should be set to deny",
+          "Description": "The default_action for network rules should come into effect when no other rules are matched.\nThe default action should be set to Deny.\n",
+          "Message": "No network rules defined and default action allows access.",
+          "Namespace": "builtin.azure.storage.azure0012",
+          "Query": "data.builtin.azure.storage.azure0012.deny",
+          "Resolution": "Set network rules to deny",
+          "Severity": "CRITICAL",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0012",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/firewall/rule-processing",
+            "https://avd.aquasec.com/misconfig/azu-0012"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "storage",
+            "StartLine": 269,
+            "EndLine": 282,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 269,
+                  "Content": "resource \"azurerm_storage_account\" \"logs\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_storage_account\"\u001b[0m \u001b[38;5;37m\"logs\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 270,
+                  "Content": "  name                     = \"st${var.variant_name}logs\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m                     = \u001b[38;5;37m\"st\u001b[0m\u001b[38;5;37m${\u001b[0m\u001b[38;5;33mvar\u001b[0m.\u001b[38;5;33mvar\u001b[0miant_name\u001b[38;5;37m}\u001b[0m\u001b[38;5;37mlogs\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 271,
+                  "Content": "  resource_group_name      = azurerm_resource_group.rg.name",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mresource_group_name\u001b[0m      = azurerm_resource_group.rg.name",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 272,
+                  "Content": "  location                 = azurerm_resource_group.rg.location",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mlocation\u001b[0m                 = azurerm_resource_group.rg.location",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 273,
+                  "Content": "  account_tier             = \"Standard\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245maccount_tier\u001b[0m             = \u001b[38;5;37m\"Standard\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 274,
+                  "Content": "  account_replication_type = \"LRS\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245maccount_replication_type\u001b[0m = \u001b[38;5;37m\"LRS\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 275,
+                  "Content": "  min_tls_version          = \"TLS1_2\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mmin_tls_version\u001b[0m          = \u001b[38;5;37m\"TLS1_2\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 276,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 277,
+                  "Content": "  https_traffic_only_enabled = !var.mc06_no_https",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mhttps_traffic_only_enabled\u001b[0m = \u001b[38;5;245m!\u001b[0m\u001b[38;5;33mvar\u001b[0m.mc06_no_https",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 278,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0013",
+          "Title": "Key vault should have the network acl block specified",
+          "Description": "Network ACLs allow you to reduce your exposure to risk by limiting what can access your key vault.\n\nThe default action of the Network ACL should be set to deny for when IPs are not matched. Azure services can be allowed to bypass.\n",
+          "Message": "Vault network ACL does not block access by default.",
+          "Namespace": "builtin.azure.keyvault.azure0013",
+          "Query": "data.builtin.azure.keyvault.azure0013.deny",
+          "Resolution": "Set a network ACL for the key vault",
+          "Severity": "CRITICAL",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0013",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/key-vault/general/network-security",
+            "https://avd.aquasec.com/misconfig/azu-0013"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "keyvault",
+            "StartLine": 51,
+            "EndLine": 61,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 51,
+                  "Content": "resource \"azurerm_key_vault\" \"vault\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_key_vault\"\u001b[0m \u001b[38;5;37m\"vault\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 52,
+                  "Content": "  name                        = \"vault${var.variant_name}\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m                        = \u001b[38;5;37m\"vault\u001b[0m\u001b[38;5;37m${\u001b[0m\u001b[38;5;33mvar\u001b[0m.\u001b[38;5;33mvar\u001b[0miant_name\u001b[38;5;37m}\u001b[0m\u001b[38;5;37m\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 53,
+                  "Content": "  resource_group_name         = azurerm_resource_group.rg.name",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mresource_group_name\u001b[0m         = azurerm_resource_group.rg.name",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 54,
+                  "Content": "  location                    = azurerm_resource_group.rg.location",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mlocation\u001b[0m                    = azurerm_resource_group.rg.location",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 55,
+                  "Content": "  enable_rbac_authorization   = false",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245menable_rbac_authorization\u001b[0m   = \u001b[38;5;166mfalse",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 56,
+                  "Content": "  enabled_for_disk_encryption = true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245menabled_for_disk_encryption\u001b[0m = \u001b[38;5;166mtrue",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 57,
+                  "Content": "  tenant_id                   = data.azurerm_client_config.current.tenant_id",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mtenant_id\u001b[0m                   = \u001b[38;5;33mdata\u001b[0m.azurerm_client_config.current.tenant_id",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 58,
+                  "Content": "  soft_delete_retention_days  = 7",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245msoft_delete_retention_days\u001b[0m  = \u001b[38;5;37m7",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 59,
+                  "Content": "  purge_protection_enabled = !var.mc08_no_cmk",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mpurge_protection_enabled\u001b[0m = \u001b[38;5;245m!\u001b[0m\u001b[38;5;33mvar\u001b[0m.mc08_no_cmk",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 60,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0015",
+          "Title": "Key vault Secret should have a content type set",
+          "Description": "Content Type is an optional Key Vault Secret behavior and is not enabled by default.\n\nClients may specify the content type of a secret to assist in interpreting the secret data when it's retrieved. The maximum length of this field is 255 characters. There are no pre-defined values. The suggested usage is as a hint for interpreting the secret data.\n",
+          "Message": "Secret does not have a content-type specified.",
+          "Namespace": "builtin.azure.keyvault.azure0015",
+          "Query": "data.builtin.azure.keyvault.azure0015.deny",
+          "Resolution": "Provide content type for secrets to aid interpretation on retrieval",
+          "Severity": "LOW",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0015",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/key-vault/secrets/about-secrets",
+            "https://avd.aquasec.com/misconfig/azu-0015"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "keyvault",
+            "StartLine": 73,
+            "EndLine": 81,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 73,
+                  "Content": "resource \"azurerm_key_vault_secret\" \"sql_conn\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_key_vault_secret\"\u001b[0m \u001b[38;5;37m\"sql_conn\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 74,
+                  "Content": "  name         = \"sql-connection\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m         = \u001b[38;5;37m\"sql-connection\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 75,
+                  "Content": "  value        = local.sql_conn_string",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mvalue\u001b[0m        = local.sql_conn_string",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 76,
+                  "Content": "  key_vault_id = azurerm_key_vault.vault.id",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mkey_vault_id\u001b[0m = azurerm_key_vault.vault.id",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 77,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 78,
+                  "Content": "  depends_on = [",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mdepends_on\u001b[0m = [",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 79,
+                  "Content": "    time_sleep.wait_for_kv_policy",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    time_sleep.wait_for_kv_policy",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 80,
+                  "Content": "  ]",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  ]",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 81,
+                  "Content": "}",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "}",
+                  "FirstCause": false,
+                  "LastCause": true
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0017",
+          "Title": "Key Vault Secret should have an expiration date set",
+          "Description": "Expiration Date is an optional Key Vault Secret behavior and is not set by default.\n\nSet when the resource will be become inactive.\n",
+          "Message": "Secret should have an expiry date specified.",
+          "Namespace": "builtin.azure.keyvault.azure0017",
+          "Query": "data.builtin.azure.keyvault.azure0017.deny",
+          "Resolution": "Set an expiry for secrets",
+          "Severity": "LOW",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0017",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/key-vault/secrets/about-secrets",
+            "https://avd.aquasec.com/misconfig/azu-0017"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "keyvault",
+            "StartLine": 73,
+            "EndLine": 81,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 73,
+                  "Content": "resource \"azurerm_key_vault_secret\" \"sql_conn\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_key_vault_secret\"\u001b[0m \u001b[38;5;37m\"sql_conn\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 74,
+                  "Content": "  name         = \"sql-connection\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m         = \u001b[38;5;37m\"sql-connection\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 75,
+                  "Content": "  value        = local.sql_conn_string",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mvalue\u001b[0m        = local.sql_conn_string",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 76,
+                  "Content": "  key_vault_id = azurerm_key_vault.vault.id",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mkey_vault_id\u001b[0m = azurerm_key_vault.vault.id",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 77,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 78,
+                  "Content": "  depends_on = [",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mdepends_on\u001b[0m = [",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 79,
+                  "Content": "    time_sleep.wait_for_kv_policy",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    time_sleep.wait_for_kv_policy",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 80,
+                  "Content": "  ]",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  ]",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 81,
+                  "Content": "}",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "}",
+                  "FirstCause": false,
+                  "LastCause": true
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0022",
+          "Title": "Ensure databases are not publicly accessible",
+          "Description": "Database resources should not publicly available. You should limit all access to the minimum that is required for your application to function.\n",
+          "Message": "Database server has public network access enabled.",
+          "Namespace": "builtin.azure.database.azure0022",
+          "Query": "data.builtin.azure.database.azure0022.deny",
+          "Resolution": "Disable public access to database when not required",
+          "Severity": "MEDIUM",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0022",
+          "References": [
+            "https://avd.aquasec.com/misconfig/azu-0022"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "database",
+            "StartLine": 94,
+            "EndLine": 94,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 85,
+                  "Content": "resource \"azurerm_mssql_server\" \"sqlserver\" {",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_mssql_server\"\u001b[0m \u001b[38;5;37m\"sqlserver\"\u001b[0m {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 86,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 94,
+                  "Content": "  public_network_access_enabled = var.mc03_sql_public",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mpublic_network_access_enabled\u001b[0m = \u001b[38;5;33mvar\u001b[0m.mc03_sql_public",
+                  "FirstCause": true,
+                  "LastCause": true
+                },
+                {
+                  "Number": 101,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 102,
+                  "Content": "}",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "}",
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "azurerm_mssql_server.sqlserver",
+                "Filename": "../../modules/baseline/main.tf",
+                "Location": {
+                  "StartLine": 85,
+                  "EndLine": 102
+                }
+              },
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ],
+            "RenderedCause": {
+              "Raw": "resource \"azurerm_mssql_server\" \"sqlserver\" {\n  public_network_access_enabled = true\n}",
+              "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_mssql_server\"\u001b[0m \u001b[38;5;37m\"sqlserver\"\u001b[0m {\n  \u001b[38;5;245mpublic_network_access_enabled\u001b[0m = \u001b[38;5;166mtrue\n\u001b[0m}"
+            }
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0027",
+          "Title": "Auditing should be enabled on Azure SQL Databases",
+          "Description": "Auditing helps you maintain regulatory compliance, understand database activity, and gain insight into discrepancies and anomalies that could indicate business concerns or suspected security violations.\n",
+          "Message": "Server does not have an extended audit policy configured.",
+          "Namespace": "builtin.azure.database.azure0027",
+          "Query": "data.builtin.azure.database.azure0027.deny",
+          "Resolution": "Enable auditing on Azure SQL databases",
+          "Severity": "MEDIUM",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0027",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/azure-sql/database/auditing-overview",
+            "https://avd.aquasec.com/misconfig/azu-0027"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "database",
+            "StartLine": 85,
+            "EndLine": 102,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 85,
+                  "Content": "resource \"azurerm_mssql_server\" \"sqlserver\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_mssql_server\"\u001b[0m \u001b[38;5;37m\"sqlserver\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 86,
+                  "Content": "  name                         = \"sql${var.variant_name}server\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m                         = \u001b[38;5;37m\"sql\u001b[0m\u001b[38;5;37m${\u001b[0m\u001b[38;5;33mvar\u001b[0m.\u001b[38;5;33mvar\u001b[0miant_name\u001b[38;5;37m}\u001b[0m\u001b[38;5;37mserver\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 87,
+                  "Content": "  resource_group_name          = azurerm_resource_group.rg.name",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mresource_group_name\u001b[0m          = azurerm_resource_group.rg.name",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 88,
+                  "Content": "  location                     = azurerm_resource_group.rg.location",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mlocation\u001b[0m                     = azurerm_resource_group.rg.location",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 89,
+                  "Content": "  version                      = \"12.0\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mversion\u001b[0m                      = \u001b[38;5;37m\"12.0\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 90,
+                  "Content": "  administrator_login          = var.sql_server_user",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245madministrator_login\u001b[0m          = \u001b[38;5;33mvar\u001b[0m.sql_server_user",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 91,
+                  "Content": "  administrator_login_password = random_password.sql.result",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245madministrator_login_password\u001b[0m = random_password.sql.result",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 92,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;239m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 93,
+                  "Content": "  #SECURE: private only; INSECURE: public endpoint open",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  #SECURE: private only; INSECURE: public endpoint open",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 94,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0029",
+          "Title": "Ensure database firewalls do not permit public access",
+          "Description": "Azure services can be allowed access through the firewall using a start and end IP address of 0.0.0.0. No other end ip address should be combined with a start of 0.0.0.0\n",
+          "Message": "Firewall rule allows public internet access to a database server.",
+          "Namespace": "builtin.azure.database.azure0029",
+          "Query": "data.builtin.azure.database.azure0029.deny",
+          "Resolution": "Don't use wide ip ranges for the sql firewall",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0029",
+          "References": [
+            "https://docs.microsoft.com/en-us/rest/api/sql/2021-02-01-preview/firewall-rules/create-or-update",
+            "https://avd.aquasec.com/misconfig/azu-0029"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "database",
+            "StartLine": 105,
+            "EndLine": 111,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 105,
+                  "Content": "resource \"azurerm_mssql_firewall_rule\" \"allow_internet\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_mssql_firewall_rule\"\u001b[0m \u001b[38;5;37m\"allow_internet\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 106,
+                  "Content": "  count            = var.mc03_sql_public ? 1 : 0",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mcount\u001b[0m            = \u001b[38;5;33mvar\u001b[0m.mc03_sql_public \u001b[38;5;245m?\u001b[0m \u001b[38;5;37m1\u001b[0m \u001b[38;5;245m:\u001b[0m \u001b[38;5;37m0",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 107,
+                  "Content": "  name             = \"allow-all-internet\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mname\u001b[0m             = \u001b[38;5;37m\"allow-all-internet\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 108,
+                  "Content": "  server_id        = azurerm_mssql_server.sqlserver.id",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mserver_id\u001b[0m        = azurerm_mssql_server.sqlserver.id",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 109,
+                  "Content": "  start_ip_address = \"0.0.0.0\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mstart_ip_address\u001b[0m = \u001b[38;5;37m\"0.0.0.0\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 110,
+                  "Content": "  end_ip_address   = \"255.255.255.255\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mend_ip_address\u001b[0m   = \u001b[38;5;37m\"255.255.255.255\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 111,
+                  "Content": "}",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m}",
+                  "FirstCause": false,
+                  "LastCause": true
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0057",
+          "Title": "Storage account should have logging enabled",
+          "Description": "Storage Analytics logs detailed information about successful and failed requests to a storage service.\nThis information can be used to monitor individual requests and to diagnose issues with a storage service.\nLogging should be enabled for at least one storage service type.\n",
+          "Message": "Storage account does not have logging enabled for any service.",
+          "Namespace": "builtin.azure.storage.azure0057",
+          "Query": "data.builtin.azure.storage.azure0057.deny",
+          "Resolution": "Enable logging for at least one storage service (Queue, Table, or Blob)",
+          "Severity": "MEDIUM",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0057",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/storage/common/storage-analytics-logging",
+            "https://avd.aquasec.com/misconfig/azu-0057"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "storage",
+            "StartLine": 269,
+            "EndLine": 282,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 269,
+                  "Content": "resource \"azurerm_storage_account\" \"logs\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_storage_account\"\u001b[0m \u001b[38;5;37m\"logs\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 270,
+                  "Content": "  name                     = \"st${var.variant_name}logs\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m                     = \u001b[38;5;37m\"st\u001b[0m\u001b[38;5;37m${\u001b[0m\u001b[38;5;33mvar\u001b[0m.\u001b[38;5;33mvar\u001b[0miant_name\u001b[38;5;37m}\u001b[0m\u001b[38;5;37mlogs\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 271,
+                  "Content": "  resource_group_name      = azurerm_resource_group.rg.name",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mresource_group_name\u001b[0m      = azurerm_resource_group.rg.name",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 272,
+                  "Content": "  location                 = azurerm_resource_group.rg.location",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mlocation\u001b[0m                 = azurerm_resource_group.rg.location",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 273,
+                  "Content": "  account_tier             = \"Standard\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245maccount_tier\u001b[0m             = \u001b[38;5;37m\"Standard\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 274,
+                  "Content": "  account_replication_type = \"LRS\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245maccount_replication_type\u001b[0m = \u001b[38;5;37m\"LRS\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 275,
+                  "Content": "  min_tls_version          = \"TLS1_2\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mmin_tls_version\u001b[0m          = \u001b[38;5;37m\"TLS1_2\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 276,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 277,
+                  "Content": "  https_traffic_only_enabled = !var.mc06_no_https",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mhttps_traffic_only_enabled\u001b[0m = \u001b[38;5;245m!\u001b[0m\u001b[38;5;33mvar\u001b[0m.mc06_no_https",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 278,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0057",
+          "Title": "Storage account should have logging enabled",
+          "Description": "Storage Analytics logs detailed information about successful and failed requests to a storage service.\nThis information can be used to monitor individual requests and to diagnose issues with a storage service.\nLogging should be enabled for at least one storage service type.\n",
+          "Message": "Storage account does not have logging enabled for any service.",
+          "Namespace": "builtin.azure.storage.azure0057",
+          "Query": "data.builtin.azure.storage.azure0057.deny",
+          "Resolution": "Enable logging for at least one storage service (Queue, Table, or Blob)",
+          "Severity": "MEDIUM",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0057",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/storage/common/storage-analytics-logging",
+            "https://avd.aquasec.com/misconfig/azu-0057"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "storage",
+            "StartLine": 24,
+            "EndLine": 47,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 24,
+                  "Content": "resource \"azurerm_storage_account\" \"data\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_storage_account\"\u001b[0m \u001b[38;5;37m\"data\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 25,
+                  "Content": "  name                     = \"st${var.variant_name}data\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m                     = \u001b[38;5;37m\"st\u001b[0m\u001b[38;5;37m${\u001b[0m\u001b[38;5;33mvar\u001b[0m.\u001b[38;5;33mvar\u001b[0miant_name\u001b[38;5;37m}\u001b[0m\u001b[38;5;37mdata\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 26,
+                  "Content": "  resource_group_name      = azurerm_resource_group.rg.name",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mresource_group_name\u001b[0m      = azurerm_resource_group.rg.name",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 27,
+                  "Content": "  location                 = azurerm_resource_group.rg.location",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mlocation\u001b[0m                 = azurerm_resource_group.rg.location",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 28,
+                  "Content": "  account_tier             = \"Standard\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245maccount_tier\u001b[0m             = \u001b[38;5;37m\"Standard\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 29,
+                  "Content": "  account_replication_type = \"LRS\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245maccount_replication_type\u001b[0m = \u001b[38;5;37m\"LRS\"\u001b[0m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 30,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;239m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 31,
+                  "Content": "  # SECURE default = false;insecure when flag is true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  # SECURE default = false;insecure when flag is true",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 32,
+                  "Content": "  #mc01",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  #mc01",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 33,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0058",
+          "Title": "Storage account should use geo-redundant replication",
+          "Description": "Geo-redundant storage (GRS) replicates your data to a secondary region that is hundreds of miles away from the primary region.\nThis provides an additional level of durability for your data in the event of a complete regional outage or a disaster.\nOptions include GRS, RAGRS, GZRS, and RAGZRS for geo-redundancy.\n",
+          "Message": "Storage account does not use geo-redundant replication.",
+          "Namespace": "builtin.azure.storage.azure0058",
+          "Query": "data.builtin.azure.storage.azure0058.deny",
+          "Resolution": "Configure storage account to use geo-redundant replication (GRS, RAGRS, GZRS, or RAGZRS)",
+          "Severity": "LOW",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0058",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+            "https://avd.aquasec.com/misconfig/azu-0058"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "storage",
+            "StartLine": 274,
+            "EndLine": 274,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 269,
+                  "Content": "resource \"azurerm_storage_account\" \"logs\" {",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_storage_account\"\u001b[0m \u001b[38;5;37m\"logs\"\u001b[0m {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 270,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 274,
+                  "Content": "  account_replication_type = \"LRS\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245maccount_replication_type\u001b[0m = \u001b[38;5;37m\"LRS\"",
+                  "FirstCause": true,
+                  "LastCause": true
+                },
+                {
+                  "Number": 281,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 282,
+                  "Content": "}",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m}",
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "azurerm_storage_account.logs",
+                "Filename": "../../modules/baseline/main.tf",
+                "Location": {
+                  "StartLine": 269,
+                  "EndLine": 282
+                }
+              },
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0058",
+          "Title": "Storage account should use geo-redundant replication",
+          "Description": "Geo-redundant storage (GRS) replicates your data to a secondary region that is hundreds of miles away from the primary region.\nThis provides an additional level of durability for your data in the event of a complete regional outage or a disaster.\nOptions include GRS, RAGRS, GZRS, and RAGZRS for geo-redundancy.\n",
+          "Message": "Storage account does not use geo-redundant replication.",
+          "Namespace": "builtin.azure.storage.azure0058",
+          "Query": "data.builtin.azure.storage.azure0058.deny",
+          "Resolution": "Configure storage account to use geo-redundant replication (GRS, RAGRS, GZRS, or RAGZRS)",
+          "Severity": "LOW",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0058",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+            "https://avd.aquasec.com/misconfig/azu-0058"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "storage",
+            "StartLine": 29,
+            "EndLine": 29,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 24,
+                  "Content": "resource \"azurerm_storage_account\" \"data\" {",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_storage_account\"\u001b[0m \u001b[38;5;37m\"data\"\u001b[0m {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 25,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 29,
+                  "Content": "  account_replication_type = \"LRS\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245maccount_replication_type\u001b[0m = \u001b[38;5;37m\"LRS\"\u001b[0m",
+                  "FirstCause": true,
+                  "LastCause": true
+                },
+                {
+                  "Number": 46,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 47,
+                  "Content": "}",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "}",
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "azurerm_storage_account.data",
+                "Filename": "../../modules/baseline/main.tf",
+                "Location": {
+                  "StartLine": 24,
+                  "EndLine": 47
+                }
+              },
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0061",
+          "Title": "Storage account should have infrastructure encryption enabled",
+          "Description": "Infrastructure encryption provides an additional layer of encryption at the infrastructure level.\nWhen infrastructure encryption is enabled, data in the storage account is encrypted twice -\nonce at the service level and once at the infrastructure level with two different encryption algorithms.\nThis provides double encryption for enhanced security.\n",
+          "Message": "Storage account does not have infrastructure encryption enabled.",
+          "Namespace": "builtin.azure.storage.azure0061",
+          "Query": "data.builtin.azure.storage.azure0061.deny",
+          "Resolution": "Enable infrastructure encryption for storage account",
+          "Severity": "MEDIUM",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0061",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/storage/common/infrastructure-encryption-enable",
+            "https://avd.aquasec.com/misconfig/azu-0061"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "storage",
+            "StartLine": 269,
+            "EndLine": 282,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 269,
+                  "Content": "resource \"azurerm_storage_account\" \"logs\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_storage_account\"\u001b[0m \u001b[38;5;37m\"logs\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 270,
+                  "Content": "  name                     = \"st${var.variant_name}logs\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m                     = \u001b[38;5;37m\"st\u001b[0m\u001b[38;5;37m${\u001b[0m\u001b[38;5;33mvar\u001b[0m.\u001b[38;5;33mvar\u001b[0miant_name\u001b[38;5;37m}\u001b[0m\u001b[38;5;37mlogs\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 271,
+                  "Content": "  resource_group_name      = azurerm_resource_group.rg.name",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mresource_group_name\u001b[0m      = azurerm_resource_group.rg.name",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 272,
+                  "Content": "  location                 = azurerm_resource_group.rg.location",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mlocation\u001b[0m                 = azurerm_resource_group.rg.location",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 273,
+                  "Content": "  account_tier             = \"Standard\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245maccount_tier\u001b[0m             = \u001b[38;5;37m\"Standard\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 274,
+                  "Content": "  account_replication_type = \"LRS\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245maccount_replication_type\u001b[0m = \u001b[38;5;37m\"LRS\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 275,
+                  "Content": "  min_tls_version          = \"TLS1_2\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mmin_tls_version\u001b[0m          = \u001b[38;5;37m\"TLS1_2\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 276,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 277,
+                  "Content": "  https_traffic_only_enabled = !var.mc06_no_https",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mhttps_traffic_only_enabled\u001b[0m = \u001b[38;5;245m!\u001b[0m\u001b[38;5;33mvar\u001b[0m.mc06_no_https",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 278,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Terraform Plan Snapshot Security Check",
+          "ID": "AZU-0061",
+          "Title": "Storage account should have infrastructure encryption enabled",
+          "Description": "Infrastructure encryption provides an additional layer of encryption at the infrastructure level.\nWhen infrastructure encryption is enabled, data in the storage account is encrypted twice -\nonce at the service level and once at the infrastructure level with two different encryption algorithms.\nThis provides double encryption for enhanced security.\n",
+          "Message": "Storage account does not have infrastructure encryption enabled.",
+          "Namespace": "builtin.azure.storage.azure0061",
+          "Query": "data.builtin.azure.storage.azure0061.deny",
+          "Resolution": "Enable infrastructure encryption for storage account",
+          "Severity": "MEDIUM",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/azu-0061",
+          "References": [
+            "https://docs.microsoft.com/en-us/azure/storage/common/infrastructure-encryption-enable",
+            "https://avd.aquasec.com/misconfig/azu-0061"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "module.baseline",
+            "Provider": "Azure",
+            "Service": "storage",
+            "StartLine": 24,
+            "EndLine": 47,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 24,
+                  "Content": "resource \"azurerm_storage_account\" \"data\" {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;33mresource\u001b[0m \u001b[38;5;37m\"azurerm_storage_account\"\u001b[0m \u001b[38;5;37m\"data\"\u001b[0m {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 25,
+                  "Content": "  name                     = \"st${var.variant_name}data\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mname\u001b[0m                     = \u001b[38;5;37m\"st\u001b[0m\u001b[38;5;37m${\u001b[0m\u001b[38;5;33mvar\u001b[0m.\u001b[38;5;33mvar\u001b[0miant_name\u001b[38;5;37m}\u001b[0m\u001b[38;5;37mdata\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 26,
+                  "Content": "  resource_group_name      = azurerm_resource_group.rg.name",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245mresource_group_name\u001b[0m      = azurerm_resource_group.rg.name",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 27,
+                  "Content": "  location                 = azurerm_resource_group.rg.location",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245mlocation\u001b[0m                 = azurerm_resource_group.rg.location",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 28,
+                  "Content": "  account_tier             = \"Standard\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;245maccount_tier\u001b[0m             = \u001b[38;5;37m\"Standard\"",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 29,
+                  "Content": "  account_replication_type = \"LRS\"",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  \u001b[38;5;245maccount_replication_type\u001b[0m = \u001b[38;5;37m\"LRS\"\u001b[0m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 30,
+                  "Content": "",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[38;5;239m",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 31,
+                  "Content": "  # SECURE default = false;insecure when flag is true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  # SECURE default = false;insecure when flag is true",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 32,
+                  "Content": "  #mc01",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  #mc01",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 33,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "module.baseline",
+                "Filename": "main.tf",
+                "Location": {
+                  "StartLine": 6,
+                  "EndLine": 28
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
