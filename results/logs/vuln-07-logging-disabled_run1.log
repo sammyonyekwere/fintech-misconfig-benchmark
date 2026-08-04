@@ -2,27 +2,27 @@ Acquiring state lock. This may take a few moments...
 [0m[1mmodule.baseline.random_password.sql: Creating...[0m[0m
 [0m[1mmodule.baseline.random_password.sql: Creation complete after 0s [id=none][0m
 [0m[1mmodule.baseline.azuread_application.payments: Creating...[0m[0m
-[0m[1mmodule.baseline.azuread_application.payments: Creation complete after 3s [id=/applications/89a4f8ba-3849-4ff2-89c6-72339844261d][0m
+[0m[1mmodule.baseline.azuread_application.payments: Creation complete after 3s [id=/applications/bf459440-1367-48f0-b10b-66f44e53a99a][0m
 [0m[1mmodule.baseline.azuread_application_password.payments: Creating...[0m[0m
 [0m[1mmodule.baseline.azuread_service_principal.payments: Creating...[0m[0m
-[0m[1mmodule.baseline.azuread_service_principal.payments: Creation complete after 2s [id=/servicePrincipals/efc3e9fb-bd8a-41a3-bfee-f49c620ff012][0m
+[0m[1mmodule.baseline.azuread_service_principal.payments: Creation complete after 3s [id=/servicePrincipals/ebd0f41c-256a-4dc7-a860-291162475415][0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Creation complete after 6s [id=bf459440-1367-48f0-b10b-66f44e53a99a/password/2418ea3e-b536-44b9-8384-0808eeedd5b7][0m
 [0m[1mmodule.baseline.azurerm_resource_group.rg: Creating...[0m[0m
-[0m[1mmodule.baseline.azuread_application_password.payments: Creation complete after 6s [id=89a4f8ba-3849-4ff2-89c6-72339844261d/password/1c91a256-9278-4ac1-872d-bfc7633528e0][0m
 [0m[1mmodule.baseline.azurerm_resource_group.rg: Still creating... [00m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_resource_group.rg: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_resource_group.rg: Creation complete after 25s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07][0m
 [0m[1mmodule.baseline.azurerm_role_assignment.sp_payments: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_user_assigned_identity.storage: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_virtual_network.vnet: Creating...[0m[0m
+[0m[1mmodule.baseline.azurerm_user_assigned_identity.storage: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_service_plan.serviceplan: Creating...[0m[0m
+[0m[1mmodule.baseline.azurerm_virtual_network.vnet: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_network_security_group.nsg: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_log_analytics_workspace.law: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.logs: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_user_assigned_identity.storage: Creation complete after 3s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-vuln07-storage][0m
 [0m[1mmodule.baseline.azurerm_storage_account.data: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_network_security_group.nsg: Creation complete after 4s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Network/networkSecurityGroups/nsg-app][0m
+[0m[1mmodule.baseline.azurerm_network_security_group.nsg: Creation complete after 3s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Network/networkSecurityGroups/nsg-app][0m
 [0m[1mmodule.baseline.azurerm_virtual_network.vnet: Creation complete after 6s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Network/virtualNetworks/vnet-payments][0m
 [0m[1mmodule.baseline.azurerm_subnet.snet: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_role_assignment.sp_payments: Still creating... [00m10s elapsed][0m[0m
@@ -36,14 +36,14 @@ Acquiring state lock. This may take a few moments...
 [0m[1mmodule.baseline.azurerm_storage_account.data: Still creating... [00m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_subnet_network_security_group_association.app: Creation complete after 7s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Network/virtualNetworks/vnet-payments/subnets/snet-app][0m
 [0m[1mmodule.baseline.azurerm_role_assignment.sp_payments: Still creating... [00m20s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_service_plan.serviceplan: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Still creating... [00m20s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_service_plan.serviceplan: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_log_analytics_workspace.law: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.logs: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.data: Still creating... [00m20s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_service_plan.serviceplan: Creation complete after 24s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Web/serverFarms/appvuln07service][0m
-[0m[1mmodule.baseline.azurerm_role_assignment.sp_payments: Creation complete after 27s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Authorization/roleAssignments/3d2a49d8-c8d3-8ffd-8acd-c0a531cd64d5][0m
+[0m[1mmodule.baseline.azurerm_service_plan.serviceplan: Creation complete after 23s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Web/serverFarms/appvuln07service][0m
+[0m[1mmodule.baseline.azurerm_role_assignment.sp_payments: Creation complete after 28s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Authorization/roleAssignments/42cd0c08-7868-f983-77aa-de03d8ba3876][0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Still creating... [00m30s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_log_analytics_workspace.law: Still creating... [00m30s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Still creating... [00m30s elapsed][0m[0m
@@ -54,7 +54,7 @@ Acquiring state lock. This may take a few moments...
 [0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Still creating... [00m40s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.logs: Still creating... [00m40s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.data: Still creating... [00m40s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_log_analytics_workspace.law: Creation complete after 46s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.OperationalInsights/workspaces/law-vuln07][0m
+[0m[1mmodule.baseline.azurerm_log_analytics_workspace.law: Creation complete after 45s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.OperationalInsights/workspaces/law-vuln07][0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Still creating... [00m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Still creating... [00m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.logs: Still creating... [00m50s elapsed][0m[0m
@@ -67,14 +67,15 @@ Acquiring state lock. This may take a few moments...
 [0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Still creating... [01m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.logs: Still creating... [01m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.data: Still creating... [01m10s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_storage_account.logs: Creation complete after 1m19s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Storage/storageAccounts/stvuln07logs][0m
+[0m[1mmodule.baseline.azurerm_storage_account.logs: Creation complete after 1m17s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Storage/storageAccounts/stvuln07logs][0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Still creating... [01m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Still creating... [01m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_storage_account.data: Creation complete after 1m18s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Storage/storageAccounts/stvuln07data][0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Still creating... [01m30s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Still creating... [01m30s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Creation complete after 1m40s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Sql/servers/sqlvuln07server][0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Still creating... [01m40s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Still creating... [01m40s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_server.sqlserver: Creation complete after 1m45s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Sql/servers/sqlvuln07server][0m
 [0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Still creating... [01m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [00m10s elapsed][0m[0m
@@ -82,63 +83,58 @@ Acquiring state lock. This may take a few moments...
 [0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault.vault: Still creating... [02m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [00m30s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault.vault: Creation complete after 2m20s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.KeyVault/vaults/vaultvuln07][0m
+[0m[1mmodule.baseline.azurerm_key_vault.vault: Creation complete after 2m19s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.KeyVault/vaults/vaultvuln07][0m
 [0m[1mmodule.baseline.azurerm_key_vault_access_policy.storage_uai: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_access_policy.terraform_client: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [00m40s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_access_policy.storage_uai: Creation complete after 7s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.KeyVault/vaults/vaultvuln07/objectId/78278417-2198-4884-a6b6-69caa78131a8][0m
-[0m[1mmodule.baseline.azurerm_key_vault_access_policy.terraform_client: Still creating... [00m10s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [00m50s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_access_policy.terraform_client: Creation complete after 15s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.KeyVault/vaults/vaultvuln07/objectId/962419b0-2ba9-46d2-8915-2601f7a156c9][0m
+[0m[1mmodule.baseline.azurerm_key_vault_access_policy.terraform_client: Creation complete after 8s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.KeyVault/vaults/vaultvuln07/objectId/962419b0-2ba9-46d2-8915-2601f7a156c9][0m
 [0m[1mmodule.baseline.time_sleep.wait_for_kv_policy: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m00s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_key_vault_access_policy.storage_uai: Still creating... [00m10s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [00m50s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_key_vault_access_policy.storage_uai: Creation complete after 17s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.KeyVault/vaults/vaultvuln07/objectId/59ef0231-df3d-4b76-8a7c-7c37b977e1d0][0m
 [0m[1mmodule.baseline.time_sleep.wait_for_kv_policy: Still creating... [00m10s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m10s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m00s elapsed][0m[0m
 [0m[1mmodule.baseline.time_sleep.wait_for_kv_policy: Still creating... [00m20s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m20s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m10s elapsed][0m[0m
 [0m[1mmodule.baseline.time_sleep.wait_for_kv_policy: Still creating... [00m30s elapsed][0m[0m
-[0m[1mmodule.baseline.time_sleep.wait_for_kv_policy: Creation complete after 30s [id=2026-08-01T22:08:07Z][0m
+[0m[1mmodule.baseline.time_sleep.wait_for_kv_policy: Creation complete after 30s [id=2026-08-04T14:12:40Z][0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m30s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [00m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m10s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m40s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m20s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m30s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [00m20s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m50s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m20s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m40s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m30s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [00m30s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [02m00s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [01m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [00m40s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m40s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [02m10s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [02m00s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [00m50s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [02m20s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Creation complete after 2m10s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Sql/servers/sqlvuln07server/databases/mssqlvuln07db][0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m00s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [01m00s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [02m30s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [01m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m10s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [02m40s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [01m20s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Still creating... [02m50s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m30s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [01m30s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_mssql_database.mssqldb: Creation complete after 2m58s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Sql/servers/sqlvuln07server/databases/mssqlvuln07db][0m
+[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m30s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m40s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [01m40s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [01m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m50s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [01m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [02m00s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Still creating... [02m00s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Creation complete after 2m3s [id=https://vaultvuln07.vault.azure.net/secrets/sql-connection/c01e4d22254e4f5d8deb0e0c9924e766][0m
-[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Creation complete after 2m4s [id=https://vaultvuln07.vault.azure.net/keys/cmk-storage/eb4e58e82d9c45c48196ac51520174c5][0m
+[0m[1mmodule.baseline.azurerm_key_vault_secret.sql_conn: Creation complete after 2m3s [id=https://vaultvuln07.vault.azure.net/secrets/sql-connection/d553951826e54d4b85d88a9e0f37b45b][0m
+[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Creation complete after 2m3s [id=https://vaultvuln07.vault.azure.net/keys/cmk-storage/eb4e58e82d9c45c48196ac51520174c5][0m
 [0m[1mmodule.baseline.azurerm_storage_account_customer_managed_key.data[0]: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_storage_account_customer_managed_key.data[0]: Creation complete after 3s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Storage/storageAccounts/stvuln07data][0m
 [0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Creating...[0m[0m
+[0m[1mmodule.baseline.azurerm_storage_account_customer_managed_key.data[0]: Creation complete after 7s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Storage/storageAccounts/stvuln07data][0m
 [0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Still creating... [00m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Still creating... [00m30s elapsed][0m[0m
@@ -146,21 +142,24 @@ Acquiring state lock. This may take a few moments...
 [0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Still creating... [00m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Still creating... [01m00s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Still creating... [01m10s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Creation complete after 1m10s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Web/sites/functionvuln07app][0m
+[0m[1mmodule.baseline.azurerm_linux_function_app.functionapp: Creation complete after 1m12s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Web/sites/functionvuln07app][0m
 [0m[1mmodule.baseline.azurerm_key_vault_access_policy.functionapp: Creating...[0m[0m
 [0m[1mmodule.baseline.azurerm_role_assignment.func_identity: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_access_policy.functionapp: Creation complete after 7s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.KeyVault/vaults/vaultvuln07/objectId/85391b18-fe2a-423f-a445-bddac109fb0b][0m
+[0m[1mmodule.baseline.azurerm_key_vault_access_policy.functionapp: Creation complete after 9s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.KeyVault/vaults/vaultvuln07/objectId/e5035e90-36be-45f8-88e5-44472a34d4c1][0m
 [0m[1mmodule.baseline.azurerm_role_assignment.func_identity: Still creating... [00m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_role_assignment.func_identity: Still creating... [00m20s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_role_assignment.func_identity: Creation complete after 26s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Authorization/roleAssignments/9e0968ad-699a-5834-08ca-05f17097c9c4][0m
+[0m[1mmodule.baseline.azurerm_role_assignment.func_identity: Creation complete after 26s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Authorization/roleAssignments/65871566-c38b-635c-3c7a-dc1695c2cc15][0m
 [33m╷[0m[0m
 [33m│[0m [0m[1m[33mWarning: [0m[0m[1mValue for undeclared variable[0m
 [33m│[0m [0m
-[33m│[0m [0m[0mThe root module does not declare a variable named "disable_purge_protection_for_testing" but a value was found in
-[33m│[0m [0mfile "terraform.tfvars". If you meant to use this value, add a "variable" block to the configuration.
+[33m│[0m [0m[0mThe root module does not declare a variable named
+[33m│[0m [0m"disable_purge_protection_for_testing" but a value was found in file
+[33m│[0m [0m"terraform.tfvars". If you meant to use this value, add a "variable" block
+[33m│[0m [0mto the configuration.
 [33m│[0m [0m
-[33m│[0m [0mTo silence these warnings, use TF_VAR_... environment variables to provide certain "global" settings to all
-[33m│[0m [0mconfigurations in your organization. To reduce the verbosity of these warnings, use the -compact-warnings option.
+[33m│[0m [0mTo silence these warnings, use TF_VAR_... environment variables to provide
+[33m│[0m [0mcertain "global" settings to all configurations in your organization. To
+[33m│[0m [0mreduce the verbosity of these warnings, use the -compact-warnings option.
 [33m╵[0m[0m
 [33m╷[0m[0m
 [33m│[0m [0m[1m[33mWarning: [0m[0m[1mArgument is deprecated[0m
@@ -169,11 +168,11 @@ Acquiring state lock. This may take a few moments...
 [33m│[0m [0m  on ../../modules/baseline/main.tf line 55, in resource "azurerm_key_vault" "vault":
 [33m│[0m [0m  55:   enable_rbac_authorization   = [4mfalse[0m[0m
 [33m│[0m [0m
-[33m│[0m [0mThis property has been renamed to `rbac_authorization_enabled` and will be removed in v5.0 of the provider
+[33m│[0m [0mThis property has been renamed to `rbac_authorization_enabled` and will be
+[33m│[0m [0mremoved in v5.0 of the provider
 [33m│[0m [0m
 [33m│[0m [0m(and 2 more similar warnings elsewhere)
 [33m╵[0m[0m
 Releasing state lock. This may take a few moments...
 [0m[1m[32m
 Apply complete! Resources: 27 added, 0 changed, 0 destroyed.[0m
-APPLY COMPLETE  vuln-07-logging-disabled run 1 at 2026-08-01T22:11:59Z

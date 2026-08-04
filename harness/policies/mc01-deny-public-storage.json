@@ -1,0 +1,9 @@
+{
+  "if": {
+    "allOf": [
+      { "field": "type", "equals": "Microsoft.Storage/storageAccounts" },
+      { "field": "Microsoft.Storage/storageAccounts/publicNetworkAccess", "notEquals": "Disabled" }
+    ]
+  },
+  "then": { "effect": "deny" }
+}

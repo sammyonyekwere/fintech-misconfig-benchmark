@@ -1,19 +1,17 @@
 Acquiring state lock. This may take a few moments...
-[0m[1mmodule.baseline.azuread_application_password.payments: Destroying... [id=e5755373-482d-43d5-a02a-5452a6211c8c/password/c338e48b-bf8b-4c68-b01c-20a28193a4ad][0m[0m
-[0m[1mmodule.baseline.azuread_application_password.payments: Still destroying... [id=e5755373-482d-43d5-a02a-5452a6211c8c/pa...d/c338e48b-bf8b-4c68-b01c-20a28193a4ad, 00m10s elapsed][0m[0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Destroying... [id=7db396b7-7cd3-41d6-ab4f-49008560d723/password/d443999a-3414-4397-89e1-ba0a9b33bab3][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Destroying... [id=https://vaultvuln01.vault.azure.net/keys/cmk-storage/1803b02ecde14d4ea02f5875c1675d3c][0m[0m
 [0m[1mmodule.baseline.azurerm_monitor_diagnostic_setting.sql[0]: Modifying... [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.Sql/servers/sqlvuln01server/databases/mssqlvuln01db|diag-sql][0m[0m
-[0m[1mmodule.baseline.azurerm_storage_account.data: Modifying... [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.Storage/storageAccounts/stvuln01data][0m[0m
-[0m[1mmodule.baseline.azurerm_monitor_diagnostic_setting.sql[0]: Modifications complete after 5s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.Sql/servers/sqlvuln01server/databases/mssqlvuln01db|diag-sql][0m
-[0m[1mmodule.baseline.azuread_application_password.payments: Still destroying... [id=e5755373-482d-43d5-a02a-5452a6211c8c/pa...d/c338e48b-bf8b-4c68-b01c-20a28193a4ad, 00m20s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_storage_account.data: Creating...[0m[0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Still destroying... [id=7db396b7-7cd3-41d6-ab4f-49008560d723/pa...d/d443999a-3414-4397-89e1-ba0a9b33bab3, 00m10s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_monitor_diagnostic_setting.sql[0]: Modifications complete after 7s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.Sql/servers/sqlvuln01server/databases/mssqlvuln01db|diag-sql][0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still destroying... [id=https://vaultvuln01.vault.azure.net/key...orage/1803b02ecde14d4ea02f5875c1675d3c, 00m10s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_storage_account.data: Still modifying... [id=/subscriptions/11635850-6fa9-4838-abb6-...t.Storage/storageAccounts/stvuln01data, 00m10s elapsed][0m[0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Still destroying... [id=7db396b7-7cd3-41d6-ab4f-49008560d723/pa...d/d443999a-3414-4397-89e1-ba0a9b33bab3, 00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azuread_application_password.payments: Destruction complete after 21s[0m
 [0m[1mmodule.baseline.azuread_application_password.payments: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Destruction complete after 15s[0m
+[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Destruction complete after 16s[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Creating...[0m[0m
-[0m[1mmodule.baseline.azurerm_storage_account.data: Modifications complete after 17s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln01/providers/Microsoft.Storage/storageAccounts/stvuln01data][0m
-[0m[1mmodule.baseline.azuread_application_password.payments: Creation complete after 6s [id=e5755373-482d-43d5-a02a-5452a6211c8c/password/8534e5d2-9349-4910-ba4c-692a080f37ac][0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Creation complete after 7s [id=7db396b7-7cd3-41d6-ab4f-49008560d723/password/eace8dac-a29c-405a-b062-a2932a1acbfd][0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m10s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m20s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [00m30s elapsed][0m[0m
@@ -26,7 +24,7 @@ Acquiring state lock. This may take a few moments...
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m40s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [01m50s elapsed][0m[0m
 [0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Still creating... [02m00s elapsed][0m[0m
-[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Creation complete after 2m3s [id=https://vaultvuln01.vault.azure.net/keys/cmk-storage/1803b02ecde14d4ea02f5875c1675d3c][0m
+[0m[1mmodule.baseline.azurerm_key_vault_key.cmk[0]: Creation complete after 2m4s [id=https://vaultvuln01.vault.azure.net/keys/cmk-storage/1803b02ecde14d4ea02f5875c1675d3c][0m
 [33m╷[0m[0m
 [33m│[0m [0m[1m[33mWarning: [0m[0m[1mArgument is deprecated[0m
 [33m│[0m [0m
@@ -34,9 +32,17 @@ Acquiring state lock. This may take a few moments...
 [33m│[0m [0m  on ../../modules/baseline/main.tf line 306, in resource "azurerm_monitor_diagnostic_setting" "sql":
 [33m│[0m [0m 306: resource "azurerm_monitor_diagnostic_setting" "sql" [4m{[0m[0m
 [33m│[0m [0m
-[33m│[0m [0m`metric` has been deprecated in favour of the `enabled_metric` property and will be removed in v5.0 of the
-[33m│[0m [0mAzureRM provider
+[33m│[0m [0m`metric` has been deprecated in favour of the `enabled_metric` property and
+[33m│[0m [0mwill be removed in v5.0 of the AzureRM provider
 [33m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1mcreating Storage Account (Subscription: "11635850-6fa9-4838-abb6-49352629e098"
+[31m│[0m [0mResource Group Name: "rg-vuln01"
+[31m│[0m [0mStorage Account Name: "stvuln01data"): performing Create: unexpected status 403 (403 Forbidden) with error: RequestDisallowedByPolicy: Resource 'stvuln01data' was disallowed by policy. Policy identifiers: '[{"policyAssignment":{"name":"mc01-deny-public-storage-assign","id":"/subscriptions/11635850-6fa9-4838-abb6-49352629e098/providers/Microsoft.Authorization/policyAssignments/mc01-deny-public-storage-assign"},"policyDefinition":{"name":"mc01-deny-public-storage","id":"/subscriptions/11635850-6fa9-4838-abb6-49352629e098/providers/Microsoft.Authorization/policyDefinitions/mc01-deny-public-storage","version":"1.0.0"}}]'.[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with module.baseline.azurerm_storage_account.data,
+[31m│[0m [0m  on ../../modules/baseline/main.tf line 24, in resource "azurerm_storage_account" "data":
+[31m│[0m [0m  24: resource "azurerm_storage_account" "data" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
 Releasing state lock. This may take a few moments...
-[0m[1m[32m
-Apply complete! Resources: 2 added, 2 changed, 2 destroyed.[0m

@@ -1,13 +1,4 @@
-# Deployed-state compliance scan (Azure Policy) — NOT static IaC analysis.
-#
-# This evaluates a resource's actual, already-deployed configuration in Azure
-# (via a forced policy compliance re-scan), which is a different detection
-# tier from harness/run_static.py (KICS/Checkov/Trivy, which scan Terraform
-# *source* and never touch Azure) and from harness/kql/ (continuous,
-# event/telemetry-based runtime detection). See docs/01-implementation.md
-# for the three-tier breakdown: static (pre-deployment) / deployed-state
-# (post-deployment, this script) / runtime (continuous, event-driven).
-#
+
 # Usage: pwsh harness/deployed_state_policy_scan.ps1 <variant> <run>
 
 param(
@@ -19,15 +10,22 @@ param(
 )
 
 # --- mc0X -> Azure Policy mapping -------------------------------------------------
-# Same empirical method as results/rule_map.json: run this script against `hardened`
-# and against each single-fault `vuln-0X`, diff which policyDefinitionReferenceId
-# values go NonCompliant that weren't already NonCompliant on hardened, and add
-# those entries here. Until populated, n_findings_mapped will (correctly) read 0 --
-# MCSB's ~20+ raw non-compliant policies are mostly baseline-design objections
-# (private-link, shared-key, DDoS, SQL auditing), not your injected faults, and
-# should not count toward TPR until verified against this map.
+# Built the same empirical way as results/rule_map.json: diff each variant's
+# non-compliant policyDefinitionReferenceId set against the hardened baseline
+# (results/raw/azpolicy_hardenedtest2_run2.json), verified against real data
+# for all 10 vuln-0X variants plus all 3 mixed-seed variants and
+# noisy-compliant (zero false positives, every mixed-variant detection
+# matched its exact ground-truth flags with no spillover). mc02, mc04, mc05,
+# mc09, mc10 showed zero new non-compliant policies -- confirmed no MCSB
+# coverage, consistent with (or in mc04/mc09's case, narrower than) the
+# static and what-if tiers. No entries added for those (nothing to map).
 $PolicyRuleMap = @{
-    # "<policyDefinitionReferenceId>" = "mc01_public_storage"
+    "storagedisallowpublicaccess"                                             = "mc01_public_storage"
+    "publicnetworkaccessonazuresqldatabaseshouldbedisabledmonitoringeffect"   = "mc03_sql_public"
+    "functionappenforcehttpsmonitoring"                                       = "mc06_no_https"
+    "securetransfertostorageaccountmonitoring"                                = "mc06_no_https"
+    "diagnosticslogsinkeyvaultmonitoring"                                     = "mc07_logging_disabled"
+    "keyvaultsshouldhavepurgeprotectionenabledmonitoringeffect"               = "mc08_no_cmk"
 }
 
 function Get-PolicyStates {
@@ -67,7 +65,11 @@ if (-not (Test-Path $logPath)) {
 New-Item -ItemType Directory -Force results/raw | Out-Null
 
 Write-Host "=== Deploying $Variant ==="
-bash ./scripts/run_variant.sh $Variant
+# Pass $Run through explicitly -- run_variant.sh defaults to run 1 when the
+# second argument is omitted, which would make repeated invocations (or
+# policy_whatif_scan.ps1 targeting the same variant) silently overwrite
+# each other's results/logs/<variant>_run<N>.log via `tee`.
+bash ./scripts/run_variant.sh $Variant $Run
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Deploy failed for $Variant — aborting evaluation"
     exit 1

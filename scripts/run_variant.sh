@@ -25,7 +25,7 @@ terraform validate
 terraform plan -out tfplan
 terraform show -no-color tfplan > "$ROOT/results/plans/${VARIANT}_run${RUN}.txt"
 
-terraform apply -auto-approve tfplan | tee "$ROOT/results/logs/${VARIANT}_run${RUN}.log"
+terraform apply -auto-approve tfplan 2>&1 | tee "$ROOT/results/logs/${VARIANT}_run${RUN}.log"
 DEPLOY_TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 echo "${VARIANT},${RUN},${DEPLOY_TS}" >> "$ROOT/results/run_log.csv"
 echo "APPLY COMPLETE  ${VARIANT} run ${RUN} at ${DEPLOY_TS}"

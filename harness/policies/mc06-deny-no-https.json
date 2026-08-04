@@ -1,0 +1,19 @@
+{
+  "if": {
+    "anyOf": [
+      {
+        "allOf": [
+          { "field": "type", "equals": "Microsoft.Storage/storageAccounts" },
+          { "field": "Microsoft.Storage/storageAccounts/supportsHttpsTrafficOnly", "equals": "false" }
+        ]
+      },
+      {
+        "allOf": [
+          { "field": "type", "equals": "Microsoft.Web/sites" },
+          { "field": "Microsoft.Web/sites/httpsOnly", "equals": "false" }
+        ]
+      }
+    ]
+  },
+  "then": { "effect": "deny" }
+}

@@ -10,7 +10,7 @@ Terraform will perform the following actions:
       + app_role_ids                = (known after apply)
       + client_id                   = (known after apply)
       + disabled_by_microsoft       = (known after apply)
-      + display_name                = "sp-noisy-payments"
+      + display_name                = "sp-hardenedtest2-payments"
       + id                          = (known after apply)
       + logo_url                    = (known after apply)
       + oauth2_permission_scope_ids = (known after apply)
@@ -26,14 +26,13 @@ Terraform will perform the following actions:
 
   # module.baseline.azuread_application_password.payments will be created
   + resource "azuread_application_password" "payments" {
-      + application_id      = (known after apply)
-      + display_name        = (known after apply)
-      + end_date            = (known after apply)
-      + id                  = (known after apply)
-      + key_id              = (known after apply)
-      + rotate_when_changed = (known after apply)
-      + start_date          = (known after apply)
-      + value               = (sensitive value)
+      + application_id = (known after apply)
+      + display_name   = (known after apply)
+      + end_date       = (known after apply)
+      + id             = (known after apply)
+      + key_id         = (known after apply)
+      + start_date     = (known after apply)
+      + value          = (sensitive value)
     }
 
   # module.baseline.azuread_service_principal.payments will be created
@@ -69,11 +68,11 @@ Terraform will perform the following actions:
       + enabled_for_disk_encryption   = true
       + id                            = (known after apply)
       + location                      = "westeurope"
-      + name                          = "vaultnoisy"
+      + name                          = "vaulthardenedtest2"
       + public_network_access_enabled = true
       + purge_protection_enabled      = true
       + rbac_authorization_enabled    = (known after apply)
-      + resource_group_name           = "rg-noisy"
+      + resource_group_name           = "rg-hardenedtest2"
       + sku_name                      = "standard"
       + soft_delete_retention_days    = 7
       + tenant_id                     = "0d7e5e08-08f5-4c19-a6d0-9262be69304b"
@@ -148,58 +147,6 @@ Terraform will perform the following actions:
       + tenant_id               = "0d7e5e08-08f5-4c19-a6d0-9262be69304b"
     }
 
-  # module.baseline.azurerm_key_vault_certificate.app[0] will be created
-  + resource "azurerm_key_vault_certificate" "app" {
-      + certificate_attribute           = (known after apply)
-      + certificate_data                = (known after apply)
-      + certificate_data_base64         = (known after apply)
-      + id                              = (known after apply)
-      + key_vault_id                    = (known after apply)
-      + name                            = "cert-app-noisy"
-      + resource_manager_id             = (known after apply)
-      + resource_manager_versionless_id = (known after apply)
-      + secret_id                       = (known after apply)
-      + thumbprint                      = (known after apply)
-      + version                         = (known after apply)
-      + versionless_id                  = (known after apply)
-      + versionless_secret_id           = (known after apply)
-
-      + certificate_policy {
-          + issuer_parameters {
-              + name = "Self"
-            }
-          + key_properties {
-              + curve      = (known after apply)
-              + exportable = false
-              + key_size   = 2048
-              + key_type   = "RSA"
-              + reuse_key  = true
-            }
-          + lifetime_action {
-              + action {
-                  + action_type = "AutoRenew"
-                }
-              + trigger {
-                  + days_before_expiry = 30
-                }
-            }
-          + secret_properties {
-              + content_type = "application/x-pkcs12"
-            }
-          + x509_certificate_properties {
-              + extended_key_usage = (known after apply)
-              + key_usage          = [
-                  + "digitalSignature",
-                  + "keyEncipherment",
-                ]
-              + subject            = "CN=payments.internal"
-              + validity_in_months = 12
-
-              + subject_alternative_names (known after apply)
-            }
-        }
-    }
-
   # module.baseline.azurerm_key_vault_key.cmk[0] will be created
   + resource "azurerm_key_vault_key" "cmk" {
       + curve                   = (known after apply)
@@ -261,17 +208,17 @@ Terraform will perform the following actions:
       + key_vault_reference_identity_id                = (known after apply)
       + kind                                           = (known after apply)
       + location                                       = "westeurope"
-      + name                                           = "functionnoisyapp"
+      + name                                           = "functionhardenedtest2app"
       + outbound_ip_address_list                       = (known after apply)
       + outbound_ip_addresses                          = (known after apply)
       + possible_outbound_ip_address_list              = (known after apply)
       + possible_outbound_ip_addresses                 = (known after apply)
       + public_network_access_enabled                  = true
-      + resource_group_name                            = "rg-noisy"
+      + resource_group_name                            = "rg-hardenedtest2"
       + service_plan_id                                = (known after apply)
       + site_credential                                = (sensitive value)
       + storage_account_access_key                     = (sensitive value)
-      + storage_account_name                           = "stnoisydata"
+      + storage_account_name                           = "sthardenedtest2data"
       + storage_uses_managed_identity                  = false
       + virtual_network_backup_restore_enabled         = false
       + vnet_image_pull_enabled                        = false
@@ -322,9 +269,9 @@ Terraform will perform the following actions:
       + local_authentication_disabled   = (known after apply)
       + local_authentication_enabled    = true
       + location                        = "westeurope"
-      + name                            = "law-noisy"
+      + name                            = "law-hardenedtest2"
       + primary_shared_key              = (sensitive value)
-      + resource_group_name             = "rg-noisy"
+      + resource_group_name             = "rg-hardenedtest2"
       + retention_in_days               = 30
       + secondary_shared_key            = (sensitive value)
       + sku                             = "PerGB2018"
@@ -384,7 +331,7 @@ Terraform will perform the following actions:
       + maintenance_configuration_name                             = (known after apply)
       + max_size_gb                                                = 2
       + min_capacity                                               = (known after apply)
-      + name                                                       = "mssqlnoisydb"
+      + name                                                       = "mssqlhardenedtest2db"
       + read_replica_count                                         = (known after apply)
       + read_scale                                                 = (known after apply)
       + restore_point_in_time                                      = (known after apply)
@@ -418,11 +365,11 @@ Terraform will perform the following actions:
       + id                                       = (known after apply)
       + location                                 = "westeurope"
       + minimum_tls_version                      = "1.2"
-      + name                                     = "sqlnoisyserver"
+      + name                                     = "sqlhardenedtest2server"
       + outbound_network_restriction_enabled     = false
       + primary_user_assigned_identity_id        = (known after apply)
       + public_network_access_enabled            = false
-      + resource_group_name                      = "rg-noisy"
+      + resource_group_name                      = "rg-hardenedtest2"
       + restorable_dropped_database_ids          = (known after apply)
       + version                                  = "12.0"
 
@@ -437,7 +384,7 @@ Terraform will perform the following actions:
       + id                  = (known after apply)
       + location            = "westeurope"
       + name                = "nsg-app"
-      + resource_group_name = "rg-noisy"
+      + resource_group_name = "rg-hardenedtest2"
       + security_rule       = [
           + {
               + access                                     = "Allow"
@@ -460,27 +407,11 @@ Terraform will perform the following actions:
         ]
     }
 
-  # module.baseline.azurerm_network_security_rule.routine[0] will be created
-  + resource "azurerm_network_security_rule" "routine" {
-      + access                      = "Allow"
-      + destination_address_prefix  = "*"
-      + destination_port_range      = "8443"
-      + direction                   = "Inbound"
-      + id                          = (known after apply)
-      + name                        = "app-inbound-8443"
-      + network_security_group_name = "nsg-app"
-      + priority                    = 110
-      + protocol                    = "Tcp"
-      + resource_group_name         = "rg-noisy"
-      + source_address_prefix       = "10.20.0.0/16"
-      + source_port_range           = "*"
-    }
-
   # module.baseline.azurerm_resource_group.rg will be created
   + resource "azurerm_resource_group" "rg" {
       + id       = (known after apply)
       + location = "westeurope"
-      + name     = "rg-noisy"
+      + name     = "rg-hardenedtest2"
     }
 
   # module.baseline.azurerm_role_assignment.func_identity will be created
@@ -515,12 +446,12 @@ Terraform will perform the following actions:
       + kind                            = (known after apply)
       + location                        = "westeurope"
       + maximum_elastic_worker_count    = (known after apply)
-      + name                            = "appnoisyservice"
+      + name                            = "apphardenedtest2service"
       + os_type                         = "Linux"
       + per_site_scaling_enabled        = false
       + premium_plan_auto_scale_enabled = false
       + reserved                        = (known after apply)
-      + resource_group_name             = "rg-noisy"
+      + resource_group_name             = "rg-hardenedtest2"
       + sku_name                        = "B1"
       + worker_count                    = (known after apply)
     }
@@ -543,7 +474,7 @@ Terraform will perform the following actions:
       + local_user_enabled                 = true
       + location                           = "westeurope"
       + min_tls_version                    = "TLS1_2"
-      + name                               = "stnoisydata"
+      + name                               = "sthardenedtest2data"
       + nfsv3_enabled                      = false
       + primary_access_key                 = (sensitive value)
       + primary_blob_connection_string     = (sensitive value)
@@ -583,7 +514,7 @@ Terraform will perform the following actions:
       + primary_web_microsoft_host         = (known after apply)
       + public_network_access_enabled      = false
       + queue_encryption_key_type          = "Service"
-      + resource_group_name                = "rg-noisy"
+      + resource_group_name                = "rg-hardenedtest2"
       + secondary_access_key               = (sensitive value)
       + secondary_blob_connection_string   = (sensitive value)
       + secondary_blob_endpoint            = (known after apply)
@@ -665,7 +596,7 @@ Terraform will perform the following actions:
       + local_user_enabled                 = true
       + location                           = "westeurope"
       + min_tls_version                    = "TLS1_2"
-      + name                               = "stnoisylogs"
+      + name                               = "sthardenedtest2logs"
       + nfsv3_enabled                      = false
       + primary_access_key                 = (sensitive value)
       + primary_blob_connection_string     = (sensitive value)
@@ -705,7 +636,7 @@ Terraform will perform the following actions:
       + primary_web_microsoft_host         = (known after apply)
       + public_network_access_enabled      = false
       + queue_encryption_key_type          = "Service"
-      + resource_group_name                = "rg-noisy"
+      + resource_group_name                = "rg-hardenedtest2"
       + secondary_access_key               = (sensitive value)
       + secondary_blob_connection_string   = (sensitive value)
       + secondary_blob_endpoint            = (known after apply)
@@ -782,7 +713,7 @@ Terraform will perform the following actions:
       + name                                          = "snet-app"
       + private_endpoint_network_policies             = "Disabled"
       + private_link_service_network_policies_enabled = true
-      + resource_group_name                           = "rg-noisy"
+      + resource_group_name                           = "rg-hardenedtest2"
       + virtual_network_name                          = "vnet-payments"
     }
 
@@ -798,9 +729,9 @@ Terraform will perform the following actions:
       + client_id           = (known after apply)
       + id                  = (known after apply)
       + location            = "westeurope"
-      + name                = "uai-noisy-storage"
+      + name                = "uai-hardenedtest2-storage"
       + principal_id        = (known after apply)
-      + resource_group_name = "rg-noisy"
+      + resource_group_name = "rg-hardenedtest2"
       + tenant_id           = (known after apply)
     }
 
@@ -815,7 +746,7 @@ Terraform will perform the following actions:
       + location                       = "westeurope"
       + name                           = "vnet-payments"
       + private_endpoint_vnet_policies = "Disabled"
-      + resource_group_name            = "rg-noisy"
+      + resource_group_name            = "rg-hardenedtest2"
       + subnet                         = (known after apply)
     }
 
@@ -842,4 +773,4 @@ Terraform will perform the following actions:
       + id              = (known after apply)
     }
 
-Plan: 31 to add, 0 to change, 0 to destroy.
+Plan: 29 to add, 0 to change, 0 to destroy.

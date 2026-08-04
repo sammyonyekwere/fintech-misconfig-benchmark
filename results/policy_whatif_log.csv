@@ -1,0 +1,8 @@
+"tool","variant","run","scanned_at","duration_s","blocked","denied_by"
+"azpolicy-whatif","hardened","1","2026-08-04T01:58:52.2810988Z","350.1092205","False",""
+"azpolicy-whatif","vuln-01-public-storage","1","2026-08-04T02:26:07.0374632Z","260.5973838","True","mc01-deny-public-storage"
+"azpolicy-whatif","vuln-02-rbac-contributor","1","2026-08-04T02:37:38.8612188Z","539.2002285","False",""
+"azpolicy-whatif","vuln-03-sql-public","1","2026-08-04T08:17:48.1978639Z","409.5771922","True","mc03-deny-sql-public"
+"azpolicy-whatif","vuln-04-open-mgmt-ports","1","2026-08-04T09:31:52.0548435Z","996.5896879","True","mc04-deny-open-mgmt-ports"
+"azpolicy-whatif","vuln-06-no-https","1","2026-08-04T10:16:50.2133165Z","416.4543793","True","mc06-deny-no-https"
+"azpolicy-whatif","vuln-09-nsg-open-inbound","1","2026-08-04T12:04:41.4889537Z","152.8318252","False",""

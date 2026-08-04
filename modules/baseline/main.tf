@@ -327,6 +327,14 @@ resource "azurerm_key_vault_key" "cmk" {
     time_sleep.wait_for_kv_policy
   ]
 
+  # expiration_date recomputes from timestamp() on every plan, so without
+  # this it never matches state and forces a destroy+recreate on every
+  # apply -- which races against Key Vault's soft-delete latency and fails
+  # with "Key cmk-storage is currently being deleted". The expiration is
+  # only ever meant to be set once at creation, not recalculated each run.
+  lifecycle {
+    ignore_changes = [expiration_date]
+  }
 }
 
 resource "azurerm_storage_account_customer_managed_key" "data" {

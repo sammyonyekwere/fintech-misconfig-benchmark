@@ -4,8 +4,8 @@ Reproducible benchmark for evaluating static and runtime cloud misconfiguration
 detection tooling against a fintech-style payment workload on Microsoft Azure.
 
 Detailed implementation notes, full result tables, and analysis are maintained
-separately outside this README; the sections below are a concise reference for
-navigating and running the repository.
+separately outside this README; the sections below are a self-contained guide
+to understanding, running, and reproducing the benchmark from scratch.
 
 ## Overview
 
@@ -17,9 +17,29 @@ navigating and running the repository.
 - **Variants**: isolated root modules under `variants/` that deploy the
 	baseline with a specific flag combination, so each scenario is
 	independently testable.
-- **Detection**: a static-analysis harness (KICS, Checkov, Trivy) scores each
-	variant against the ten misconfigurations, plus KQL rules for runtime
-	detection.
+- **Detection**: evaluated across three tiers — static (Terraform source,
+	pre-deployment), deployed-state (Azure Policy compliance scans against
+	live resources), and what-if (Azure Policy `deny` at deployment time) —
+	each scored against the same ten misconfigurations independently, so
+	results are directly comparable across tiers.
+
+## Prerequisites
+
+Install and have available before starting:
+
+| Tool | Used for | Check with |
+|---|---|---|
+| [Terraform](https://developer.hashicorp.com/terraform/install) ≥ 1.9 | deploying/destroying variants | `terraform -version` |
+| [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) | authentication, Azure Policy, resource inspection | `az --version` |
+| [PowerShell 7+](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) (`pwsh`) | all `harness/*.ps1` scripts | `pwsh --version` |
+| Python 3.10+ | the static-tier harness (`run_static.py`) | `python --version` |
+| [KICS](https://docs.kics.io/latest/getting-started/), [Checkov](https://www.checkov.io/2.Basics/Installing%20Checkov.html), [Trivy](https://trivy.dev/latest/getting-started/installation/) | static-tier scanners | `kics version`, `checkov --version`, `trivy --version` |
+| Git Bash (ships with [Git for Windows](https://git-scm.com/downloads)) | `scripts/*.sh` | `bash --version` |
+
+You'll also need an **Azure subscription** with rights to create resource
+groups, Key Vaults, SQL servers, and (for the what-if tier) custom Policy
+definitions and subscription-scoped assignments — Owner or Contributor +
+Resource Policy Contributor is the simplest role combination.
 
 ## Repository Structure
 
@@ -37,13 +57,31 @@ navigating and running the repository.
 	- `run_variant.sh <variant> [run]` — init, plan, apply, and log a variant.
 	- `teardown.sh [variant]` — destroy one variant, or all if no argument.
 	- `gen_mixed_variants.py` — generates the `mixed-seed-*` variants.
-- `harness/` — detection tooling:
-	- `run_static.py` — runs KICS, Checkov, and Trivy against every variant
-		and scores results against the `mc0X` benchmark.
+- `harness/` — detection tooling, one script per tier:
+	- `run_static.py` — **static tier**: runs KICS, Checkov, and Trivy against
+		every variant and scores results against the `mc0X` benchmark.
 	- `static_scan.ps1` — standalone helper for ad-hoc single-variant rescans.
-	- `kql/` — runtime detection rules.
-- `results/` — all scan and deploy output (raw scanner JSON, normalised
-	findings, rule mapping, and per-run logs).
+	- `deployed_state_policy_scan.ps1 <variant> <run>` — **deployed-state
+		tier**: deploys a variant, forces an Azure Policy compliance re-scan
+		against it, and logs latency and `mc0X`-mapped findings.
+	- `policy_whatif_scan.ps1 <variant> <run>` — **what-if tier**: deploys a
+		variant against a set of custom `deny`-effect policies, and logs
+		whether/which policy blocked the write.
+	- `policies/*.json` — the custom `deny`-effect policy definitions the
+		what-if tier assigns and tests against (see "Running the what-if tier"
+		below for one-time setup).
+	- `show_results.ps1` — combines the static and deployed-state result logs
+		into one normalised view for display/export.
+	- `kql/` — **runtime tier**: not yet implemented (planned; see project
+		documentation for status).
+- `results/` — all scan and deploy output:
+	- `static_scan_run_log.csv` / `policy_scan_log.csv` / `policy_whatif_log.csv`
+		— one row per run, for the static, deployed-state, and what-if tiers
+		respectively.
+	- `rule_map.json` — native rule ID → `mc0X` ID mapping used by the static
+		tier (the deployed-state and what-if tiers keep their own mappings
+		inline in their harness scripts, built the same empirical way).
+	- `raw/`, `normalised/` — per-run scanner output, raw and `mc0X`-mapped.
 - `az-cli/cli.ps1` — one-time setup for the shared remote state backend.
 - `load-env.ps1` — loads `.env` into the current PowerShell session.
 
@@ -70,48 +108,152 @@ legitimate-looking change activity for false-positive testing:
 `enable_credential_rotation`, `enable_nsg_routine_update`,
 `enable_tls_cert_renewal` (all three enabled together in `noisy-compliant/`).
 
-## Static Detection
+## Detection Tiers
 
-`harness/run_static.py` runs three scanners against every variant and maps
-each tool's native findings to the `mc0X` vocabulary via `results/rule_map.json`:
+Three distinct tiers, differing in *what* they evaluate and *when* — not
+just which tool implements them:
+
+| Tier | What it evaluates | Needs live Azure? | Tooling |
+|---|---|---|---|
+| Static | Terraform source directly, before anything is deployed | No | KICS, Checkov, Trivy (`run_static.py`) |
+| Deployed-state | Actual config of already-deployed resources | Yes | Azure Policy compliance scan (`deployed_state_policy_scan.ps1`) |
+| What-if | A proposed write, before the resource is created | Yes | Azure Policy `deny` effect (`policy_whatif_scan.ps1`) |
+| *(planned)* Runtime | Events/activity over time | Yes, continuously | KQL rules — not yet built |
+
+Static tier tool choices:
 
 - **KICS**, **Checkov**, **Trivy** (`trivy config`).
 - **Terrascan** is not used — the project is retired.
 - **tfsec** is not used separately — Trivy absorbed tfsec's Terraform checks
 	and is its direct successor.
-- Azure Policy is evaluated separately, since it requires a live Azure scope.
 
-Coverage is not complete out of the box: not every `mc0X` misconfiguration has
-a matching rule in these tools. See the project documentation for the full
-per-tool coverage breakdown, methodology, and known false-positive cases.
+No tier detects all ten misconfigurations, and coverage differs by tier —
+some flags (like `mc07`, missing diagnostic settings) are only detectable
+by the deployed-state tier, since static analysis and what-if can't see an
+*absent* resource. See the project documentation for the full coverage
+breakdown, methodology, and known false-positive/false-negative cases.
 
-## Quick Start
+## Setup and Reproduction Walkthrough
 
-Run Terraform from inside the specific variant folder you want, not from
-`modules/baseline` directly. The remote backend is set up once via
-`az-cli/cli.ps1`.
+Everything below assumes PowerShell as your primary shell, with Git Bash
+available for the `.sh` scripts. Run each step from the repository root
+unless told otherwise.
 
-`subscription_id` and `sql_server_user` are supplied via a local `.env`
-(gitignored, not committed):
+### 1. One-time environment setup
+
+Create a `.env` file in the repo root (gitignored, never committed):
 
 ```
-TF_VAR_subscription_id=<subscription-id>
-TF_VAR_sql_server_user=<sql-admin-username>
+TF_VAR_subscription_id=<your-subscription-id>
+TF_VAR_sql_server_user=<a-sql-admin-username>
 ```
+
+Load it and authenticate:
 
 ```powershell
-# 1. Load environment and authenticate
 . .\load-env.ps1
 az login
-az account set --subscription <subscription-id>
-
-# 2. Deploy a variant
-./scripts/run_variant.sh hardened
-
-# 3. Tear down when finished
-./scripts/teardown.sh hardened
-./scripts/teardown.sh          # tears down every variant
+az account set --subscription <your-subscription-id>
 ```
+
+### 2. One-time remote state backend
+
+Only needs running once, ever, per Azure subscription:
+
+```powershell
+./az-cli/cli.ps1
+```
+
+This creates a resource group (`rg-tfstate`), a storage account
+(`sttfstatembf`), and a blob container (`tfstate`) that every variant's
+Terraform backend points at.
+
+### 3. Deploy and tear down a variant
+
+The core lifecycle used throughout the rest of this guide:
+
+```powershell
+./scripts/run_variant.sh hardened        # init, plan, apply, log
+./scripts/teardown.sh hardened           # destroy when finished
+./scripts/teardown.sh                    # or: tear down every variant
+```
+
+Expect this to take several minutes per variant — SQL server provisioning
+in particular can range from ~2 minutes to occasionally much longer (see
+"Known Operational Constraints" below).
+
+### 4. Running the static tier
+
+No Azure deployment needed — this scans Terraform source directly:
+
+```powershell
+python harness/run_static.py
+```
+
+Runs KICS, Checkov, and Trivy against every variant in one pass and writes
+to `results/static_scan_run_log.csv` (raw output in `results/raw/`,
+`mc0X`-mapped output in `results/normalised/`).
+
+### 5. Running the deployed-state tier
+
+Requires a variant to actually be deployed — the script handles deployment
+for you:
+
+```powershell
+pwsh harness/deployed_state_policy_scan.ps1 hardened 1
+```
+
+This deploys the named variant, forces an Azure Policy compliance
+re-scan, and logs the result to `results/policy_scan_log.csv`. **Expect
+this to take 7–14 minutes per run** — it's a live Azure control-plane
+re-evaluation, not a local scan. Tear the variant down afterward with
+`./scripts/teardown.sh <variant>` — this script does not do it for you,
+by design (so a live resource group is never destroyed as a side effect
+of an evaluation step).
+
+Always run `hardened` first — it's the baseline every other result is
+compared against.
+
+### 6. Running the what-if tier
+
+This one needs a **one-time policy setup** before first use, since it
+tests custom `deny`-effect policies against proposed deployments:
+
+```powershell
+$subId = az account show --query id -o tsv
+Get-ChildItem harness/policies -Filter "*.json" | ForEach-Object {
+    $name = $_.BaseName
+    az policy definition create --name $name --rules $_.FullName --mode All --display-name $name
+    az policy assignment create --name "$name-assign" --policy $name --scope "/subscriptions/$subId"
+}
+```
+
+Then, per variant:
+
+```powershell
+pwsh harness/policy_whatif_scan.ps1 hardened 1
+```
+
+This deploys the named variant; if a policy denies one of its resources,
+the write fails, that failure is captured as a detection, and the result
+is logged to `results/policy_whatif_log.csv`. **A denial means a partial
+deployment** — some resources may have been created before the denial hit
+— so always run `./scripts/teardown.sh <variant>` afterward regardless of
+whether the run was blocked.
+
+Run `hardened` first here too, as a negative-control sanity check: it
+should complete with zero denials since it doesn't violate any policy.
+
+### 7. Viewing combined results
+
+```powershell
+pwsh harness/show_results.ps1
+```
+
+Normalises the static and deployed-state logs into one side-by-side view
+(the what-if log has a different enough shape — pass/fail per policy
+rather than a finding count — that it's read directly from
+`results/policy_whatif_log.csv` instead).
 
 ## Known Operational Constraints
 
@@ -121,10 +263,48 @@ az account set --subscription <subscription-id>
 	`terraform destroy`, not by deleting the resource group directly.
 - **SQL server creation** can occasionally hang; `azurerm_mssql_server` has an
 	explicit 15-minute `timeouts` block so it fails cleanly instead of
-	requiring a manual interrupt.
+	requiring a manual interrupt. When it does surface as a named error rather
+	than a silent hang, it's usually `UpsertLogicalServerRequestAlreadyInProgress`
+	— Azure's backend still has an earlier create request for that server name
+	in flight (commonly left over when a prior `apply` failed on an unrelated
+	resource partway through, since Terraform creates independent resources in
+	parallel and doesn't cancel in-flight Azure-side operations just because
+	the overall apply errored elsewhere). Check
+	`az sql server show -g <rg> -n <server>` before retrying: if it returns a
+	real server, `terraform import` it rather than re-creating; if it 404s,
+	the request is still genuinely stuck server-side and retrying immediately
+	just repeats the same conflict — wait a few minutes first.
 - **TLS 1.2** is pinned platform-wide across SQL, storage, and the Function
 	App (Azure now enforces this floor); `mc06` toggles HTTPS-only enforcement
 	rather than TLS version as a result.
+- **Azure CLI tokens can expire mid-`apply`** on long-running operations
+	(e.g. waiting for a role assignment to replicate) — re-run `az login` if
+	you hit `ExpiredAuthenticationToken`. If the underlying resource was
+	already created before the token expired, retrying `apply` directly can
+	fail with `RoleAssignmentExists`; resolve with `terraform import` rather
+	than re-creating it.
+- **Deployed-state (Azure Policy) scans are slow** — a single forced
+	`trigger-scan` has been observed taking 10+ minutes, since it's a live
+	Azure control-plane re-evaluation, not a local file parse. Budget for
+	this; it's not suited to fast iteration the way the static tier is.
+- **The CMK key (`azurerm_key_vault_key.cmk`) used to force a destroy+recreate
+	on every single `apply`**, because `expiration_date =
+	timeadd(timestamp(), "8760h")` recomputes a new value on every plan,
+	which never matches what's stored in state. The recreate then races
+	against Key Vault's soft-delete latency and fails with `Conflict: Key
+	cmk-storage is currently being deleted`. Fixed with `lifecycle {
+	ignore_changes = [expiration_date] }` on that resource — the expiration
+	is only meant to be set once at creation, not recalculated every run.
+	If you hit this error on a variant applied before this fix, `terraform
+	import` the key back in (`az keyvault key show --vault-name <vault>
+	--name cmk-storage --query key.kid -o tsv` for the exact versioned ID)
+	rather than retrying the create.
+- **A `terraform apply` that appears to hang with zero console output** may
+	just be `Measure-Command { ... }` swallowing the child process's live
+	output in PowerShell rather than an actual hang — the harness scripts
+	time operations manually (`Get-Date` before/after) specifically to avoid
+	this; if you write your own timing wrapper, avoid `Measure-Command` for
+	anything you need to watch progress on.
 
 ## Security Note
 
