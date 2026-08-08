@@ -1,0 +1,4 @@
+﻿mc_id,resource,type,httpsOnly,resourceGroup,ts
+"mc06","functionvuln06app","microsoft.web/sites",0,"rg-vuln06","2026-08-05T22:09:43.7939062Z"
+"mc06","stvuln06data","microsoft.storage/storageaccounts",0,"rg-vuln06","2026-08-05T22:09:43.7939062Z"
+"mc06","stvuln06logs","microsoft.storage/storageaccounts",0,"rg-vuln06","2026-08-05T22:09:43.7939062Z"

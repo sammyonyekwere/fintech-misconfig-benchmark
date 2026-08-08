@@ -1,0 +1,14 @@
+// CIS v5.0.0 - 6.x (Networking: inbound Allow of 22/3389 from the internet)
+resources
+| where type =~ "microsoft.network/networksecuritygroups"
+| mv-expand rule = properties.securityRules
+| extend acc = tostring(rule.properties.access),
+         dir = tostring(rule.properties.direction),
+         src = tostring(rule.properties.sourceAddressPrefix),
+         port = tostring(rule.properties.destinationPortRange),
+         ports = rule.properties.destinationPortRanges
+| where dir =~ "Inbound" and acc =~ "Allow"
+        and src in ("0.0.0.0/0", "*", "Internet")
+| where port in ("22","3389") or ports has_any ("22","3389")
+| project mc_id = "mc04", resource = name, rule = tostring(rule.name), src, ts = now()
+  

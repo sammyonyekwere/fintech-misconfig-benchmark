@@ -1,0 +1,7 @@
+// CIS v5.0.0 - 1.x (IAM: workload principal holds Owner at SUBSCRIPTION scope)
+authorizationresources
+| where type =~ "microsoft.authorization/roleassignments"
+| extend roleId = tolower(tostring(properties.roleDefinitionId))
+| where roleId endswith "8e3af657-a8ff-443c-a75c-2fe8c4bcb635"  // Owner (built-in)
+| project mc_id = "mc10", principal = tostring(properties.principalId),
+          scope = tostring(properties.scope), ts = now()

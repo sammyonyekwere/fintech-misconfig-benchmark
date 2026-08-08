@@ -1,0 +1,10 @@
+// CIS v5.0.0 - 6.x (Networking: any inbound Allow from 0.0.0.0/0)
+resources
+| where type =~ "microsoft.network/networksecuritygroups"
+| mv-expand rule = properties.securityRules
+| extend src = tostring(rule.properties.sourceAddressPrefix),
+         access = tostring(rule.properties.access),
+         dir = tostring(rule.properties.direction)
+| where dir =~ "Inbound" and access =~ "Allow"
+        and src in ("0.0.0.0/0", "*", "Internet")
+| project mc_id = "mc09", resource = name, rule = tostring(rule.name), src, resourceGroup, ts = now()

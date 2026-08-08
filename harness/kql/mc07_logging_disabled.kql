@@ -1,0 +1,13 @@
+// CIS v5.0.0 - 5.x (Logging: target resource has NO diagnostic setting)
+resources
+| where type in~ ("microsoft.keyvault/vaults", "microsoft.sql/servers",
+                  "microsoft.sql/servers/databases")
+| project targetId = tolower(id), targetName = name, targetType = type, resourceGroup
+| join kind=leftouter (
+    resources
+    | where type =~ "microsoft.insights/diagnosticsettings"
+    | extend targetId = tolower(tostring(properties.targetResourceId))
+    | project targetId, diag = name
+  ) on targetId
+| where isempty(diag)
+| project mc_id = "mc07", resource = targetName, targetType, resourceGroup, ts = now()

@@ -1,0 +1,4 @@
+﻿mc_id,resource,keySource,resourceGroup,ts
+"mc08","sttfstatembf","Microsoft.Storage","rg-tfstate","2026-08-05T19:23:34.6510037Z"
+"mc08","stvuln08data","Microsoft.Storage","rg-vuln08","2026-08-05T19:23:34.6510037Z"
+"mc08","stvuln08logs","Microsoft.Storage","rg-vuln08","2026-08-05T19:23:34.6510037Z"

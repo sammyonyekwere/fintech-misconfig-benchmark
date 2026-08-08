@@ -1,0 +1,2 @@
+﻿mc_id,resource,rule,src,resourceGroup,ts
+"mc09","nsg-app","app-inbound","0.0.0.0/0","rg-vuln09","2026-08-05T19:52:52.0728101Z"

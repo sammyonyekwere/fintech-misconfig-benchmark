@@ -4,10 +4,25 @@ set -euo pipefail
 export TZ=UTC+1
 
 VARIANT="$1"
-RUN="${2:-1}"
 STATE_RG="rg-tfstate"
 STATE_SA="sttfstatembf"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [ -n "${2:-}" ]; then
+    RUN="$2"
+else
+    # Auto-detect the next run number from the highest one already logged
+    # for this variant, instead of always defaulting to 1 -- previously,
+    # every call without an explicit run number logged "1" regardless of
+    # how many times the variant had actually been run, silently
+    # overwriting that run's log/plan file each time.
+    RUN=1
+    if [ -f "$ROOT/results/run_log.csv" ]; then
+        MAX_RUN=$(awk -F, -v v="$VARIANT" '$1==v {if ($2+0>max) max=$2+0} END {print max+0}' "$ROOT/results/run_log.csv")
+        RUN=$((MAX_RUN + 1))
+    fi
+fi
+
 set -a
 source <(sed 's/\r$//' "$ROOT/.env")
 set +a

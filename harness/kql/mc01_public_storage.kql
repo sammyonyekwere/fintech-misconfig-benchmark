@@ -1,0 +1,9 @@
+//  CIS Azure Foundations v5.0.0 - 3.x  (Storage: public network access)
+resources
+| where type =~ "microsoft.storage/storageaccounts"
+| where properties.allowBlobPublicAccess == true
+   or tostring(properties.publicNetworkAccess) =~ "Enabled"
+| project mc_id = "mc01", resource = name, resourceGroup,
+          publicNet = tostring(properties.publicNetworkAccess),
+          publicBlob = tobool(properties.allowBlobPublicAccess),
+          ts = now()

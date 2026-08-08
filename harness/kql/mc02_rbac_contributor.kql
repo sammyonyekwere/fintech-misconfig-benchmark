@@ -1,0 +1,8 @@
+// CIS v5.0.0 - 1.x (IAM: workload principal holds Contributor at SUBSCRIPTION scope)
+authorizationresources
+| where type =~ "microsoft.authorization/roleassignments"
+| extend roleId = tolower(tostring(properties.roleDefinitionId)),
+         scope  = tostring(properties.scope)
+| where roleId endswith "b24988ac-6180-42a0-ab88-20f7382dd24c"  // Contributor (built-in)
+| where scope matches regex @"^/subscriptions/[^/]+$"          // subscription root only
+| project mc_id = "mc02", principal = tostring(properties.principalId), scope, ts = now()

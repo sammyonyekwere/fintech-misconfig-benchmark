@@ -1,0 +1,7 @@
+// CIS v5.0.0 - 3.x (Storage: should use customer-managed keys)
+resources
+| where type =~ "microsoft.storage/storageaccounts"
+| where name endswith "data"
+| where tostring(properties.encryption.keySource) != "Microsoft.Keyvault"
+| project mc_id = "mc08", resource = name,
+          keySource = tostring(properties.encryption.keySource), resourceGroup, ts = now()

@@ -1,0 +1,4 @@
+// CIS v5.0.0 - 1.x (IAM: application/service-principal credential does not expire)
+// Application password expiry lives in Entra, not Resource Graph. Read it via Graph:
+az rest --method GET --url "https://graph.microsoft.com/v1.0/applications?$select=displayName,passwordCredentials"
+// flag any passwordCredentials[].endDateTime far in the future (e.g. > now + 2 years)

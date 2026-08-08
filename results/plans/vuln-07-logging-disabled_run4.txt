@@ -1,0 +1,38 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # module.baseline.azuread_application_password.payments must be replaced
+-/+ resource "azuread_application_password" "payments" {
+      + display_name   = (known after apply)
+      ~ end_date       = "2026-11-06T13:26:14Z" -> (known after apply) # forces replacement
+      ~ id             = "27cc07ed-84ed-4e46-a109-eb513b664144/password/dc73af9c-847b-42e4-b0ec-1a031ba5b5b7" -> (known after apply)
+      ~ key_id         = "dc73af9c-847b-42e4-b0ec-1a031ba5b5b7" -> (known after apply)
+      ~ start_date     = "2026-08-08T13:26:15.7163121Z" -> (known after apply)
+      ~ value          = (sensitive value)
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.baseline.azurerm_storage_account.data will be updated in-place
+  ~ resource "azurerm_storage_account" "data" {
+        id                                 = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Storage/storageAccounts/stvuln07data"
+        name                               = "stvuln07data"
+        tags                               = {
+            "environment" = "dev"
+        }
+        # (97 unchanged attributes hidden)
+
+      - customer_managed_key {
+          - key_vault_key_id          = "https://vaultvuln07.vault.azure.net/keys/cmk-storage" -> null
+          - user_assigned_identity_id = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-vuln07-storage" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+        # (4 unchanged blocks hidden)
+    }
+
+Plan: 1 to add, 1 to change, 1 to destroy.

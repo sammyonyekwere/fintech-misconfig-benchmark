@@ -10,10 +10,10 @@ Terraform will perform the following actions:
   # module.baseline.azuread_application_password.payments must be replaced
 -/+ resource "azuread_application_password" "payments" {
       + display_name   = (known after apply)
-      ~ end_date       = "2026-11-02T01:53:32Z" -> (known after apply) # forces replacement
-      ~ id             = "9e76fc95-3c9b-49d3-8855-86b1c755a5da/password/f5578c2d-9ba3-42a8-abf4-b30eb8692ee6" -> (known after apply)
-      ~ key_id         = "f5578c2d-9ba3-42a8-abf4-b30eb8692ee6" -> (known after apply)
-      ~ start_date     = "2026-08-04T01:53:32.751667Z" -> (known after apply)
+      ~ end_date       = "2026-11-03T13:38:51Z" -> (known after apply) # forces replacement
+      ~ id             = "c01bd3fa-7273-409a-89e3-b4a0404b8323/password/44ce9cbc-3b93-42ad-99ea-ef24cf1efdcd" -> (known after apply)
+      ~ key_id         = "44ce9cbc-3b93-42ad-99ea-ef24cf1efdcd" -> (known after apply)
+      ~ start_date     = "2026-08-05T13:38:51.8989561Z" -> (known after apply)
       ~ value          = (sensitive value)
         # (1 unchanged attribute hidden)
     }
@@ -29,54 +29,11 @@ Terraform will perform the following actions:
       + tenant_id          = "0d7e5e08-08f5-4c19-a6d0-9262be69304b"
     }
 
-  # module.baseline.azurerm_key_vault_key.cmk[0] must be replaced
--/+ resource "azurerm_key_vault_key" "cmk" {
-      + curve                   = (known after apply)
-      ~ e                       = "AQAB" -> (known after apply)
-      ~ expiration_date         = "2027-08-01T03:44:13Z" -> (known after apply) # forces replacement
-      ~ id                      = "https://vaulthardenedtest2.vault.azure.net/keys/cmk-storage/f4f950516df541afafe369e2f28684c8" -> (known after apply)
-      ~ n                       = "82weZaSetuNEraG9gxgYMWMHOvW9WY2HLL-mWlNtPaBvaUJfJ2aVutFwfgKutTTTJBFaqhlZi96kziJ-u8kIwJd5mxksS5dPVfErOFdVx3c4qHA6Ogrhqm5O9NnZxjV1_DM2WvX9ZccLdFRANVC_Xdjqez129_0P-qL_IioFK0Bj9qE1qM368f2ix2eRyDvGGEfe5VKNwZ8YTrWt8qjb1GAI8yk4PeRhZk7h_LqlK4yDKyAx-FWyAlj0iFMmVxElc5IuDzVxe4C_DT3UL1TLMl5cj7gvj8AxNb10XPZap3gObP0MBeeaXGTClVqWoZKPjdl9yuJ-aT5ktEJ70ydxoQ" -> (known after apply)
-        name                    = "cmk-storage"
-      ~ public_key_openssh      = <<-EOT
-            ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDzbB5lpJ6240Stob2DGBgxYwc69b1ZjYcsv6ZaU209oG9pQl8nZpW60XB+Aq61NNMkEVqqGVmL3qTOIn67yQjAl3mbGSxLl09V8Ss4V1XHdziocDo6CuGqbk702dnGNXX8MzZa9f1lxwt0VEA1UL9d2Op7PXb3/Q/6ov8iKgUrQGP2oTWozfrx/aLHZ5HIO8YYR97lUo3BnxhOta3yqNvUYAjzKTg95GFmTuH8uqUrjIMrIDH4VbICWPSIUyZXESVzki4PNXF7gL8NPdQvVMsyXlyPuC+PwDE1vXRc9lqneA5s/QwF55pcZMKVWpahko+N2X3K4n5pPmS0QnvTJ3Gh
-        EOT -> (known after apply)
-      ~ public_key_pem          = <<-EOT
-            -----BEGIN PUBLIC KEY-----
-            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82weZaSetuNEraG9gxgY
-            MWMHOvW9WY2HLL+mWlNtPaBvaUJfJ2aVutFwfgKutTTTJBFaqhlZi96kziJ+u8kI
-            wJd5mxksS5dPVfErOFdVx3c4qHA6Ogrhqm5O9NnZxjV1/DM2WvX9ZccLdFRANVC/
-            Xdjqez129/0P+qL/IioFK0Bj9qE1qM368f2ix2eRyDvGGEfe5VKNwZ8YTrWt8qjb
-            1GAI8yk4PeRhZk7h/LqlK4yDKyAx+FWyAlj0iFMmVxElc5IuDzVxe4C/DT3UL1TL
-            Ml5cj7gvj8AxNb10XPZap3gObP0MBeeaXGTClVqWoZKPjdl9yuJ+aT5ktEJ70ydx
-            oQIDAQAB
-            -----END PUBLIC KEY-----
-        EOT -> (known after apply)
-      ~ resource_id             = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.KeyVault/vaults/vaulthardenedtest2/keys/cmk-storage/versions/f4f950516df541afafe369e2f28684c8" -> (known after apply)
-      ~ resource_versionless_id = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.KeyVault/vaults/vaulthardenedtest2/keys/cmk-storage" -> (known after apply)
-      - tags                    = {} -> null
-      ~ version                 = "f4f950516df541afafe369e2f28684c8" -> (known after apply)
-      ~ versionless_id          = "https://vaulthardenedtest2.vault.azure.net/keys/cmk-storage" -> (known after apply)
-      + x                       = (known after apply)
-      + y                       = (known after apply)
-        # (5 unchanged attributes hidden)
-    }
-
-  # module.baseline.azurerm_key_vault_secret.sql_conn will be created
-  + resource "azurerm_key_vault_secret" "sql_conn" {
-      + id                      = (known after apply)
-      + key_vault_id            = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.KeyVault/vaults/vaulthardenedtest2"
-      + name                    = "sql-connection"
-      + resource_id             = (known after apply)
-      + resource_versionless_id = (known after apply)
-      + value                   = (sensitive value)
-      + value_wo                = (write-only attribute)
-      + version                 = (known after apply)
-      + versionless_id          = (known after apply)
-    }
-
   # module.baseline.azurerm_linux_function_app.functionapp will be created
   + resource "azurerm_linux_function_app" "functionapp" {
-      + app_settings                                   = (known after apply)
+      + app_settings                                   = {
+          + "SQL_CONNECTION" = (sensitive value)
+        }
       + builtin_logging_enabled                        = true
       + client_certificate_enabled                     = false
       + client_certificate_mode                        = "Optional"
@@ -100,7 +57,7 @@ Terraform will perform the following actions:
       + possible_outbound_ip_addresses                 = (known after apply)
       + public_network_access_enabled                  = true
       + resource_group_name                            = "rg-hardenedtest2"
-      + service_plan_id                                = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.Web/serverFarms/apphardenedtest2service"
+      + service_plan_id                                = (known after apply)
       + site_credential                                = (sensitive value)
       + storage_account_access_key                     = (sensitive value)
       + storage_account_name                           = "sthardenedtest2data"
@@ -144,76 +101,45 @@ Terraform will perform the following actions:
         }
     }
 
-  # module.baseline.azurerm_monitor_diagnostic_setting.sql[0] will be created
-  + resource "azurerm_monitor_diagnostic_setting" "sql" {
-      + id                             = (known after apply)
-      + log_analytics_destination_type = (known after apply)
-      + log_analytics_workspace_id     = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.OperationalInsights/workspaces/law-hardenedtest2"
-      + name                           = "diag-sql"
-      + target_resource_id             = (known after apply)
+  # module.baseline.azurerm_monitor_diagnostic_setting.sql[0] will be updated in-place
+  ~ resource "azurerm_monitor_diagnostic_setting" "sql" {
+        id                             = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.Sql/servers/sqlhardenedtest2server/databases/mssqlhardenedtest2db|diag-sql"
+        name                           = "diag-sql"
+        # (5 unchanged attributes hidden)
 
-      + enabled_log {
-          + category       = "SQLSecurityAuditEvents"
-            # (1 unchanged attribute hidden)
+      - metric {
+          - category = "Basic" -> null
+          - enabled  = true -> null
+
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
         }
+      - metric {
+          - category = "InstanceAndAppAdvanced" -> null
+          - enabled  = true -> null
 
-      + enabled_metric (known after apply)
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
+        }
+      - metric {
+          - category = "WorkloadManagement" -> null
+          - enabled  = true -> null
 
+          - retention_policy {
+              - days    = 0 -> null
+              - enabled = false -> null
+            }
+        }
       + metric {
           + category = "AllMetrics"
           + enabled  = true
         }
-    }
 
-  # module.baseline.azurerm_mssql_database.mssqldb will be created
-  + resource "azurerm_mssql_database" "mssqldb" {
-      + auto_pause_delay_in_minutes                                = (known after apply)
-      + collation                                                  = "SQL_Latin1_General_CP1_CI_AS"
-      + create_mode                                                = "Default"
-      + creation_source_database_id                                = (known after apply)
-      + enclave_type                                               = (known after apply)
-      + geo_backup_enabled                                         = true
-      + id                                                         = (known after apply)
-      + ledger_enabled                                             = (known after apply)
-      + license_type                                               = "LicenseIncluded"
-      + maintenance_configuration_name                             = (known after apply)
-      + max_size_gb                                                = 2
-      + min_capacity                                               = (known after apply)
-      + name                                                       = "mssqlhardenedtest2db"
-      + read_replica_count                                         = (known after apply)
-      + read_scale                                                 = (known after apply)
-      + restore_point_in_time                                      = (known after apply)
-      + sample_name                                                = (known after apply)
-      + secondary_type                                             = (known after apply)
-      + server_id                                                  = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.Sql/servers/sqlhardenedtest2server"
-      + sku_name                                                   = "S0"
-      + storage_account_type                                       = "Geo"
-      + tags                                                       = {
-          + "environment" = "staging"
-        }
-      + transparent_data_encryption_enabled                        = true
-      + transparent_data_encryption_key_automatic_rotation_enabled = false
-      + zone_redundant                                             = (known after apply)
-
-      + long_term_retention_policy (known after apply)
-
-      + short_term_retention_policy (known after apply)
-
-      + threat_detection_policy (known after apply)
-    }
-
-  # module.baseline.azurerm_mssql_server.sqlserver will be updated in-place
-  ~ resource "azurerm_mssql_server" "sqlserver" {
-      + administrator_login_password                 = (sensitive value)
-        id                                           = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.Sql/servers/sqlhardenedtest2server"
-        name                                         = "sqlhardenedtest2server"
-        tags                                         = {}
-        # (15 unchanged attributes hidden)
-
-      + timeouts {
-          + create = "15m"
-          + delete = "15m"
-        }
+        # (4 unchanged blocks hidden)
     }
 
   # module.baseline.azurerm_role_assignment.func_identity will be created
@@ -229,6 +155,22 @@ Terraform will perform the following actions:
       + skip_service_principal_aad_check = (known after apply)
     }
 
+  # module.baseline.azurerm_service_plan.serviceplan will be created
+  + resource "azurerm_service_plan" "serviceplan" {
+      + id                              = (known after apply)
+      + kind                            = (known after apply)
+      + location                        = "westeurope"
+      + maximum_elastic_worker_count    = (known after apply)
+      + name                            = "apphardenedtest2service"
+      + os_type                         = "Linux"
+      + per_site_scaling_enabled        = false
+      + premium_plan_auto_scale_enabled = false
+      + reserved                        = (known after apply)
+      + resource_group_name             = "rg-hardenedtest2"
+      + sku_name                        = "B1"
+      + worker_count                    = (known after apply)
+    }
+
   # module.baseline.azurerm_storage_account_customer_managed_key.data[0] will be created
   + resource "azurerm_storage_account_customer_managed_key" "data" {
       + id                        = (known after apply)
@@ -242,4 +184,4 @@ Terraform will perform the following actions:
       + user_assigned_identity_id = "/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-hardenedtest2/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-hardenedtest2-storage"
     }
 
-Plan: 9 to add, 1 to change, 2 to destroy.
+Plan: 6 to add, 1 to change, 1 to destroy.

@@ -1,0 +1,37 @@
+Acquiring state lock. This may take a few moments...
+[0m[1mmodule.baseline.azuread_application_password.payments: Destroying... [id=27cc07ed-84ed-4e46-a109-eb513b664144/password/3ea78383-85d2-4de6-89bc-d185bd82c2d5][0m[0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Still destroying... [id=27cc07ed-84ed-4e46-a109-eb513b664144/pa...d/3ea78383-85d2-4de6-89bc-d185bd82c2d5, 00m10s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_storage_account_customer_managed_key.data[0]: Creating...[0m[0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Still destroying... [id=27cc07ed-84ed-4e46-a109-eb513b664144/pa...d/3ea78383-85d2-4de6-89bc-d185bd82c2d5, 00m20s elapsed][0m[0m
+[0m[1mmodule.baseline.azurerm_storage_account_customer_managed_key.data[0]: Still creating... [00m10s elapsed][0m[0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Destruction complete after 22s[0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Creating...[0m[0m
+[0m[1mmodule.baseline.azurerm_storage_account_customer_managed_key.data[0]: Creation complete after 13s [id=/subscriptions/11635850-6fa9-4838-abb6-49352629e098/resourceGroups/rg-vuln07/providers/Microsoft.Storage/storageAccounts/stvuln07data][0m
+[0m[1mmodule.baseline.azuread_application_password.payments: Creation complete after 6s [id=27cc07ed-84ed-4e46-a109-eb513b664144/password/0da374bc-6f0c-4b89-9923-d34b21979500][0m
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mValue for undeclared variable[0m
+[33m│[0m [0m
+[33m│[0m [0m[0mThe root module does not declare a variable named
+[33m│[0m [0m"disable_purge_protection_for_testing" but a value was found in file
+[33m│[0m [0m"terraform.tfvars". If you meant to use this value, add a "variable" block
+[33m│[0m [0mto the configuration.
+[33m│[0m [0m
+[33m│[0m [0mTo silence these warnings, use TF_VAR_... environment variables to provide
+[33m│[0m [0mcertain "global" settings to all configurations in your organization. To
+[33m│[0m [0mreduce the verbosity of these warnings, use the -compact-warnings option.
+[33m╵[0m[0m
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mArgument is deprecated[0m
+[33m│[0m [0m
+[33m│[0m [0m[0m  with module.baseline.azurerm_storage_account_customer_managed_key.data[0],
+[33m│[0m [0m  on ..\..\modules\baseline\main.tf line 343, in resource "azurerm_storage_account_customer_managed_key" "data":
+[33m│[0m [0m 343:   key_vault_id              = [4mazurerm_key_vault.vault.id[0m[0m
+[33m│[0m [0m
+[33m│[0m [0m`key_vault_id` has been deprecated in favour of `key_vault_key_id` and will
+[33m│[0m [0mbe removed in v5.0 of the AzureRM provider
+[33m│[0m [0m
+[33m│[0m [0m(and one more similar warning elsewhere)
+[33m╵[0m[0m
+Releasing state lock. This may take a few moments...
+[0m[1m[32m
+Apply complete! Resources: 2 added, 0 changed, 1 destroyed.[0m

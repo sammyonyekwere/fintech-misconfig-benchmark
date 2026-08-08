@@ -1,0 +1,5 @@
+// CIS v5.0.0 - 4.x (Database: SQL server public network access enabled)
+resources
+| where type =~ "microsoft.sql/servers"
+| where tostring(properties.publicNetworkAccess) =~ "Enabled"
+| project mc_id = "mc03", resource = name, resourceGroup, ts = now()

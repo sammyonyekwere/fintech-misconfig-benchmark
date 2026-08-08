@@ -17,11 +17,12 @@ to understanding, running, and reproducing the benchmark from scratch.
 - **Variants**: isolated root modules under `variants/` that deploy the
 	baseline with a specific flag combination, so each scenario is
 	independently testable.
-- **Detection**: evaluated across three tiers — static (Terraform source,
+- **Detection**: evaluated across four tiers — static (Terraform source,
 	pre-deployment), deployed-state (Azure Policy compliance scans against
-	live resources), and what-if (Azure Policy `deny` at deployment time) —
-	each scored against the same ten misconfigurations independently, so
-	results are directly comparable across tiers.
+	live resources), what-if (Azure Policy `deny` at deployment time), and
+	runtime (custom KQL rules over Azure Resource Graph) — each scored
+	against the same ten misconfigurations independently, so results are
+	directly comparable across tiers.
 
 ## Prerequisites
 
@@ -72,8 +73,10 @@ Resource Policy Contributor is the simplest role combination.
 		below for one-time setup).
 	- `show_results.ps1` — combines the static and deployed-state result logs
 		into one normalised view for display/export.
-	- `kql/` — **runtime tier**: not yet implemented (planned; see project
-		documentation for status).
+	- `run_runtime.sh <variant> [run]` — **runtime tier**: deploys a variant
+		and checks it against ten custom KQL rules over Azure Resource Graph,
+		logging results to `results/run_log_runtime.csv`.
+	- `kql/` — one `.kql` rule per `mc0X` flag, queried via `az graph query`.
 - `results/` — all scan and deploy output:
 	- `static_scan_run_log.csv` / `policy_scan_log.csv` / `policy_whatif_log.csv`
 		— one row per run, for the static, deployed-state, and what-if tiers
@@ -110,7 +113,7 @@ legitimate-looking change activity for false-positive testing:
 
 ## Detection Tiers
 
-Three distinct tiers, differing in *what* they evaluate and *when* — not
+Four distinct tiers, differing in *what* they evaluate and *when* — not
 just which tool implements them:
 
 | Tier | What it evaluates | Needs live Azure? | Tooling |
@@ -118,7 +121,7 @@ just which tool implements them:
 | Static | Terraform source directly, before anything is deployed | No | KICS, Checkov, Trivy (`run_static.py`) |
 | Deployed-state | Actual config of already-deployed resources | Yes | Azure Policy compliance scan (`deployed_state_policy_scan.ps1`) |
 | What-if | A proposed write, before the resource is created | Yes | Azure Policy `deny` effect (`policy_whatif_scan.ps1`) |
-| *(planned)* Runtime | Events/activity over time | Yes, continuously | KQL rules — not yet built |
+| Runtime | Config-state snapshot read via Azure Resource Graph | Yes | Custom KQL rules (`run_runtime.sh`) |
 
 Static tier tool choices:
 
@@ -127,11 +130,24 @@ Static tier tool choices:
 - **tfsec** is not used separately — Trivy absorbed tfsec's Terraform checks
 	and is its direct successor.
 
+**Microsoft Defender for Cloud is deliberately not part of this
+benchmark.** Its foundational CSPM tier derives its posture
+recommendations from the same Microsoft Cloud Security Benchmark (MCSB)
+baseline the deployed-state tier already evaluates directly, and its
+assessment cadence can't be scoped to a resource group, triggered on
+demand, or reproduced deterministically — incompatible with this
+project's controlled, reproducible measurement approach. See the project
+documentation for the full rationale.
+
 No tier detects all ten misconfigurations, and coverage differs by tier —
-some flags (like `mc07`, missing diagnostic settings) are only detectable
-by the deployed-state tier, since static analysis and what-if can't see an
-*absent* resource. See the project documentation for the full coverage
-breakdown, methodology, and known false-positive/false-negative cases.
+some flags (like `mc07`, missing diagnostic settings) are only reliably
+detectable by the deployed-state tier: static analysis and what-if can't
+see an *absent* resource, and Azure Resource Graph does not reliably
+index the diagnostic-settings extension resources needed to check it
+either. `mc05` (a plaintext secret's value) has no automated coverage in
+any tier — a genuine, benchmark-wide blind spot, not a single tier's gap.
+See the project documentation for the full coverage breakdown,
+methodology, and known false-positive/false-negative cases.
 
 ## Setup and Reproduction Walkthrough
 
@@ -244,7 +260,29 @@ whether the run was blocked.
 Run `hardened` first here too, as a negative-control sanity check: it
 should complete with zero denials since it doesn't violate any policy.
 
-### 7. Viewing combined results
+### 7. Running the runtime tier
+
+This one deploys the variant itself (no separate `run_variant.sh` call
+needed) and checks it against ten custom KQL rules over Azure Resource
+Graph in one command:
+
+```bash
+bash harness/run_runtime.sh hardened
+```
+
+Each rule is checked once against the freshly-deployed variant and the
+result — a detection with timestamp/latency, `NOT_DETECTED`, or
+`MANUAL_CHECK_REQUIRED` — is logged to `results/run_log_runtime.csv`.
+Two flags are always manual regardless of variant: `mc05` (Resource Graph
+doesn't expose app-setting values) and `mc07` (Resource Graph doesn't
+reliably index diagnostic-settings extension resources) — both need a
+direct `az` CLI check instead (`az webapp config appsettings list` /
+`az monitor diagnostic-settings list`). `mc10`'s credential-expiry half is
+checked the same manual way, via the Microsoft Graph API. As with the
+other tiers, tear the variant down afterward with
+`./scripts/teardown.sh <variant>` — this script does not do it for you.
+
+### 8. Viewing combined results
 
 ```powershell
 pwsh harness/show_results.ps1
@@ -305,6 +343,21 @@ rather than a finding count — that it's read directly from
 	time operations manually (`Get-Date` before/after) specifically to avoid
 	this; if you write your own timing wrapper, avoid `Measure-Command` for
 	anything you need to watch progress on.
+- **CMK attachment can silently fail to apply.** `azurerm_storage_account_customer_managed_key`
+	is a separate resource applied *after* the storage account already
+	exists — if an `apply` errors partway through elsewhere (e.g. an
+	unrelated SQL server race), this resource can end up missing from state
+	entirely with no visible error of its own. If a storage account shows
+	`encryption.keySource = Microsoft.Storage` when it should have CMK,
+	check `terraform state show <the CMK resource>` — if it reports "No
+	instance found," re-run `terraform plan`/`apply` to create it.
+- **Azure Resource Graph indexes IAM/role-assignment data (`authorizationresources`)
+	more slowly and less predictably than it indexes regular resources.**
+	A role assignment that's genuinely live can take noticeably longer than
+	other resource types to become queryable — if `run_runtime.sh`'s
+	`mc02`/`mc10` checks come back `NOT_DETECTED` right after a fresh
+	deploy, wait a few minutes and re-check directly with `az graph query`
+	before assuming something is wrong with the query itself.
 
 ## Security Note
 

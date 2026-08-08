@@ -1,0 +1,3 @@
+﻿mc_id,resource,targetType,resourceGroup
+"mc07","sqlvuln07server","microsoft.sql/servers","rg-vuln07"
+"mc07","vaultvuln07","microsoft.keyvault/vaults","rg-vuln07"

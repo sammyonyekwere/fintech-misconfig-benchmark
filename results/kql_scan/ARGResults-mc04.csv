@@ -1,0 +1,2 @@
+﻿mc_id,resource,rule,src
+"mc04","nsg-app","allow-rdp-ssh","0.0.0.0/0"
