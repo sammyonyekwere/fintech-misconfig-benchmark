@@ -1,4 +1,4 @@
-// CIS v5.0.0 (transport: HTTPS-only across storage and the app tier)
+// CIS v5.0.0 - 3.x & 9.x (transport: HTTPS-only across storage and the app tier)
 resources
 | where type in~ ("microsoft.storage/storageaccounts", "microsoft.web/sites")
 | extend httpsOnly = coalesce(tobool(properties.supportsHttpsTrafficOnly),

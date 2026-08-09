@@ -7,10 +7,11 @@
 # instantly and TTF collapses to ~0 (it is measuring nothing, not detecting
 # nothing). A genuine cold deploy shows the real ARG-indexing lag (secs-~2min).
 #
-# Window is 600s (10 min): KQL over ARG is a config-state snapshot, not an
+# Window default is 150s: KQL over ARG is a config-state snapshot, not an
 # event stream -- once ARG indexes the resource the config is fully visible,
-# so a long timeout is conceptually wrong here. Pilot showed all detections
-# under 5 min; 10 min is a 2x buffer. Override with RUNTIME_WINDOW / _INTERVAL.
+# so a long timeout is conceptually wrong here. Measured detections all land
+# in 5-14s (median 5.5s, n=20), so 150s is already a ~10x buffer. Override
+# with RUNTIME_WINDOW / RUNTIME_INTERVAL.
 set -euo pipefail
 VARIANT="$1"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
